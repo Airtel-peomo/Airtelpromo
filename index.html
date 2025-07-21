@@ -1,61 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Welcome - Airtel App</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Airtel App</title>
   <style>
     body {
-      background-color: #e60000;
-      color: white;
+      background-color: #d90000; /* Airtel red */
       font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
       text-align: center;
-      padding-top: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100vh;
+      color: #ffffff;
+      overflow: hidden;
     }
 
-    img.logo {
+    .logo {
       width: 120px;
-      height: auto;
-      margin-bottom: 20px;
+      margin: 0 auto 15px;
+      animation: blink 1.5s infinite;
     }
 
-    .title {
-      font-size: 28px;
-      font-weight: bold;
+    h1 {
+      font-size: 24px;
       margin-bottom: 10px;
     }
 
-    .small {
-      font-size: 14px;
-      margin-top: 180px;
-      color: #fff;
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      color: #ffffff;
     }
 
-    button {
-      background-color: white;
-      color: #e60000;
-      border: none;
-      padding: 15px 30px;
-      border-radius: 30px;
-      font-size: 16px;
-      font-weight: bold;
-      margin-top: 30px;
-    }
-
-    button:hover {
-      background-color: #fff3f3;
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Local Logo (make sure airtel-logo.png is in same folder) -->
-  <img src="airtel-logo.png" class="logo" alt="Airtel Logo">
+  <!-- Your Logo (name it your-logo.png and place it in same folder) -->
+  <img src="your-logo.png" class="logo" alt="Airtel Logo">
 
-  <div class="title">Welcome to Airtel App</div>
+  <!-- App Title -->
+  <h1>my Airtel</h1>
 
-  <button onclick="location.href='signup.html'">Get Started</button>
+  <!-- Footer -->
+  <div class="footer">Powered by Airtel</div>
 
-  <div class="small">Powered by Airtel App</div>
+  <!-- Redirect Script -->
+  <script>
+    setTimeout(() => {
+      const user = localStorage.getItem('user');
+      if (user) {
+        window.location.href = "login.html";
+      } else {
+        window.location.href = "signup.html";
+      }
+    }, 2500);
+  </script>
 
 </body>
 </html>
