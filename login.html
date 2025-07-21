@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login - Airtel App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <style>
+    body {
+      background-color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h2 { color: #d90000; }
+
+    input, button {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    input { border: 1px solid #ccc; }
+
+    button {
+      background-color: #d90000;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #b00000;
+    }
+
+    .blinking-logo {
+      width: 100px;
+      margin-top: 25px;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Login</h2>
+
+  <!-- BLINKING LOGO -->
+  <img src="your-logo.png" class="blinking-logo" alt="Logo">
+
+  <form onsubmit="login(event)">
+    <input type="tel" id="phone" placeholder="Phone Number" required><br>
+    <input type="password" id="pin" placeholder="4-digit PIN" required><br>
+    <button type="submit">Login</button>
+  </form>
+
+  <script>
+    function login(event) {
+      event.preventDefault();
+      const phone = document.getElementById('phone').value;
+      const pin = document.getElementById('pin').value;
+      const user = JSON.parse(localStorage.getItem('user'));
+
+      if (user && user.phone === phone && user.pin === pin) {
+        alert("Login successful!");
+        window.location.href = "dashboard.html";
+      } else {
+        alert("Invalid credentials.");
+      }
+    }
+  </script>
+
+</body>
+</html>
