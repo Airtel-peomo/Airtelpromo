@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Add Money - Airtel</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #d90000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .logo-bg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 200px;
+      opacity: 0.08;
+      transform: translate(-50%, -50%);
+      animation: blink 3s infinite alternate;
+      z-index: 0;
+    }
+
+    @keyframes blink {
+      from { opacity: 0.05; }
+      to { opacity: 0.15; }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 30px 20px;
+      width: 90%;
+      max-width: 380px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 1;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #d90000;
+      font-weight: bold;
+      text-align: center;
+      font-size: 22px;
+    }
+
+    .detail-box {
+      margin: 15px 0;
+      text-align: center;
+      color: #333;
+    }
+
+    .detail-title {
+      font-weight: bold;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .detail-value {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 5px;
+      color: #000;
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Faint background logo -->
+  <img src="your-logo.png" alt="Airtel Logo" class="logo-bg">
+
+  <!-- Add Money Card -->
+  <div class="card">
+    <h2>Bank Transfer</h2>
+
+    <div class="detail-box">
+      <div class="detail-title">Account Name</div>
+      <div class="detail-value">EMMANUEL OKWUNNA</div>
+    </div>
+
+    <div class="detail-box">
+      <div class="detail-title">Bank</div>
+      <div class="detail-value">SmartCash Payment Service Bank</div>
+    </div>
+
+    <div class="detail-box">
+      <div class="detail-title">Account Number</div>
+      <div class="detail-value">812 489 0070</div>
+    </div>
+
+    <div class="footer-note">
+      Please make a transfer to the account details above. <br>
+      Funds will reflect automatically after payment confirmation.
+    </div>
+  </div>
+</body>
+</html>
