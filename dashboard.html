@@ -2,16 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
-  <title>Airtel Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Airtel Promo Dashboard</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
       background: white;
       overflow: hidden;
@@ -21,40 +16,40 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 250px;
       transform: translate(-50%, -50%);
-      opacity: 0;
-      z-index: 1;
+      width: 250px;
+      opacity: 0.07;
+      filter: blur(8px);
+      animation: blink 4s infinite ease-in-out;
+      z-index: 0;
+      pointer-events: none;
     }
 
-    .logo-piece {
-      position: absolute;
-      width: 60px;
-      opacity: 0;
-      transition: all 0.6s ease-out;
-    }
-
-    .content {
-      padding-bottom: 180px;
-      z-index: 2;
-      position: relative;
+    @keyframes blink {
+      0%, 100% { opacity: 0.07; }
+      50% { opacity: 0.15; }
     }
 
     .header {
-      background: #d90000;
+      background-color: #d90000;
       color: white;
-      padding: 12px 15px;
+      padding: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
+      z-index: 2;
     }
 
     .main-card {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.9);
       margin: -20px 10px 10px;
       border-radius: 15px;
-      box-shadow: 0 0 8px #ccc;
-      padding: 15px;
+      box-shadow: 0 0 10px #ccc;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 2;
     }
 
     .user-info {
@@ -63,11 +58,11 @@
     }
 
     .balance {
-      font-size: 18px;
+      font-size: 20px;
       margin-top: 10px;
     }
 
-    .eye {
+    .balance .eye {
       color: red;
       cursor: pointer;
       margin-left: 5px;
@@ -75,7 +70,7 @@
 
     .buttons-row {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       margin-top: 15px;
     }
 
@@ -92,11 +87,22 @@
       cursor: pointer;
     }
 
+    .banner {
+      margin: 10px auto;
+      border-radius: 10px;
+      width: 95%;
+      display: none;
+      z-index: 2;
+      position: relative;
+    }
+
     .section {
-      margin: 10px;
-      padding: 10px;
       background: white;
       border-radius: 10px;
+      margin: 10px;
+      padding: 10px;
+      position: relative;
+      z-index: 2;
     }
 
     .grid {
@@ -108,41 +114,68 @@
     }
 
     .grid div {
-      background: #f8f8f8;
       padding: 10px;
-      border-radius: 10px;
       cursor: pointer;
+      background: #f8f8f8;
+      border-radius: 10px;
     }
 
-    .video-ads {
+    .video-ad-container {
       position: fixed;
-      bottom: 55px;
-      left: 10px;
-      right: 10px;
-      height: 100px;
-      background: black;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 300px;
+      background: white;
       border-radius: 15px;
-      overflow: hidden;
+      box-shadow: 0 0 20px #aaa;
+      display: none;
+      flex-direction: column;
+      align-items: center;
       z-index: 99;
     }
 
-    .video-ads video {
+    video {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      border-radius: 15px 15px 0 0;
     }
 
     .countdown {
-      position: absolute;
-      top: 5px;
-      right: 15px;
-      color: white;
+      padding: 10px;
+      text-align: center;
       font-weight: bold;
-      font-size: 18px;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 2px 10px;
-      border-radius: 12px;
-      z-index: 100;
+      background: #fff5f5;
+      width: 100%;
+      border-top: 1px solid #ffd6d6;
+    }
+
+    .logo-animated {
+      width: 150px;
+      max-width: 90%;
+      opacity: 1;
+      animation: scatter 2s ease-in-out forwards;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      z-index: 10;
+      display: none;
+    }
+
+    @keyframes scatter {
+      0% {
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+        opacity: 0;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+        opacity: 0.5;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1) rotate(360deg);
+        opacity: 1;
+      }
     }
 
     .bottom-nav {
@@ -151,68 +184,77 @@
       left: 0;
       right: 0;
       background: white;
-      border-top: 1px solid #ccc;
+      border-top: 1px solid #ddd;
       display: flex;
       justify-content: space-around;
       padding: 10px 0;
       font-size: 12px;
-      z-index: 100;
+      z-index: 2;
     }
   </style>
 </head>
 <body>
-  <!-- Static Logo (Initially Hidden) -->
-  <img src="your-logo.png" id="staticLogo" class="background-logo" />
+  <!-- Background Logo -->
+  <img src="your-logo.png" alt="Background Logo" class="background-logo" />
 
-  <div class="content">
-    <div class="header">
-      <div><b>Airtel Promo</b></div>
-      <div><img src="bell.png" width="20" /></div>
+  <!-- Header -->
+  <div class="header">
+    <div><b>Airtel Promo</b></div>
+    <div><img src="bell.png" alt="Bell" width="20" /></div>
+  </div>
+
+  <!-- Main Card -->
+  <div class="main-card">
+    <div class="user-info" id="userName">Loading...</div>
+    <div id="userNumber">00000000000</div>
+    <div class="balance">
+      Account Balance: <span id="userBalance">₦0.00</span>
+      <span class="eye" onclick="toggleBalance()">👁️</span>
     </div>
-
-    <div class="main-card">
-      <div class="user-info" id="userName">Loading...</div>
-      <div id="userNumber">00000000000</div>
-      <div class="balance">
-        Balance: <span id="userBalance">₦0.00</span>
-        <span class="eye" onclick="toggleBalance()">👁️</span>
-      </div>
-      <div class="buttons-row">
-        <div class="btn" onclick="location.href='add-money.html'">+ Add Money</div>
-        <div class="btn" onclick="location.href='withdraw.html'">Withdraw</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <b>Transfer & Cashout</b>
-      <div class="grid">
-        <div onclick="location.href='transfer.html'">Transfer</div>
-        <div onclick="location.href='withdraw.html'">Withdraw</div>
-        <div onclick="location.href='add-money.html'">Add Money</div>
-        <div onclick="location.href='services.html'">Services</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <b>Recharge & Bills</b>
-      <div class="grid">
-        <div onclick="location.href='airtime.html'">Airtime</div>
-        <div onclick="location.href='bundle.html'">Bundle</div>
-        <div onclick="location.href='bills.html'">Bills</div>
-        <div onclick="location.href='electricity.html'">Electricity</div>
-      </div>
+    <div class="buttons-row">
+      <div class="btn" onclick="location.href='add-money.html'">+ Add Money</div>
+      <div class="btn" onclick="location.href='withdraw.html'">Withdraw</div>
     </div>
   </div>
 
-  <!-- Video Ad with Countdown -->
-  <div class="video-ads" id="videoAd">
-    <div class="countdown" id="countdown">20s</div>
-    <video autoplay muted playsinline loop id="adVideo">
-      <source src="your-ad.mp4" type="video/mp4" />
+  <!-- Banners -->
+  <img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
+  <img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
+
+  <!-- Services Section -->
+  <div class="section">
+    <b>Transfer & Cashout</b>
+    <div class="grid">
+      <div onclick="location.href='transfer.html'">Transfer Money</div>
+      <div onclick="location.href='add-money.html'">Add Money</div>
+      <div onclick="location.href='withdraw.html'">Withdraw Cash</div>
+      <div onclick="location.href='services.html'">More Services</div>
+    </div>
+  </div>
+
+  <!-- Recharge Section -->
+  <div class="section">
+    <b>Recharge & Bill Payments</b>
+    <div class="grid">
+      <div onclick="location.href='airtime.html'">Airtime</div>
+      <div onclick="location.href='bundle.html'">Buy Bundle</div>
+      <div onclick="location.href='bills.html'">Pay Bills</div>
+      <div onclick="location.href='electricity.html'">Electricity</div>
+    </div>
+  </div>
+
+  <!-- Video Ad -->
+  <div class="video-ad-container" id="adContainer">
+    <video id="adVideo" muted autoplay>
+      <source src="ad.mp4" type="video/mp4" />
     </video>
+    <div class="countdown" id="countdown">Ad ends in 20s</div>
   </div>
 
-  <!-- Bottom Nav -->
+  <!-- Animated Logo after Ad -->
+  <img src="your-logo.png" class="logo-animated" id="animatedLogo" />
+
+  <!-- Bottom Navigation -->
   <div class="bottom-nav">
     <div onclick="location.href='dashboard.html'">🏠 Home</div>
     <div onclick="location.href='scan.html'">📷 Scan</div>
@@ -220,59 +262,70 @@
     <div onclick="location.href='more.html'">☰ More</div>
   </div>
 
+  <!-- JavaScript -->
   <script>
-    const user = JSON.parse(localStorage.getItem("user")) || {};
-    document.getElementById("userName").innerText = (user.name || "USER").toUpperCase();
-    document.getElementById("userNumber").innerText = user.phone || "08000000000";
-    const balance = user.balance ? `₦${user.balance}` : "₦0.00";
+    const user = JSON.parse(localStorage.getItem('user')) || {};
+    const balanceElement = document.getElementById('userBalance');
     let isHidden = false;
+
+    document.getElementById('userName').innerText = (user.name || 'USER').toUpperCase();
+    document.getElementById('userNumber').innerText = user.phone || '08000000000';
+    const balanceValue = user.balance ? `₦${user.balance}` : '₦300.00';
+    balanceElement.innerText = balanceValue;
 
     function toggleBalance() {
       isHidden = !isHidden;
-      document.getElementById("userBalance").innerText = isHidden ? "•••••" : balance;
+      balanceElement.innerText = isHidden ? '••••••••' : balanceValue;
     }
 
-    // Countdown logic
-    let timeLeft = 20;
-    const countdownEl = document.getElementById("countdown");
-    const videoAd = document.getElementById("videoAd");
-    const staticLogo = document.getElementById("staticLogo");
+    // Banners alternating
+    const updateBanner = document.getElementById('updateBanner');
+    const promoBanner = document.getElementById('promoBanner');
 
-    const timer = setInterval(() => {
-      timeLeft--;
-      countdownEl.innerText = `${timeLeft}s`;
-
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        videoAd.style.display = "none";
-        showLogoPieces();
-      }
-    }, 1000);
-
-    function showLogoPieces() {
-      staticLogo.style.opacity = 1;
-      staticLogo.style.animation = "logoScatter 1s ease-in-out forwards";
+    function cycleBanners() {
+      updateBanner.style.display = 'block';
+      promoBanner.style.display = 'none';
+      setTimeout(() => {
+        updateBanner.style.display = 'none';
+        promoBanner.style.display = 'block';
+        setTimeout(cycleBanners, 10000); // Show promo for 10s
+      }, 5000); // Show update for 5s
     }
 
-    // Add scattered entry animation
-    const style = document.createElement("style");
-    style.innerHTML = `
-      @keyframes logoScatter {
-        0% {
-          opacity: 0;
-          transform: translate(-50%, -50%) scale(0.1) rotate(0deg);
+    cycleBanners();
+
+    // Ads Logic
+    const adContainer = document.getElementById("adContainer");
+    const countdown = document.getElementById("countdown");
+    const video = document.getElementById("adVideo");
+    const animatedLogo = document.getElementById("animatedLogo");
+
+    video.controls = false;
+    video.playsInline = true;
+
+    let interval;
+    function startAd() {
+      let timeLeft = 20;
+      adContainer.style.display = "flex";
+      animatedLogo.style.display = "none";
+      countdown.innerText = `Ad ends in ${timeLeft}s`;
+
+      interval = setInterval(() => {
+        timeLeft--;
+        countdown.innerText = `Ad ends in ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          adContainer.style.display = "none";
+          animatedLogo.style.display = "block";
+          setTimeout(() => {
+            animatedLogo.style.display = "none";
+            setTimeout(startAd, 10000); // Show ad again after 10s
+          }, 3000);
         }
-        50% {
-          opacity: 0.5;
-          transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
-        }
-        100% {
-          opacity: 1;
-          transform: translate(-50%, -50%) scale(1) rotate(360deg);
-        }
-      }
-    `;
-    document.head.appendChild(style);
+      }, 1000);
+    }
+
+    setTimeout(startAd, 20000); // First ad after 20s
   </script>
 </body>
-    </html>
+      </html>
