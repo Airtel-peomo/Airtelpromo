@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Airtel Dashboard</title>
+  <title>Airtel Promo Dashboard</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #fff;
+      background: white;
       overflow-x: hidden;
     }
 
@@ -20,9 +20,9 @@
       width: 250px;
       opacity: 0.07;
       filter: blur(8px);
+      animation: blink 4s infinite ease-in-out;
       z-index: 0;
       pointer-events: none;
-      animation: blink 4s infinite ease-in-out;
     }
 
     @keyframes blink {
@@ -36,13 +36,12 @@
     }
 
     .header {
-      background: #d90000;
+      background-color: #d90000;
       color: white;
       padding: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-weight: bold;
     }
 
     .main-card {
@@ -55,8 +54,8 @@
     }
 
     .user-info {
-      font-size: 16px;
       font-weight: bold;
+      font-size: 16px;
     }
 
     .balance {
@@ -90,9 +89,9 @@
     }
 
     .banner {
-      width: 95%;
-      border-radius: 10px;
       margin: 10px auto;
+      border-radius: 10px;
+      width: 95%;
       display: none;
     }
 
@@ -118,6 +117,23 @@
       border-radius: 10px;
     }
 
+    .logo-container {
+      text-align: center;
+      padding: 30px 0 10px;
+    }
+
+    .static-logo {
+      width: 150px;
+      max-width: 90%;
+      opacity: 1;
+      animation: pulse 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -129,67 +145,64 @@
       justify-content: space-around;
       padding: 10px 0;
       font-size: 12px;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
-  <!-- Background Logo -->
+  <!-- Blurred Background Logo -->
   <img src="your-logo.png" alt="Airtel Logo" class="background-logo" />
 
+  <!-- Content -->
   <div class="content">
-    <!-- Header -->
     <div class="header">
-      <div>Airtel Promo</div>
+      <div><b>Airtel Promo</b></div>
       <div><img src="bell.png" alt="Bell" width="20" /></div>
     </div>
 
-    <!-- Glass Card -->
     <div class="main-card">
       <div class="user-info" id="userName">Loading...</div>
-      <div id="userNumber">0000000000</div>
+      <div id="userNumber">00000000000</div>
       <div class="balance">
-        Balance: <span id="userBalance">₦0.00</span>
+        Account Balance: <span id="userBalance">₦0.00</span>
         <span class="eye" onclick="toggleBalance()">👁️</span>
       </div>
       <div class="buttons-row">
-        <div class="btn" onclick="location.href='addmoney.html'">+ Add Money</div>
+        <div class="btn" onclick="location.href='add-money.html'">+ Add Money</div>
         <div class="btn" onclick="location.href='withdraw.html'">Withdraw</div>
       </div>
     </div>
 
-    <!-- Banners -->
-    <img src="update-banner.png" id="updateBanner" class="banner" alt="Update Banner" />
-    <img src="promo-banner.png" id="promoBanner" class="banner" alt="Promo Banner" />
+    <img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
+    <img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
 
-    <!-- Transfer Section -->
     <div class="section">
       <b>Transfer & Cashout</b>
       <div class="grid">
-        <div onclick="location.href='transfer.html'">Transfer</div>
-        <div onclick="location.href='addmoney.html'">Add Money</div>
-        <div onclick="location.href='withdraw.html'">Withdraw</div>
-        <div onclick="location.href='services.html'">Services</div>
+        <div onclick="location.href='transfer.html'">Transfer Money</div>
+        <div onclick="location.href='add-money.html'">Add Money</div>
+        <div onclick="location.href='withdraw.html'">Withdraw Cash</div>
+        <div onclick="location.href='services.html'">More Services</div>
       </div>
     </div>
 
-    <!-- Recharge Section -->
     <div class="section">
       <b>Recharge & Bill Payments</b>
       <div class="grid">
         <div onclick="location.href='airtime.html'">Airtime</div>
-        <div onclick="location.href='bundle.html'">Bundles</div>
-        <div onclick="location.href='bills.html'">Bills</div>
+        <div onclick="location.href='bundle.html'">Buy Bundle</div>
+        <div onclick="location.href='bills.html'">Pay Bills</div>
         <div onclick="location.href='electricity.html'">Electricity</div>
       </div>
     </div>
 
-    <!-- Static Airtel Logo at Bottom -->
-    <div style="text-align:center; margin-top:10px; margin-bottom:60px;">
-      <img src="your-logo.png" alt="Airtel Logo" style="width: 120px; opacity: 0.3;" />
+    <!-- Static Logo Section -->
+    <div class="logo-container">
+      <img src="your-logo.png" alt="Airtel Logo" class="static-logo" />
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- Bottom Nav -->
   <div class="bottom-nav">
     <div onclick="location.href='dashboard.html'">🏠 Home</div>
     <div onclick="location.href='scan.html'">📷 Scan</div>
@@ -197,20 +210,20 @@
     <div onclick="location.href='more.html'">☰ More</div>
   </div>
 
-  <!-- Script -->
+  <!-- JS -->
   <script>
     const user = JSON.parse(localStorage.getItem('user')) || {};
-    const balanceEl = document.getElementById('userBalance');
+    const balanceElement = document.getElementById('userBalance');
     let isHidden = false;
 
-    document.getElementById('userName').innerText = (user.name || 'User').toUpperCase();
+    document.getElementById('userName').innerText = (user.name || 'USER').toUpperCase();
     document.getElementById('userNumber').innerText = user.phone || '08000000000';
     const balanceValue = user.balance ? `₦${user.balance}` : '₦300.00';
-    balanceEl.innerText = balanceValue;
+    balanceElement.innerText = balanceValue;
 
     function toggleBalance() {
       isHidden = !isHidden;
-      balanceEl.innerText = isHidden ? '•••••••' : balanceValue;
+      balanceElement.innerText = isHidden ? '••••••••' : balanceValue;
     }
 
     const updateBanner = document.getElementById('updateBanner');
@@ -222,8 +235,8 @@
       setTimeout(() => {
         updateBanner.style.display = 'none';
         promoBanner.style.display = 'block';
-        setTimeout(cycleBanners, 10000); // Promo banner for 10s
-      }, 5000); // Update banner for 5s
+        setTimeout(cycleBanners, 10000); // Show promo for 10s
+      }, 5000); // Show update for 5s
     }
 
     cycleBanners();
