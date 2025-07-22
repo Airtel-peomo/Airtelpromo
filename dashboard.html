@@ -1,44 +1,44 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Airtel Promo Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+  <title>Airtel Dashboard</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
       font-family: Arial, sans-serif;
-      background-color: #ffffff;
-      background-image: url('your-logo.png');
-      background-repeat: no-repeat;
-      background-position: center;
+      background: white url('your-logo.png') no-repeat center center;
       background-size: 300px;
-      background-attachment: fixed;
-      animation: blinkLogo 4s infinite;
+      background-blend-mode: lighten;
+      animation: blinkLogo 3s infinite;
     }@keyframes blinkLogo {
-  0% { opacity: 0.1; }
-  50% { opacity: 0.05; }
-  100% { opacity: 0.1; }
+  0%, 100% { opacity: 0.07; }
+  50% { opacity: 0.03; }
 }
 
-.header {
+header {
   background-color: #d90000;
   color: white;
   padding: 15px;
-  font-size: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+header h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
 .balance-card {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(8px);
   margin: 20px;
-  padding: 15px;
-  border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  color: #000;
+  position: relative;
 }
 
 .balance-card h2 {
@@ -46,90 +46,93 @@
   font-size: 18px;
 }
 
-.balance-card p {
-  font-size: 24px;
-  font-weight: bold;
+.balance {
+  font-size: 28px;
   margin: 10px 0;
 }
 
 .eye {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 18px;
   cursor: pointer;
 }
 
 .buttons-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  padding: 20px;
+  gap: 15px;
+  margin: 20px;
 }
 
-.btn {
+.buttons-grid a {
+  text-decoration: none;
   background-color: #d90000;
   color: white;
-  border: none;
   padding: 15px;
-  font-size: 16px;
-  border-radius: 10px;
-  cursor: pointer;
+  border-radius: 15px;
+  text-align: center;
+  font-weight: bold;
+  transition: transform 0.2s ease;
 }
 
-.promo-banner, .update-banner {
-  width: 100%;
+.buttons-grid a:hover {
+  transform: scale(1.05);
+}
+
+.banner-container {
+  margin: 20px;
+  text-align: center;
+}
+
+.banner-container img {
+  width: 90%;
+  max-width: 300px;
+  border-radius: 12px;
   display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 99;
-}
-
-.promo-banner img, .update-banner img {
-  width: 100%;
-  border-top: 3px solid #d90000;
 }
 
   </style>
 </head>
-<body>
-  <div class="header">
-    <span>Airtel Promo</span>
+<body>  <header>
+    <h1>Airtel Promo</h1>
     <span>🔔</span>
-  </div>  <div class="balance-card">
-    <h2>Welcome, <span id="username">User</span></h2>
-    <p>&#8358;<span id="balance">300.00</span> <span class="eye" onclick="toggleBalance()">👁️</span></p>
+  </header>  <div class="balance-card">
+    <h2 id="username">Welcome, </h2>
+    <p>08123456789</p>
+    <div class="balance" id="balance">₦0</div>
+    <div class="eye" onclick="toggleBalance()">👁️</div>
   </div>  <div class="buttons-grid">
-    <a href="add-money.html" class="btn">Add Money</a>
-    <a href="buy-data.html" class="btn">Data Purchase</a>
-    <a href="airtime.html" class="btn">Airtime</a>
-    <a href="history.html" class="btn">History</a>
-  </div>  <div class="promo-banner" id="promoBanner">
-    <img src="promo-banner.png" alt="Promo">
-  </div>
-  <div class="update-banner" id="updateBanner">
-    <img src="update-banner.png" alt="Update">
+    <a href="add-money.html">Add Money</a>
+    <a href="buy-data.html">Data Purchase</a>
+    <a href="airtime.html">Airtime</a>
+    <a href="history.html">History</a>
+  </div>  <div class="banner-container">
+    <img src="promo-image.png" id="promo" />
+    <img src="update-banner.png" id="update" />
   </div>  <script>
-    // Username from signup
-    document.getElementById('username').innerText = localStorage.getItem('username') || 'User';
+    let balanceVisible = true;
+    let balance = localStorage.getItem("balance") || 300;
+    let user = JSON.parse(localStorage.getItem("user")) || { name: "User" };
 
-    // Toggle balance visibility
-    let showBalance = true;
+    document.getElementById("balance").innerText = `₦${balance}`;
+    document.getElementById("username").innerText = `Welcome, ${user.name}`;
+
     function toggleBalance() {
-      const balanceEl = document.getElementById('balance');
-      showBalance = !showBalance;
-      balanceEl.innerText = showBalance ? localStorage.getItem('balance') || '300.00' : '••••';
+      balanceVisible = !balanceVisible;
+      document.getElementById("balance").innerText = balanceVisible ? `₦${balance}` : "••••";
     }
 
-    // Promo and update banners display logic
-    window.onload = function() {
-      setTimeout(() => {
-        document.getElementById('promoBanner').style.display = 'block';
-        setTimeout(() => {
-          document.getElementById('promoBanner').style.display = 'none';
-          document.getElementById('updateBanner').style.display = 'block';
-          setTimeout(() => {
-            document.getElementById('updateBanner').style.display = 'none';
-          }, 5000);
-        }, 10000);
-      }, 1000);
-    }
+    // Promo and update banner slide
+    const promo = document.getElementById("promo");
+    const update = document.getElementById("update");
+
+    promo.style.display = "block";
+    setTimeout(() => {
+      promo.style.display = "none";
+      update.style.display = "block";
+      setTimeout(() => update.style.display = "none", 5000);
+    }, 10000);
   </script></body>
 </html>
