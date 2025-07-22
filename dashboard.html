@@ -1,245 +1,180 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Airtel Promo Dashboard</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: white;
+      font-family: sans-serif;
       overflow: hidden;
-    }.background-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  width: 250px;
-  opacity: 0.07;
-  filter: blur(8px);
-  animation: blink 4s infinite ease-in-out;
-  z-index: 0;
-  pointer-events: none;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 0.07; }
-  50% { opacity: 0.15; }
-}
-
-.content {
-  position: relative;
-  z-index: 1;
-  padding-bottom: 180px;
-}
-
-.header {
-  background-color: #d90000;
+      background: url('your-logo.png') no-repeat center center fixed;
+      background-size: contain;
+      backdrop-filter: blur(10px);
+    }header {
+  background: red;
   color: white;
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.2rem;
+  position: relative;
 }
 
-.main-card {
-  background: rgba(255, 255, 255, 0.9);
-  margin: -20px 10px 10px;
-  border-radius: 15px;
-  box-shadow: 0 0 10px #ccc;
-  padding: 20px;
+.glass-card {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 1rem;
+  margin: 1rem;
+  padding: 1rem;
+  text-align: center;
   backdrop-filter: blur(10px);
 }
 
-.user-info {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.balance {
-  font-size: 20px;
-  margin-top: 10px;
-}
-
-.balance .eye {
-  color: red;
-  cursor: pointer;
-  margin-left: 5px;
-}
-
-.buttons-row {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 15px;
-}
-
-.btn {
-  background-color: #ffe5e5;
-  border: 1px solid #ffcccc;
-  color: #d90000;
-  border-radius: 10px;
-  padding: 10px;
-  flex: 1;
-  margin: 0 5px;
-  text-align: center;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.banner {
-  margin: 10px auto;
-  border-radius: 10px;
-  width: 95%;
-  display: none;
-}
-
-.section {
-  background: white;
-  border-radius: 10px;
-  margin: 10px;
-  padding: 10px;
-}
-
-.grid {
+.btns {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  text-align: center;
-  font-size: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin: 1rem;
 }
 
-.grid div {
-  padding: 10px;
-  cursor: pointer;
-  background: #f8f8f8;
-  border-radius: 10px;
+.btns button {
+  padding: 1rem;
+  border: none;
+  border-radius: 1rem;
+  background: red;
+  color: white;
+  font-weight: bold;
 }
 
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
+.video-section, .logo-animate {
+  position: absolute;
+  bottom: 70px;
   left: 0;
   right: 0;
-  background: white;
-  border-top: 1px solid #ddd;
   display: flex;
-  justify-content: space-around;
-  padding: 10px 0;
-  font-size: 12px;
-  z-index: 10;
+  justify-content: center;
+  align-items: center;
 }
 
-.ad-video-container {
-  position: fixed;
-  bottom: 50px;
-  left: 0;
-  width: 100%;
-  background: white;
-  z-index: 9;
-  padding: 5px;
-  text-align: center;
-  display: none;
-}
-
-video#adVideo {
+video {
   width: 90%;
-  border-radius: 10px;
+  max-width: 400px;
+  border-radius: 1rem;
   pointer-events: none;
 }
 
-#muteBtn {
-  pointer-events: all;
-  margin-top: 5px;
-  font-size: 12px;
-  background: #d90000;
+.mute-btn {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: red;
   color: white;
   border: none;
-  padding: 5px 10px;
-  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
 }
 
-#countdown {
+footer {
   position: fixed;
-  bottom: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #d90000;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 10px;
-  font-size: 14px;
-  z-index: 99;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem 0;
+  border-top: 1px solid #ccc;
 }
 
-.scatter-logo {
-  display: none;
-  position: fixed;
-  bottom: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150px;
-  animation: scatterZoom 1.5s ease-in-out forwards;
-  z-index: 9;
-}
-
-@keyframes scatterZoom {
-  0% { transform: translateX(-50%) scale(0); opacity: 0; }
-  50% { transform: translateX(-50%) scale(1.2); opacity: 1; }
-  100% { transform: translateX(-50%) scale(1); }
+.countdown {
+  color: red;
+  font-weight: bold;
+  text-align: center;
 }
 
   </style>
 </head>
 <body>
-  <img src="your-logo.png" alt="Logo" class="background-logo" />  <div class="content">
-    <!-- Header, Cards, Banners, Buttons go here (same as before) -->
-    <!-- (omitted here for brevity) -->
-  </div>  <div id="countdown">Ad in 20s</div>
-  <img src="your-logo.png" id="scatterLogo" class="scatter-logo" />  <div class="ad-video-container" id="adContainer">
-    <video id="adVideo" autoplay muted playsinline loop>
-      <source src="ads.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
+  <header>
+    Airtel Promo Dashboard
+  </header>  <div class="glass-card">
+    <h3 id="username">Welcome</h3>
+    <p id="userphone"></p>
+    <p>Balance: ₦<span id="balance">****</span> <button onclick="toggleBalance()">👁️</button></p>
+  </div>  <div class="countdown" id="countdown"></div>  <div class="btns">
+    <button onclick="location.href='add-money.html'">Add Money</button>
+    <button onclick="location.href='withdraw.html'">Withdraw</button>
+    <button>Transfer</button>
+    <button>Airtime</button>
+    <button>Bundle</button>
+    <button>Bills</button>
+  </div>  <div class="video-section" id="adContainer" style="display: none;">
+    <video id="adVideo" muted autoplay playsinline>
+      <source src="ad.mp4" type="video/mp4">
     </video>
-    <br />
-    <button id="muteBtn" onclick="toggleMute()">Unmute</button>
-  </div>  <div class="bottom-nav">
+  </div><button class="mute-btn" onclick="toggleMute()">Unmute</button>
+
+  <footer>
     <div>🏠 Home</div>
     <div>📷 Scan</div>
     <div>📄 History</div>
     <div>☰ More</div>
-  </div>  <script>
-    const countdownEl = document.getElementById('countdown');
-    const adContainer = document.getElementById('adContainer');
-    const scatterLogo = document.getElementById('scatterLogo');
-    let seconds = 20;
+  </footer>  <script>
+    const user = {
+      name: localStorage.getItem("user.name") || "User",
+      phone: localStorage.getItem("user.phone") || "08012345678",
+      balance: localStorage.getItem("user.balance") || "3000",
+    };
 
-    function countdown() {
-      countdownEl.innerText = `Ad in ${seconds}s`;
-      seconds--;
-      if (seconds < 0) {
-        countdownEl.style.display = 'none';
-        scatterLogo.style.display = 'block';
-        setTimeout(() => {
-          scatterLogo.style.display = 'none';
-          adContainer.style.display = 'block';
-          seconds = 10;
-          setTimeout(() => {
-            adContainer.style.display = 'none';
-            countdownEl.style.display = 'block';
-            countdown();
-          }, 10000);
-        }, 2000);
-      } else {
-        setTimeout(countdown, 1000);
-      }
+    document.getElementById("username").innerText = `Welcome, ${user.name}`;
+    document.getElementById("userphone").innerText = user.phone;
+    let showBalance = false;
+    function toggleBalance() {
+      showBalance = !showBalance;
+      document.getElementById("balance").innerText = showBalance ? user.balance : "****";
     }
-    countdown();
+
+    let countdown = 20;
+    const countdownEl = document.getElementById("countdown");
+    countdownEl.innerText = `Ad in ${countdown}s`;
+
+    const interval = setInterval(() => {
+      countdown--;
+      countdownEl.innerText = `Ad in ${countdown}s`;
+      if (countdown === 0) {
+        clearInterval(interval);
+        showAd();
+      }
+    }, 1000);
+
+    function showAd() {
+      const ad = document.getElementById("adContainer");
+      ad.style.display = "flex";
+      const video = document.getElementById("adVideo");
+      video.currentTime = 0;
+      video.play();
+      setTimeout(() => {
+        ad.style.display = "none";
+        startCountdown();
+      }, 20000);
+    }
+
+    function startCountdown() {
+      countdown = 10;
+      countdownEl.innerText = `Ad in ${countdown}s`;
+      const interval2 = setInterval(() => {
+        countdown--;
+        countdownEl.innerText = `Ad in ${countdown}s`;
+        if (countdown === 0) {
+          clearInterval(interval2);
+          showAd();
+        }
+      }, 1000);
+    }
 
     function toggleMute() {
       const video = document.getElementById("adVideo");
-      const btn = document.getElementById("muteBtn");
       video.muted = !video.muted;
-      btn.textContent = video.muted ? "Unmute" : "Mute";
+      document.querySelector(".mute-btn").innerText = video.muted ? "Unmute" : "Mute";
     }
   </script></body>
 </html>
