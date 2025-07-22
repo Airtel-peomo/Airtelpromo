@@ -1,170 +1,223 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Airtel Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Airtel Promo Dashboard</title>
   <style>
-    * {
+    body {
       margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }body {
-  font-family: sans-serif;
-  background: url('your-logo.png') no-repeat center center/cover;
-  background-attachment: fixed;
-  overflow: hidden;
-}
+      font-family: Arial, sans-serif;
+      background: white;
+      overflow-x: hidden;
+    }
+    .background-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 250px;
+      opacity: 0.07;
+      filter: blur(8px);
+      animation: blink 4s infinite ease-in-out;
+      z-index: 0;
+      pointer-events: none;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 0.07; }
+      50% { opacity: 0.15; }
+    }
 
-.header {
-  background: red;
-  color: white;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    .content {
+      position: relative;
+      z-index: 1;
+    }
 
-.balance-card {
-  margin: 15px;
-  padding: 20px;
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-}
+    .header {
+      background-color: #d90000;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.banner-section {
-  height: 100px;
-  margin: 10px 15px;
-  overflow: hidden;
-  border-radius: 10px;
-}
+    .main-card {
+      background: rgba(255, 255, 255, 0.9);
+      margin: -20px 10px 10px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px #ccc;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+    }
 
-.banner-section img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+    .user-info {
+      font-weight: bold;
+      font-size: 16px;
+    }
 
-.grid-buttons {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  padding: 10px 15px;
-}
+    .balance {
+      font-size: 20px;
+      margin-top: 10px;
+    }
 
-.grid-buttons button {
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  background: red;
-  color: white;
-  font-weight: bold;
-}
+    .balance .eye {
+      color: red;
+      cursor: pointer;
+      margin-left: 5px;
+    }
 
-.video-ad {
-  width: 100%;
-  height: 180px;
-  margin: 10px 0;
-  position: relative;
-}
+    .buttons-row {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 15px;
+    }
 
-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-  pointer-events: none;
-}
+    .btn {
+      background-color: #ffe5e5;
+      border: 1px solid #ffcccc;
+      color: #d90000;
+      border-radius: 10px;
+      padding: 10px;
+      flex: 1;
+      margin: 0 5px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+    }
 
-.countdown {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(0,0,0,0.6);
-  color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
+    .banner {
+      margin: 10px auto;
+      border-radius: 10px;
+      width: 95%;
+      display: none;
+    }
 
-.footer {
-  display: flex;
-  justify-content: space-around;
-  background: white;
-  padding: 10px 0;
-  border-top: 1px solid #ccc;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
+    .section {
+      background: white;
+      border-radius: 10px;
+      margin: 10px;
+      padding: 10px;
+    }
 
-.footer button {
-  background: none;
-  border: none;
-  font-weight: bold;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      text-align: center;
+      font-size: 12px;
+    }
 
+    .grid div {
+      padding: 10px;
+      cursor: pointer;
+      background: #f8f8f8;
+      border-radius: 10px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      font-size: 12px;
+      z-index: 10;
+    }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h2>Airtel Promo</h2>
-    <span>🔔</span>
-  </div>  <div class="balance-card">
-    <h3 id="username">Emmanuel</h3>
-    <p id="phone">+2348123456789</p>
-    <h2>₦<span id="balance">300.00</span></h2>
-  </div>  <div class="banner-section">
-    <img id="banner" src="promo-banner.png" alt="Promo Banner">
-  </div>  <div class="grid-buttons">
-    <button onclick="location.href='add-money.html'">Add Money</button>
-    <button onclick="location.href='withdraw.html'">Withdraw</button>
-    <button>Transfer</button>
-    <button>Airtime</button>
-    <button>Bundle</button>
-    <button>Bills</button>
-  </div>  <div class="video-ad">
-    <video id="adVideo" muted autoplay loop>
-      <source src="your-ad.mp4" type="video/mp4">
-    </video>
-    <div class="countdown" id="countdown">20</div>
-  </div>  <div class="footer">
-    <button>Home</button>
-    <button>Wallet</button>
-    <button>Settings</button>
-  </div>  <script>
-    // Load local data
-    document.getElementById("username").textContent = localStorage.getItem("user") || "Emmanuel";
-    document.getElementById("phone").textContent = localStorage.getItem("phone") || "+2348123456789";
-    document.getElementById("balance").textContent = localStorage.getItem("balance") || "300.00";
+  <!-- Blurred Background Logo -->
+  <img src="your-logo.png" alt="Airtel Logo" class="background-logo" />
 
-    // Banner switch
-    let banner = document.getElementById("banner");
-    let isPromo = true;
-    setInterval(() => {
-      banner.src = isPromo ? "update-banner.png" : "promo-banner.png";
-      isPromo = !isPromo;
-    }, 10000);
+  <div class="content">
+    <!-- Header -->
+    <div class="header">
+      <div><b>Airtel Promo</b></div>
+      <div><img src="bell.png" alt="Bell" width="20" /></div>
+    </div>
 
-    // Countdown + logo logic
-    let countdownEl = document.getElementById("countdown");
-    let video = document.getElementById("adVideo");
-    let seconds = 20;
-    const countdown = setInterval(() => {
-      seconds--;
-      countdownEl.textContent = seconds;
-      if (seconds === 0) {
-        video.style.display = "none";
-        countdownEl.style.display = "none";
-        // Show your logo here
-        clearInterval(countdown);
-        setTimeout(() => {
-          video.style.display = "block";
-          countdownEl.style.display = "block";
-          seconds = 20;
-          countdownEl.textContent = seconds;
-        }, 10000); // 10 seconds logo display
-      }
-    }, 1000);
-  </script></body>
+    <!-- Main Card -->
+    <div class="main-card">
+      <div class="user-info" id="userName">Loading...</div>
+      <div id="userNumber">00000000000</div>
+      <div class="balance">
+        Account Balance: <span id="userBalance">₦0.00</span>
+        <span class="eye" onclick="toggleBalance()">👁️</span>
+      </div>
+      <div class="buttons-row">
+        <div class="btn" onclick="location.href='add-money.html'">+ Add Money</div>
+        <div class="btn" onclick="location.href='withdraw.html'">Withdraw</div>
+      </div>
+    </div>
+
+    <!-- Promo & Update Banners -->
+    <img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
+    <img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
+
+    <!-- Services Grid -->
+    <div class="section">
+      <b>Transfer & Cashout</b>
+      <div class="grid">
+        <div onclick="location.href='transfer.html'">Transfer Money</div>
+        <div onclick="location.href='add-money.html'">Add Money</div>
+        <div onclick="location.href='withdraw.html'">Withdraw Cash</div>
+        <div onclick="location.href='services.html'">More Services</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <b>Recharge & Bill Payments</b>
+      <div class="grid">
+        <div onclick="location.href='airtime.html'">Airtime</div>
+        <div onclick="location.href='bundle.html'">Buy Bundle</div>
+        <div onclick="location.href='bills.html'">Pay Bills</div>
+        <div onclick="location.href='electricity.html'">Electricity</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <div onclick="location.href='dashboard.html'">🏠 Home</div>
+    <div onclick="location.href='scan.html'">📷 Scan</div>
+    <div onclick="location.href='history.html'">📄 History</div>
+    <div onclick="location.href='more.html'">☰ More</div>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user')) || {};
+    const balanceElement = document.getElementById('userBalance');
+    let isHidden = false;
+
+    document.getElementById('userName').innerText = (user.name || 'USER').toUpperCase();
+    document.getElementById('userNumber').innerText = user.phone || '08000000000';
+    const balanceValue = user.balance ? `₦${user.balance}` : '₦300.00';
+    balanceElement.innerText = balanceValue;
+
+    function toggleBalance() {
+      isHidden = !isHidden;
+      balanceElement.innerText = isHidden ? '••••••••' : balanceValue;
+    }
+
+    const updateBanner = document.getElementById('updateBanner');
+    const promoBanner = document.getElementById('promoBanner');
+
+    function cycleBanners() {
+      updateBanner.style.display = 'block';
+      promoBanner.style.display = 'none';
+      setTimeout(() => {
+        updateBanner.style.display = 'none';
+        promoBanner.style.display = 'block';
+        setTimeout(cycleBanners, 10000);
+      }, 5000);
+    }
+
+    cycleBanners();
+  </script>
+</body>
 </html>
