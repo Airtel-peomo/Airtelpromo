@@ -1,139 +1,226 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Airtel Style Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Airtel Promo Dashboard</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f2f2f2;
+      background: white;
       overflow-x: hidden;
-    }.header {
-  background-color: #e60000;
-  color: white;
-  padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    }
 
-.header h2 {
-  margin: 0;
-}
+    .background-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 250px;
+      opacity: 0.07;
+      filter: blur(8px);
+      animation: blink 4s infinite ease-in-out;
+      z-index: 0;
+      pointer-events: none;
+    }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  padding: 16px;
-  margin: 16px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+    @keyframes blink {
+      0%, 100% { opacity: 0.07; }
+      50% { opacity: 0.15; }
+    }
 
-.glass-card::before {
-  content: "";
-  position: absolute;
-  background: url('your-logo.png') center/cover no-repeat;
-  opacity: 0.05;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
+    .content {
+      position: relative;
+      z-index: 1;
+    }
 
-.glass-card * {
-  position: relative;
-  z-index: 1;
-}
+    .header {
+      background-color: #d90000;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.balance {
-  font-size: 24px;
-  margin: 8px 0;
-}
+    .main-card {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      margin: -20px 10px 10px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
 
-.actions {
-  display: flex;
-  justify-content: space-around;
-  margin: 16px;
-  flex-wrap: wrap;
-}
+    .user-info {
+      font-weight: bold;
+      font-size: 16px;
+    }
 
-.action-button {
-  background-color: #e60000;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 12px;
-  text-decoration: none;
-  margin: 8px;
-  flex: 1 1 45%;
-  text-align: center;
-}
+    .balance {
+      font-size: 20px;
+      margin-top: 10px;
+    }
 
-.banners {
-  margin: 16px;
-}
+    .balance .eye {
+      color: red;
+      cursor: pointer;
+      margin-left: 5px;
+    }
 
-.banner {
-  display: none;
-  padding: 12px;
-  border-radius: 12px;
-  text-align: center;
-  font-weight: bold;
-  color: white;
-}
+    .buttons-row {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 15px;
+    }
 
-.update-banner {
-  background: #2d2d70;
-}
+    .btn {
+      background-color: #ffe5e5;
+      border: 1px solid #ffcccc;
+      color: #d90000;
+      border-radius: 10px;
+      padding: 10px;
+      flex: 1;
+      margin: 0 5px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+    }
 
-.promo-banner {
-  background: #e60000;
-}
+    .banner {
+      margin: 10px auto;
+      border-radius: 10px;
+      width: 95%;
+      display: none;
+    }
 
+    .section {
+      background: white;
+      border-radius: 10px;
+      margin: 10px;
+      padding: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .grid div {
+      padding: 10px;
+      cursor: pointer;
+      background: #f8f8f8;
+      border-radius: 10px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      font-size: 12px;
+    }
   </style>
-</head><body>
-  <div class="header">
-    <h2>Airtel Promo</h2>
-    <span>🔔</span>
-  </div>  <div class="glass-card">
-    <div><strong id="userName">User</strong></div>
-    <div id="userPhone">+234</div>
-    <div class="balance">
-      Balance: <span id="userBalance">₦0.00</span>
+</head>
+<body>
+  <!-- Background Blurred Airtel Logo -->
+  <img src="your-logo.png" alt="Airtel Logo" class="background-logo" />
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="header">
+      <div><b>Airtel Promo</b></div>
+      <div><img src="bell.png" alt="Bell" width="20" /></div>
     </div>
-  </div>  <div class="actions">
-    <a href="addmoney.html" class="action-button">Add Money</a>
-    <a href="withdraw.html" class="action-button">Withdraw</a>
-    <a href="#" class="action-button">Transfer</a>
-    <a href="#" class="action-button">Airtime</a>
-    <a href="#" class="action-button">Bundle</a>
-    <a href="#" class="action-button">Bills</a>
-  </div>  <div class="banners">
-    <div class="banner update-banner" id="updateBanner">Update Your Email ID</div>
-    <div class="banner promo-banner" id="promoBanner">Get up to 10% cashback on recharge</div>
-  </div>  <script>
-    // Load user data from localStorage
-    document.getElementById("userName").innerText = localStorage.getItem("user.name") || "EMMANUEL";
-    document.getElementById("userPhone").innerText = localStorage.getItem("user.phone") || "8124890070";
-    document.getElementById("userBalance").innerText = "₦" + (localStorage.getItem("user.balance") || "1.20");
 
-    // Banner rotation
-    const updateBanner = document.getElementById("updateBanner");
-    const promoBanner = document.getElementById("promoBanner");
+    <div class="main-card">
+      <div class="user-info" id="userName">Loading...</div>
+      <div id="userNumber">0000000000</div>
+      <div class="balance">
+        Account Balance: <span id="userBalance">₦0.00</span>
+        <span class="eye" onclick="toggleBalance()">👁️</span>
+      </div>
 
-    function showUpdateBanner() {
-      updateBanner.style.display = "block";
-      promoBanner.style.display = "none";
-      setTimeout(showPromoBanner, 5000);
+      <div class="buttons-row">
+        <div class="btn" onclick="location.href='fund.html'">+ Add Money</div>
+        <div class="btn" onclick="location.href='withdraw.html'">Withdraw</div>
+      </div>
+    </div>
+
+    <!-- Banners -->
+    <img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
+    <img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
+
+    <!-- Grid Section -->
+    <div class="section">
+      <b>Transfer & Cashout</b>
+      <div class="grid">
+        <div onclick="location.href='transfer.html'">Transfer</div>
+        <div onclick="location.href='fund.html'">Add Money</div>
+        <div onclick="location.href='withdraw.html'">Withdraw</div>
+        <div onclick="location.href='services.html'">More</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <b>Recharge & Bill Payments</b>
+      <div class="grid">
+        <div onclick="location.href='airtime.html'">Airtime</div>
+        <div onclick="location.href='bundle.html'">Buy Bundle</div>
+        <div onclick="location.href='bills.html'">Pay Bills</div>
+        <div onclick="location.href='electricity.html'">Electricity</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <div onclick="location.href='dashboard.html'">🏠 Home</div>
+    <div onclick="location.href='scan.html'">📷 Scan</div>
+    <div onclick="location.href='history.html'">📄 History</div>
+    <div onclick="location.href='more.html'">☰ More</div>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user')) || {};
+    const balanceElement = document.getElementById('userBalance');
+    let isHidden = false;
+
+    document.getElementById('userName').innerText = (user.name || 'USER').toUpperCase();
+    document.getElementById('userNumber').innerText = user.phone || '08000000000';
+    const balanceValue = user.balance ? `₦${user.balance}` : '₦300.00';
+    balanceElement.innerText = balanceValue;
+
+    function toggleBalance() {
+      isHidden = !isHidden;
+      balanceElement.innerText = isHidden ? '••••••••' : balanceValue;
     }
 
-    function showPromoBanner() {
-      promoBanner.style.display = "block";
-      updateBanner.style.display = "none";
-      setTimeout(showUpdateBanner, 10000);
+    // Banner cycling logic
+    const updateBanner = document.getElementById('updateBanner');
+    const promoBanner = document.getElementById('promoBanner');
+
+    function cycleBanners() {
+      updateBanner.style.display = 'block';
+      promoBanner.style.display = 'none';
+      setTimeout(() => {
+        updateBanner.style.display = 'none';
+        promoBanner.style.display = 'block';
+        setTimeout(cycleBanners, 10000); // promo for 10s
+      }, 5000); // update for 5s
     }
 
-    showUpdateBanner();
-  </script></body></html>
+    cycleBanners();
+  </script>
+</body>
+  </html>
