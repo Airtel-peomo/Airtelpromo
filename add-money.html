@@ -1,112 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <title>Add Money - Airtel App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>Add Money - Airtel</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #d90000;
+      background-color: #d90000; /* Airtel red */
+      font-family: Arial, sans-serif;
+      color: #fff;
+      position: relative;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      overflow: hidden;
-      position: relative;
     }
 
-    .logo-bg {
+    .background-logo {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 200px;
-      opacity: 0.08;
       transform: translate(-50%, -50%);
-      animation: blink 3s infinite alternate;
+      opacity: 0.07;
       z-index: 0;
-    }
-
-    @keyframes blink {
-      from { opacity: 0.05; }
-      to { opacity: 0.15; }
+      width: 300px;
+      filter: blur(2px);
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      padding: 30px 20px;
-      width: 90%;
-      max-width: 380px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      position: relative;
-      z-index: 1;
-    }
-
-    h2 {
-      margin-top: 0;
-      color: #d90000;
-      font-weight: bold;
-      text-align: center;
-      font-size: 22px;
-    }
-
-    .detail-box {
-      margin: 15px 0;
-      text-align: center;
-      color: #333;
-    }
-
-    .detail-title {
-      font-weight: bold;
-      font-size: 14px;
-      color: #888;
-    }
-
-    .detail-value {
-      font-size: 18px;
-      font-weight: bold;
-      margin-top: 5px;
+      background: #fff;
       color: #000;
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      position: relative;
     }
 
-    .footer-note {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #555;
-      text-align: center;
+    .card h2 {
+      margin-bottom: 10px;
+      color: #d90000;
+    }
+
+    .details {
+      font-size: 16px;
+      margin-top: 10px;
+      line-height: 1.8;
+    }
+
+    .details span {
+      font-weight: bold;
+    }
+
+    .back-btn {
+      margin-top: 25px;
+      background-color: #d90000;
+      color: white;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background-color: #b40000;
     }
   </style>
 </head>
 <body>
-  <!-- Faint background logo -->
-  <img src="your-logo.png" alt="Airtel Logo" class="logo-bg">
 
-  <!-- Add Money Card -->
+  <!-- Blurred Airtel Logo in background -->
+  <img src="your-logo.png" alt="Logo" class="background-logo">
+
+  <!-- White Airtel Card -->
   <div class="card">
-    <h2>Bank Transfer</h2>
-
-    <div class="detail-box">
-      <div class="detail-title">Account Name</div>
-      <div class="detail-value">EMMANUEL OKWUNNA</div>
+    <h2>Add Money</h2>
+    <div class="details">
+      <p><span>Account Name:</span> EMMANUEL OKWUNNA</p>
+      <p><span>Bank Name:</span> SmartCash Payment Service Bank</p>
+      <p><span>Account Number:</span> 812 489 0070</p>
     </div>
-
-    <div class="detail-box">
-      <div class="detail-title">Bank</div>
-      <div class="detail-value">SmartCash Payment Service Bank</div>
-    </div>
-
-    <div class="detail-box">
-      <div class="detail-title">Account Number</div>
-      <div class="detail-value">812 489 0070</div>
-    </div>
-
-    <div class="footer-note">
-      Please make a transfer to the account details above. <br>
-      Funds will reflect automatically after payment confirmation.
-    </div>
+    <button class="back-btn" onclick="goBack()">Back to Dashboard</button>
   </div>
+
+  <script>
+    function goBack() {
+      window.location.href = "dashboard.html";
+    }
+  </script>
+
 </body>
 </html>
