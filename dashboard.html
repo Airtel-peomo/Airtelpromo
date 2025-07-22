@@ -11,6 +11,7 @@
       background: white;
       overflow-x: hidden;
     }
+
     .background-logo {
       position: absolute;
       top: 50%;
@@ -23,15 +24,18 @@
       z-index: 0;
       pointer-events: none;
     }
+
     @keyframes blink {
       0%, 100% { opacity: 0.07; }
       50% { opacity: 0.15; }
     }
+
     .content {
       position: relative;
       z-index: 1;
-      padding-bottom: 140px; /* to avoid footer overlap */
+      padding-bottom: 160px; /* Leave space for ad */
     }
+
     .header {
       background-color: #d90000;
       color: white;
@@ -40,6 +44,7 @@
       justify-content: space-between;
       align-items: center;
     }
+
     .main-card {
       background: rgba(255, 255, 255, 0.9);
       margin: -20px 10px 10px;
@@ -48,24 +53,29 @@
       padding: 20px;
       backdrop-filter: blur(10px);
     }
+
     .user-info {
       font-weight: bold;
       font-size: 16px;
     }
+
     .balance {
       font-size: 20px;
       margin-top: 10px;
     }
+
     .balance .eye {
       color: red;
       cursor: pointer;
       margin-left: 5px;
     }
+
     .buttons-row {
       display: flex;
       justify-content: space-around;
       margin-top: 15px;
     }
+
     .btn {
       background-color: #ffe5e5;
       border: 1px solid #ffcccc;
@@ -78,18 +88,21 @@
       font-size: 14px;
       cursor: pointer;
     }
+
     .banner {
       margin: 10px auto;
       border-radius: 10px;
       width: 95%;
       display: none;
     }
+
     .section {
       background: white;
       border-radius: 10px;
       margin: 10px;
       padding: 10px;
     }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -97,54 +110,14 @@
       text-align: center;
       font-size: 12px;
     }
+
     .grid div {
       padding: 10px;
       cursor: pointer;
       background: #f8f8f8;
       border-radius: 10px;
     }
-    .ad-bottom {
-      position: fixed;
-      bottom: 50px;
-      left: 0;
-      right: 0;
-      background: white;
-      padding: 5px 10px;
-      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-      z-index: 9;
-    }
-    .ad-wrapper {
-      position: relative;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    video#adVideo {
-      width: 100%;
-      border-radius: 10px;
-      pointer-events: none;
-    }
-    .mute-btn {
-      position: absolute;
-      bottom: 5px;
-      right: 10px;
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 20px;
-      padding: 2px 8px;
-      font-size: 12px;
-      cursor: pointer;
-      z-index: 2;
-    }
-    .countdown {
-      position: absolute;
-      top: 5px;
-      right: 10px;
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 20px;
-      padding: 2px 8px;
-      font-size: 12px;
-      font-weight: bold;
-      z-index: 2;
-    }
+
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -158,16 +131,77 @@
       font-size: 12px;
       z-index: 10;
     }
+
+    /* Ad Section */
+    .ad-footer {
+      position: fixed;
+      bottom: 55px;
+      left: 0;
+      right: 0;
+      background: #000;
+      z-index: 9;
+      border-radius: 10px 10px 0 0;
+      overflow: hidden;
+      margin: 0 10px;
+    }
+
+    .ad-footer video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .mute-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 20px;
+      padding: 5px 10px;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .ad-logo {
+      display: none;
+      text-align: center;
+      background: white;
+      padding: 15px;
+    }
+
+    .ad-logo img {
+      width: 80px;
+      animation: zoom 2s ease-in-out infinite;
+    }
+
+    .powered {
+      font-size: 12px;
+      color: #d90000;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+
+    @keyframes zoom {
+      0% { transform: scale(0.9); opacity: 0.7; }
+      50% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.7; }
+    }
+
   </style>
 </head>
 <body>
+
   <img src="your-logo.png" alt="Airtel Logo" class="background-logo" />
+
   <div class="content">
+    <!-- Header -->
     <div class="header">
       <div><b>Airtel Promo</b></div>
       <div><img src="bell.png" alt="Bell" width="20" /></div>
     </div>
 
+    <!-- Main Card -->
     <div class="main-card">
       <div class="user-info" id="userName">Loading...</div>
       <div id="userNumber">00000000000</div>
@@ -181,9 +215,11 @@
       </div>
     </div>
 
+    <!-- Promo & Update Banners -->
     <img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
     <img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
 
+    <!-- Services -->
     <div class="section">
       <b>Transfer & Cashout</b>
       <div class="grid">
@@ -205,19 +241,21 @@
     </div>
   </div>
 
-  <!-- Bottom Ad -->
-  <div class="ad-bottom">
-    <div class="ad-wrapper">
-      <video id="adVideo" autoplay muted playsinline>
-        <source src="your-ad.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-      <div class="mute-btn" onclick="toggleMute()">🔇</div>
-      <div class="countdown" id="countdown">20s</div>
-    </div>
+  <!-- Ad Video and Airtel Logo Cycle -->
+  <div class="ad-footer" id="adContainer">
+    <video id="adVideo" autoplay muted playsinline>
+      <source src="your-ad.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <div class="mute-btn" onclick="toggleMute()">🔇</div>
   </div>
 
-  <!-- Footer Nav -->
+  <div class="ad-logo" id="logoContainer">
+    <img src="your-logo.png" alt="Logo" />
+    <div class="powered">Powered by Airtel</div>
+  </div>
+
+  <!-- Bottom Navigation -->
   <div class="bottom-nav">
     <div onclick="location.href='dashboard.html'">🏠 Home</div>
     <div onclick="location.href='scan.html'">📷 Scan</div>
@@ -229,6 +267,7 @@
     const user = JSON.parse(localStorage.getItem('user')) || {};
     const balanceElement = document.getElementById('userBalance');
     let isHidden = false;
+
     document.getElementById('userName').innerText = (user.name || 'USER').toUpperCase();
     document.getElementById('userNumber').innerText = user.phone || '08000000000';
     const balanceValue = user.balance ? `₦${user.balance}` : '₦300.00';
@@ -260,14 +299,29 @@
 
     cycleBanners();
 
-    // Countdown for ad
-    let count = 20;
-    const countdownEl = document.getElementById('countdown');
-    setInterval(() => {
-      count--;
-      if (count <= 0) count = 20;
-      countdownEl.innerText = count + 's';
-    }, 1000);
+    // Cycle Ad and Logo every 30s
+    const adVideo = document.getElementById('adVideo');
+    const adContainer = document.getElementById('adContainer');
+    const logoContainer = document.getElementById('logoContainer');
+
+    function showAdThenLogo() {
+      adContainer.style.display = 'block';
+      logoContainer.style.display = 'none';
+
+      adVideo.currentTime = 0;
+      adVideo.play();
+
+      setTimeout(() => {
+        adContainer.style.display = 'none';
+        logoContainer.style.display = 'block';
+
+        setTimeout(() => {
+          showAdThenLogo();
+        }, 10000); // Show logo for 10s
+      }, 20000); // Show ad for 20s
+    }
+
+    showAdThenLogo();
   </script>
 </body>
   </html>
