@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Airtel Promo Dashboard</title>
+  <title>Airtel Dashboard</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: white;
+      background: #fff;
       overflow-x: hidden;
     }
 
@@ -20,9 +20,9 @@
       width: 250px;
       opacity: 0.07;
       filter: blur(8px);
-      animation: blink 4s infinite ease-in-out;
       z-index: 0;
       pointer-events: none;
+      animation: blink 4s infinite ease-in-out;
     }
 
     @keyframes blink {
@@ -36,27 +36,27 @@
     }
 
     .header {
-      background-color: #d90000;
+      background: #d90000;
       color: white;
       padding: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-weight: bold;
     }
 
     .main-card {
-      background: rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.9);
       margin: -20px 10px 10px;
-      border-radius: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 15px;
+      box-shadow: 0 0 10px #ccc;
       padding: 20px;
+      backdrop-filter: blur(10px);
     }
 
     .user-info {
-      font-weight: bold;
       font-size: 16px;
+      font-weight: bold;
     }
 
     .balance {
@@ -90,9 +90,9 @@
     }
 
     .banner {
-      margin: 10px auto;
-      border-radius: 10px;
       width: 95%;
+      border-radius: 10px;
+      margin: 10px auto;
       display: none;
     }
 
@@ -133,53 +133,59 @@
   </style>
 </head>
 <body>
-  <!-- Background Blurred Airtel Logo -->
+  <!-- Background Logo -->
   <img src="your-logo.png" alt="Airtel Logo" class="background-logo" />
 
-  <!-- Main Content -->
   <div class="content">
+    <!-- Header -->
     <div class="header">
-      <div><b>Airtel Promo</b></div>
+      <div>Airtel Promo</div>
       <div><img src="bell.png" alt="Bell" width="20" /></div>
     </div>
 
+    <!-- Glass Card -->
     <div class="main-card">
       <div class="user-info" id="userName">Loading...</div>
       <div id="userNumber">0000000000</div>
       <div class="balance">
-        Account Balance: <span id="userBalance">₦0.00</span>
+        Balance: <span id="userBalance">₦0.00</span>
         <span class="eye" onclick="toggleBalance()">👁️</span>
       </div>
-
       <div class="buttons-row">
-        <div class="btn" onclick="location.href='fund.html'">+ Add Money</div>
+        <div class="btn" onclick="location.href='addmoney.html'">+ Add Money</div>
         <div class="btn" onclick="location.href='withdraw.html'">Withdraw</div>
       </div>
     </div>
 
     <!-- Banners -->
-    <img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
-    <img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
+    <img src="update-banner.png" id="updateBanner" class="banner" alt="Update Banner" />
+    <img src="promo-banner.png" id="promoBanner" class="banner" alt="Promo Banner" />
 
-    <!-- Grid Section -->
+    <!-- Transfer Section -->
     <div class="section">
       <b>Transfer & Cashout</b>
       <div class="grid">
         <div onclick="location.href='transfer.html'">Transfer</div>
-        <div onclick="location.href='fund.html'">Add Money</div>
+        <div onclick="location.href='addmoney.html'">Add Money</div>
         <div onclick="location.href='withdraw.html'">Withdraw</div>
-        <div onclick="location.href='services.html'">More</div>
+        <div onclick="location.href='services.html'">Services</div>
       </div>
     </div>
 
+    <!-- Recharge Section -->
     <div class="section">
       <b>Recharge & Bill Payments</b>
       <div class="grid">
         <div onclick="location.href='airtime.html'">Airtime</div>
-        <div onclick="location.href='bundle.html'">Buy Bundle</div>
-        <div onclick="location.href='bills.html'">Pay Bills</div>
+        <div onclick="location.href='bundle.html'">Bundles</div>
+        <div onclick="location.href='bills.html'">Bills</div>
         <div onclick="location.href='electricity.html'">Electricity</div>
       </div>
+    </div>
+
+    <!-- Static Airtel Logo at Bottom -->
+    <div style="text-align:center; margin-top:10px; margin-bottom:60px;">
+      <img src="your-logo.png" alt="Airtel Logo" style="width: 120px; opacity: 0.3;" />
     </div>
   </div>
 
@@ -191,22 +197,22 @@
     <div onclick="location.href='more.html'">☰ More</div>
   </div>
 
+  <!-- Script -->
   <script>
     const user = JSON.parse(localStorage.getItem('user')) || {};
-    const balanceElement = document.getElementById('userBalance');
+    const balanceEl = document.getElementById('userBalance');
     let isHidden = false;
 
-    document.getElementById('userName').innerText = (user.name || 'USER').toUpperCase();
+    document.getElementById('userName').innerText = (user.name || 'User').toUpperCase();
     document.getElementById('userNumber').innerText = user.phone || '08000000000';
     const balanceValue = user.balance ? `₦${user.balance}` : '₦300.00';
-    balanceElement.innerText = balanceValue;
+    balanceEl.innerText = balanceValue;
 
     function toggleBalance() {
       isHidden = !isHidden;
-      balanceElement.innerText = isHidden ? '••••••••' : balanceValue;
+      balanceEl.innerText = isHidden ? '•••••••' : balanceValue;
     }
 
-    // Banner cycling logic
     const updateBanner = document.getElementById('updateBanner');
     const promoBanner = document.getElementById('promoBanner');
 
@@ -216,11 +222,11 @@
       setTimeout(() => {
         updateBanner.style.display = 'none';
         promoBanner.style.display = 'block';
-        setTimeout(cycleBanners, 10000); // promo for 10s
-      }, 5000); // update for 5s
+        setTimeout(cycleBanners, 10000); // Promo banner for 10s
+      }, 5000); // Update banner for 5s
     }
 
     cycleBanners();
   </script>
 </body>
-  </html>
+</html>
