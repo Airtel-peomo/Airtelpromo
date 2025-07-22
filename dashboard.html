@@ -1,249 +1,195 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Airtel Dashboard</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: white;
+      background: url('airtel-bg.png') no-repeat center center fixed;
+      background-size: cover;
       overflow: hidden;
     }
-    .background-logo {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 300px;
-      opacity: 0.07;
-      filter: blur(8px);
-      pointer-events: none;
-      z-index: 0;
+    .overlay {
+      backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.85);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .header {
-      background-color: #d90000;
+    header {
+      background: #e60000;
       color: white;
-      padding: 15px;
+      padding: 10px 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 2;
-      position: relative;
     }
-    .main-card {
-      background: rgba(255, 255, 255, 0.85);
-      margin: 10px;
-      border-radius: 15px;
+    .balance-card {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      margin: 15px;
       padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       backdrop-filter: blur(10px);
-      position: relative;
-      z-index: 2;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      text-align: center;
     }
-    .user-info {
-      font-weight: bold;
-      font-size: 18px;
-    }
-    .balance {
-      font-size: 20px;
-      margin-top: 10px;
-    }
-    .balance .eye {
-      cursor: pointer;
-      color: red;
-      margin-left: 8px;
-    }
-    .buttons-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
+    .balance-card h2 { font-size: 18px; }
+    .balance-card .balance {
+      font-size: 26px;
       margin: 10px 0;
     }
-    .btn {
-      background: white;
-      border: 2px solid #d90000;
-      color: #d90000;
-      padding: 10px;
-      width: 45%;
-      text-align: center;
-      margin: 5px;
-      border-radius: 10px;
-      font-weight: bold;
-      font-size: 14px;
+    .balance-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
     }
-    .banner {
-      width: 95%;
+    .balance-buttons button {
+      background: #e60000;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 15px;
+      font-weight: bold;
+    }
+    .banner-container img {
+      width: 90%;
+      border-radius: 10px;
       margin: 10px auto;
+      display: block;
+    }
+    .middle-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 0 15px;
+    }
+    .middle-buttons button {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 12px;
+    }
+    .ads-section {
+      position: relative;
+      margin: 15px;
+      height: 150px;
+    }
+    video {
+      width: 100%;
+      height: 100%;
       border-radius: 10px;
       display: none;
-      z-index: 3;
-    }
-    .ad-section {
-      width: 95%;
-      margin: 5px auto;
-      border-radius: 15px;
-      position: relative;
-      overflow: hidden;
-      z-index: 4;
-    }
-    video#adVideo {
-      width: 100%;
-      border-radius: 15px;
-      outline: none;
-      pointer-events: none;
-    }
-    .mute-btn, .countdown {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      background: rgba(255,255,255,0.8);
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      cursor: pointer;
-      z-index: 2;
     }
     .countdown {
-      left: 10px;
-      right: auto;
+      font-size: 20px;
+      text-align: center;
+      padding: 20px;
     }
-    .static-logo {
+    .logo-zoom {
+      width: 100px;
+      height: 100px;
+      margin: auto;
       display: none;
-      width: 80px;
-      margin: 10px auto;
-      animation: zoomIn 2s ease-in-out forwards;
+      animation: zoomIn 1s ease-in-out forwards;
     }
     @keyframes zoomIn {
-      0% { transform: scale(0.5) rotate(90deg); opacity: 0; }
-      100% { transform: scale(1.2) rotate(0deg); opacity: 1; }
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0; right: 0;
-      background: white;
-      border-top: 1px solid #ddd;
+    footer {
       display: flex;
       justify-content: space-around;
+      background: white;
       padding: 10px 0;
-      font-size: 14px;
-      z-index: 10;
     }
   </style>
 </head>
 <body>
-
-  <!-- Background Logo -->
-  <img src="your-logo.png" class="background-logo" alt="bg-logo" />
-
-  <!-- Header -->
-  <div class="header">
-    <div><b>Airtel Promo</b></div>
-    <img src="bell.png" alt="bell" width="20" />
+  <div class="overlay">
+    <header>
+      <h3>Airtel Promo</h3>
+      <span>🔔</span>
+    </header><div class="balance-card">
+  <h2 id="username">Welcome, Emmanuel</h2>
+  <div class="balance">₦<span id="balance">23,000</span></div>
+  <div class="balance-buttons">
+    <button onclick="location.href='add-money.html'">+ Add Money</button>
+    <button onclick="location.href='withdraw.html'">Withdraw</button>
   </div>
+</div>
 
-  <!-- Banners -->
-  <img src="promo-banner.png" id="promoBanner" class="banner" style="display:block;" />
-  <img src="update-banner.png" id="updateBanner" class="banner" />
+<div class="banner-container">
+  <img id="bannerImage" src="promo-banner.png" alt="Banner">
+</div>
 
-  <!-- Glass Card -->
-  <div class="main-card">
-    <div class="user-info" id="userName">Loading...</div>
-    <div id="userNumber">00000000000</div>
-    <div class="balance">
-      Balance: <span id="userBalance">₦0.00</span>
-      <span class="eye" onclick="toggleBalance()">👁️</span>
-    </div>
-    <div class="buttons-row">
-      <div class="btn" onclick="location.href='add-money.html'">Add Money</div>
-      <div class="btn" onclick="location.href='withdraw.html'">Withdraw</div>
-      <div class="btn">Transfer</div>
-      <div class="btn">Airtime</div>
-      <div class="btn">Bundle</div>
-      <div class="btn">Bills</div>
-    </div>
-  </div>
+<div class="middle-buttons">
+  <button>Add Money</button>
+  <button>Withdraw</button>
+  <button>Transfer</button>
+  <button>More</button>
+  <button>Airtime</button>
+  <button>Bundle</button>
+  <button>Bills</button>
+  <button>Electricity</button>
+</div>
 
-  <!-- Ads Section -->
-  <div class="ad-section">
-    <video id="adVideo" muted autoplay playsinline loop src="ad.mp4"></video>
-    <div class="countdown" id="countdown">20</div>
-    <div class="mute-btn" onclick="toggleMute()">🔇</div>
-  </div>
+<div class="ads-section">
+  <div class="countdown" id="countdown">Ad in 20s...</div>
+  <video id="adVideo" muted>
+    <source src="your-ad.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <img src="your-logo.png" id="logoZoom" class="logo-zoom" alt="Logo">
+</div>
 
-  <!-- Static Logo -->
-  <img src="your-logo.png" id="staticLogo" class="static-logo" alt="logo" />
+<footer>
+  <button>Home</button>
+  <button>Scan</button>
+  <button>History</button>
+  <button>More</button>
+</footer>
 
-  <!-- Bottom Nav -->
-  <div class="bottom-nav">
-    <div>Home</div>
-    <div>Wallet</div>
-    <div>Promo</div>
-    <div>Account</div>
-  </div>
-
-  <script>
-    const name = localStorage.getItem("user.name") || "Emmanuel";
-    const phone = localStorage.getItem("user.phone") || "07012345678";
-    const balance = localStorage.getItem("user.balance") || "₦0.00";
-
-    document.getElementById("userName").textContent = name;
-    document.getElementById("userNumber").textContent = phone;
-    document.getElementById("userBalance").textContent = balance;
-
-    let showBalance = true;
-    function toggleBalance() {
-      showBalance = !showBalance;
-      document.getElementById("userBalance").textContent = showBalance ? balance : "****";
-    }
-
-    // Toggle Banners
+  </div>  <script>
+    // Toggle banners
+    const banners = ['promo-banner.png', 'update-banner.png'];
+    let current = 0;
     setInterval(() => {
-      const promo = document.getElementById("promoBanner");
-      const update = document.getElementById("updateBanner");
-      if (promo.style.display === "block") {
-        promo.style.display = "none";
-        update.style.display = "block";
-      } else {
-        promo.style.display = "block";
-        update.style.display = "none";
-      }
+      current = (current + 1) % banners.length;
+      document.getElementById('bannerImage').src = banners[current];
     }, 10000);
 
-    // Ads with countdown and repeat
-    const adVideo = document.getElementById("adVideo");
-    const countdown = document.getElementById("countdown");
-    const staticLogo = document.getElementById("staticLogo");
-    let adInterval, count = 20;
+    // Ad logic
+    let adTimer = 20;
+    let showAd = () => {
+      document.getElementById('countdown').style.display = 'none';
+      document.getElementById('adVideo').style.display = 'block';
+      document.getElementById('adVideo').play();
+      setTimeout(() => {
+        document.getElementById('adVideo').style.display = 'none';
+        document.getElementById('logoZoom').style.display = 'block';
+        setTimeout(() => {
+          document.getElementById('logoZoom').style.display = 'none';
+          startCycle();
+        }, 10000);
+      }, 20000);
+    };
 
-    function startAdCycle() {
-      adVideo.style.display = "block";
-      staticLogo.style.display = "none";
-      count = 20;
-      countdown.innerText = count;
-      adInterval = setInterval(() => {
-        count--;
-        countdown.innerText = count;
-        if (count <= 0) {
-          clearInterval(adInterval);
-          adVideo.style.display = "none";
-          staticLogo.style.display = "block";
-          setTimeout(startAdCycle, 10000); // After 10s, show ad again
+    let startCycle = () => {
+      adTimer = 20;
+      let countdown = setInterval(() => {
+        adTimer--;
+        document.getElementById('countdown').textContent = `Ad in ${adTimer}s...`;
+        if (adTimer <= 0) {
+          clearInterval(countdown);
+          showAd();
         }
       }, 1000);
-    }
-
-    function toggleMute() {
-      adVideo.muted = !adVideo.muted;
-    }
-
-    // Start ads after initial 5s
-    setTimeout(startAdCycle, 5000);
-  </script>
-</body>
-  </html>
+    };
+    startCycle();
+  </script></body>
+</html>
