@@ -1,258 +1,172 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Airtel Promo Dashboard</title>
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
       font-family: Arial, sans-serif;
-      background: white;
+      background: url('your-logo.png') no-repeat center center fixed;
+      background-size: cover;
+      backdrop-filter: blur(10px);
       overflow: hidden;
-    }.background-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 150px;
-  opacity: 0.07;
-  filter: blur(8px);
-  animation: blink 4s infinite ease-in-out;
-  z-index: 0;
-  pointer-events: none;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 0.07; }
-  50% { opacity: 0.15; }
-}
-
-.content {
-  position: relative;
-  z-index: 1;
-}
-
-.header {
-  background-color: #d90000;
-  color: white;
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.main-card {
-  background: rgba(255, 255, 255, 0.9);
-  margin: -20px 10px 10px;
-  border-radius: 15px;
-  box-shadow: 0 0 10px #ccc;
-  padding: 20px;
-  backdrop-filter: blur(10px);
-}
-
-.user-info {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.balance {
-  font-size: 20px;
-  margin-top: 10px;
-}
-
-.balance .eye {
-  color: red;
-  cursor: pointer;
-  margin-left: 5px;
-}
-
-.buttons-row {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 15px;
-}
-
-.btn {
-  background-color: #ffe5e5;
-  border: 1px solid #ffcccc;
-  color: #d90000;
-  border-radius: 10px;
-  padding: 10px;
-  flex: 1;
-  margin: 0 5px;
-  text-align: center;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.banner {
-  margin: 10px auto;
-  border-radius: 10px;
-  width: 95%;
-  display: none;
-}
-
-.section {
-  background: white;
-  border-radius: 10px;
-  margin: 10px;
-  padding: 10px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  text-align: center;
-  font-size: 12px;
-}
-
-.grid div {
-  padding: 10px;
-  cursor: pointer;
-  background: #f8f8f8;
-  border-radius: 10px;
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: white;
-  border-top: 1px solid #ddd;
-  display: flex;
-  justify-content: space-around;
-  padding: 10px 0;
-  font-size: 12px;
-  z-index: 10;
-}
-
-.ad-container {
-  position: fixed;
-  bottom: 60px;
-  width: 100%;
-  text-align: center;
-  z-index: 5;
-}
-
-.ad-video {
-  width: 90%;
-  max-width: 320px;
-  border-radius: 10px;
-}
-
-.airtel-logo-after {
-  display: none;
-  margin: auto;
-  width: 100px;
-  opacity: 0.7;
-}
-
+    }
+    .header {
+      background-color: #d90000;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-size: 20px;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 10px;
+      text-align: center;
+      color: white;
+    }
+    .buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+    .buttons-grid button, .footer button, #paymentBtn {
+      padding: 10px;
+      background-color: #d90000;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+    .banner {
+      margin: 10px;
+      height: 100px;
+      background-size: cover;
+      border-radius: 15px;
+    }
+    .video-ads {
+      height: 120px;
+      width: 100%;
+      margin: 10px 0;
+      position: relative;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+    }
+    #countdown {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #fff;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      border-top: 1px solid #ccc;
+    }
   </style>
 </head>
 <body>
-  <img src="your-logo.png" alt="Airtel Logo" class="background-logo" />  <div class="content">
-    <div class="header">
-      <div><b>Airtel Promo</b></div>
-      <div><img src="bell.png" alt="Bell" width="20" /></div>
-    </div><div class="main-card">
-  <div class="user-info" id="userName">Loading...</div>
-  <div id="userNumber">00000000000</div>
-  <div class="balance">
-    Account Balance: <span id="userBalance">₦0.00</span>
-    <span class="eye" onclick="toggleBalance()">👁️</span>
-  </div>
-  <div class="buttons-row">
-    <div class="btn" onclick="location.href='add-money.html'">+ Add Money</div>
-    <div class="btn" onclick="location.href='withdraw.html'">Withdraw</div>
-  </div>
-</div>
-
-<img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
-<img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
-
-<div class="section">
-  <b>Transfer & Cashout</b>
-  <div class="grid">
-    <div onclick="location.href='transfer.html'">Transfer Money</div>
-    <div onclick="location.href='add-money.html'">Add Money</div>
-    <div onclick="location.href='withdraw.html'">Withdraw Cash</div>
-    <div onclick="location.href='services.html'">More Services</div>
-  </div>
-</div>
-
-<div class="section">
-  <b>Recharge & Bill Payments</b>
-  <div class="grid">
-    <div onclick="location.href='airtime.html'">Airtime</div>
-    <div onclick="location.href='bundle.html'">Buy Bundle</div>
-    <div onclick="location.href='bills.html'">Pay Bills</div>
-    <div onclick="location.href='electricity.html'">Electricity</div>
-  </div>
-</div>
-
-  </div>  <div class="ad-container">
-    <video id="adVideo" class="ad-video" muted autoplay playsinline></video>
-    <img src="your-logo.png" class="airtel-logo-after" id="logoAfter" alt="Powered by Airtel" />
-    <div id="adCountdown">Ad ends in <span id="countdown">20</span>s</div>
-  </div>  <div class="bottom-nav">
-    <div onclick="location.href='dashboard.html'">🏠 Home</div>
-    <div onclick="location.href='scan.html'">📷 Scan</div>
-    <div onclick="location.href='history.html'">📄 History</div>
-    <div onclick="location.href='more.html'">☰ More</div>
+  <div class="header">Airtel Promo 🔔</div>  <div class="glass-card">
+    <div id="userName">Emmanuel</div>
+    <div id="userPhone">+2348012345678</div>
+    <div id="userBalance">₦0</div>
+  </div>  <img src="update-banner.png" class="banner" id="banner">  <div class="buttons-grid">
+    <button onclick="location.href='fund.html'">Add Money</button>
+    <button onclick="location.href='withdraw.html'">Withdraw</button>
+    <button>Transfer</button>
+    <button>Airtime</button>
+    <button>Bundle</button>
+    <button>Bills</button>
+  </div>  <div class="video-ads">
+    <video id="adVideo" autoplay muted playsinline>
+      <source src="ad.mp4" type="video/mp4">
+    </video>
+    <div id="countdown">20s</div>
+  </div>  <div style="text-align: center; margin: 10px;">
+    <button id="paymentBtn">I Have Made Payments</button>
+  </div>  <div class="footer">
+    <button>Home</button>
+    <button>Wallet</button>
+    <button>Profile</button>
   </div>  <script>
-    const user = JSON.parse(localStorage.getItem('user')) || {};
-    const balanceElement = document.getElementById('userBalance');
-    let isHidden = false;
-    document.getElementById('userName').innerText = (user.name || 'USER').toUpperCase();
-    document.getElementById('userNumber').innerText = user.phone || '08000000000';
-    const balanceValue = user.balance ? `₦${user.balance}` : '₦300.00';
-    balanceElement.innerText = balanceValue;
-    function toggleBalance() {
-      isHidden = !isHidden;
-      balanceElement.innerText = isHidden ? '••••••••' : balanceValue;
+    // Set default user
+    if (!localStorage.getItem("user")) {
+      localStorage.setItem("user", JSON.stringify({
+        name: "Emmanuel",
+        phone: "+2348012345678",
+        balance: 0
+      }));
     }
-    const updateBanner = document.getElementById('updateBanner');
-    const promoBanner = document.getElementById('promoBanner');
-    function cycleBanners() {
-      updateBanner.style.display = 'block';
-      promoBanner.style.display = 'none';
-      setTimeout(() => {
-        updateBanner.style.display = 'none';
-        promoBanner.style.display = 'block';
-        setTimeout(cycleBanners, 10000);
-      }, 5000);
-    }
-    cycleBanners();
 
-    // Ad Logic
-    const adVideo = document.getElementById('adVideo');
-    const logoAfter = document.getElementById('logoAfter');
-    const countdownEl = document.getElementById('countdown');
-    let adTime = 20;
-    adVideo.src = "ad.mp4";
-    adVideo.onloadeddata = () => adVideo.play();
-    let adInterval = setInterval(() => {
-      adTime--;
-      countdownEl.textContent = adTime;
-      if (adTime <= 0) {
-        clearInterval(adInterval);
-        adVideo.style.display = 'none';
-        logoAfter.style.display = 'block';
+    const user = JSON.parse(localStorage.getItem("user"));
+    document.getElementById("userName").innerText = user.name;
+    document.getElementById("userPhone").innerText = user.phone;
+    document.getElementById("userBalance").innerText = `₦${user.balance}`;
+
+    // Payment button logic
+    let tapCount = parseInt(localStorage.getItem('tapCount') || '0');
+    document.getElementById('paymentBtn').addEventListener('click', () => {
+      tapCount++;
+      localStorage.setItem('tapCount', tapCount);
+      if (tapCount >= 20) {
+        const currentBalance = parseFloat(user.balance || 0);
+        user.balance = currentBalance + 3000;
+        localStorage.setItem('user', JSON.stringify(user));
+        document.getElementById('userBalance').innerText = `₦${user.balance}`;
+        alert("₦3,000 has been added to your balance!");
+        tapCount = 0;
+        localStorage.setItem('tapCount', '0');
+      } else {
+        alert(`Tap ${20 - tapCount} more times to receive ₦3,000 bonus.`);
+      }
+    });
+
+    // Countdown and ad rotation
+    let countdown = 20;
+    const countdownEl = document.getElementById("countdown");
+    const videoEl = document.getElementById("adVideo");
+
+    setInterval(() => {
+      countdown--;
+      countdownEl.innerText = `${countdown}s`;
+      if (countdown <= 0) {
+        videoEl.pause();
+        countdownEl.innerText = "Logo...";
+        // Show logo or do something here
         setTimeout(() => {
-          logoAfter.style.display = 'none';
-          adVideo.style.display = 'block';
-          adTime = 20;
-          countdownEl.textContent = adTime;
-          adInterval = setInterval(() => {
-            adTime--;
-            countdownEl.textContent = adTime;
-            if (adTime <= 0) location.reload();
-          }, 1000);
+          countdown = 20;
+          videoEl.play();
         }, 10000);
       }
     }, 1000);
+
+    // Banner switcher
+    const banner = document.getElementById('banner');
+    let toggle = true;
+    setInterval(() => {
+      banner.src = toggle ? 'promo-banner.png' : 'update-banner.png';
+      toggle = !toggle;
+    }, 10000);
   </script></body>
-            </html>
-            
+</html>
