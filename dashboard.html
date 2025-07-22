@@ -1,212 +1,170 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Airtel-Themed Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airtel Dashboard</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
     }body {
+  font-family: sans-serif;
+  background: url('your-logo.png') no-repeat center center/cover;
+  background-attachment: fixed;
   overflow: hidden;
-  background: url('your-logo.png') center/cover no-repeat;
-  background-blend-mode: overlay;
 }
 
 .header {
-  background-color: #e60000;
+  background: red;
   color: white;
-  padding: 10px;
-  text-align: center;
-  font-weight: bold;
-  font-size: 18px;
-  position: relative;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.glass-card {
-  margin: 10px;
+.balance-card {
+  margin: 15px;
   padding: 20px;
-  border-radius: 15px;
-  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
   backdrop-filter: blur(10px);
-  color: white;
-  text-align: center;
-  position: relative;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
 }
 
-.eye-toggle {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  cursor: pointer;
-}
-
-.banner {
-  width: 90%;
-  display: none;
-  margin: 10px auto;
+.banner-section {
+  height: 100px;
+  margin: 10px 15px;
+  overflow: hidden;
   border-radius: 10px;
 }
 
-.services {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  padding: 10px;
-}
-
-.service-btn {
-  background: white;
-  border: 1px solid #e60000;
-  color: #e60000;
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.ad-section {
-  position: relative;
-  height: 150px;
-  margin: 10px;
-}
-
-#adVideo {
+.banner-section img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 15px;
 }
 
-#countdown {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: rgba(0,0,0,0.5);
-  color: white;
-  padding: 3px 8px;
+.grid-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 10px 15px;
+}
+
+.grid-buttons button {
+  padding: 10px;
+  border: none;
   border-radius: 10px;
-  font-size: 12px;
+  background: red;
+  color: white;
+  font-weight: bold;
 }
 
-#muteBtn {
+.video-ad {
+  width: 100%;
+  height: 180px;
+  margin: 10px 0;
+  position: relative;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.countdown {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(255,255,255,0.6);
-  border: none;
+  background: rgba(0,0,0,0.6);
+  color: white;
   padding: 5px 10px;
   border-radius: 5px;
-  cursor: pointer;
-}
-
-.animated-logo {
-  width: 100px;
-  display: none;
-  animation: scatterJoin 2s forwards;
-  margin: auto;
-}
-
-@keyframes scatterJoin {
-  0% {
-    opacity: 0;
-    transform: scale(0) rotate(360deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-  }
 }
 
 .footer {
+  display: flex;
+  justify-content: space-around;
+  background: white;
+  padding: 10px 0;
+  border-top: 1px solid #ccc;
   position: absolute;
   bottom: 0;
   width: 100%;
-  display: flex;
-  justify-content: space-around;
-  background-color: #fff;
-  border-top: 1px solid #ccc;
-  padding: 10px 0;
 }
 
-.footer-btn {
-  color: #e60000;
-  font-size: 14px;
+.footer button {
+  background: none;
+  border: none;
+  font-weight: bold;
 }
 
   </style>
 </head>
 <body>
   <div class="header">
-    Airtel Promo
-  </div>  <div class="glass-card">
-    <div id="userName">Emmanuel Okwunna</div>
-    <div id="userPhone">+2348123456789</div>
-    <div id="userBalance">₦<span id="balance">23,000</span></div>
-    <div class="eye-toggle" onclick="toggleBalance()">👁️</div>
-  </div>  <img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner">
-  <img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner">  <div class="services">
-    <div class="service-btn" onclick="location.href='addmoney.html'">Add Money</div>
-    <div class="service-btn" onclick="location.href='withdraw.html'">Withdraw</div>
-    <div class="service-btn">Transfer</div>
-    <div class="service-btn">Airtime</div>
-    <div class="service-btn">Bundle</div>
-    <div class="service-btn">Bills</div>
-  </div>  <div class="ad-section">
-    <video id="adVideo" autoplay muted playsinline>
+    <h2>Airtel Promo</h2>
+    <span>🔔</span>
+  </div>  <div class="balance-card">
+    <h3 id="username">Emmanuel</h3>
+    <p id="phone">+2348123456789</p>
+    <h2>₦<span id="balance">300.00</span></h2>
+  </div>  <div class="banner-section">
+    <img id="banner" src="promo-banner.png" alt="Promo Banner">
+  </div>  <div class="grid-buttons">
+    <button onclick="location.href='add-money.html'">Add Money</button>
+    <button onclick="location.href='withdraw.html'">Withdraw</button>
+    <button>Transfer</button>
+    <button>Airtime</button>
+    <button>Bundle</button>
+    <button>Bills</button>
+  </div>  <div class="video-ad">
+    <video id="adVideo" muted autoplay loop>
       <source src="your-ad.mp4" type="video/mp4">
     </video>
-    <div id="countdown">20s</div>
-    <button id="muteBtn" onclick="toggleMute()">🔇</button>
-    <img src="your-logo.png" class="animated-logo" id="animatedLogo" alt="Airtel Logo" />
+    <div class="countdown" id="countdown">20</div>
   </div>  <div class="footer">
-    <div class="footer-btn">🏠 Home</div>
-    <div class="footer-btn">📱 Wallet</div>
-    <div class="footer-btn">👤 Profile</div>
+    <button>Home</button>
+    <button>Wallet</button>
+    <button>Settings</button>
   </div>  <script>
-    let showPromo = false;
+    // Load local data
+    document.getElementById("username").textContent = localStorage.getItem("user") || "Emmanuel";
+    document.getElementById("phone").textContent = localStorage.getItem("phone") || "+2348123456789";
+    document.getElementById("balance").textContent = localStorage.getItem("balance") || "300.00";
+
+    // Banner switch
+    let banner = document.getElementById("banner");
+    let isPromo = true;
     setInterval(() => {
-      showPromo = !showPromo;
-      document.getElementById('updateBanner').style.display = showPromo ? 'none' : 'block';
-      document.getElementById('promoBanner').style.display = showPromo ? 'block' : 'none';
+      banner.src = isPromo ? "update-banner.png" : "promo-banner.png";
+      isPromo = !isPromo;
     }, 10000);
 
-    function toggleBalance() {
-      const bal = document.getElementById("balance");
-      if (bal.innerText === "****") {
-        bal.innerText = "23,000";
-      } else {
-        bal.innerText = "****";
-      }
-    }
-
-    let countdown = 20;
-    const countdownEl = document.getElementById("countdown");
-    const adVideo = document.getElementById("adVideo");
-    const logo = document.getElementById("animatedLogo");
-
-    setInterval(() => {
-      countdown--;
-      countdownEl.textContent = countdown + "s";
-
-      if (countdown === 0) {
-        adVideo.style.display = "none";
-        logo.style.display = "block";
-      }
-
-      if (countdown === -20) {
-        logo.style.display = "none";
-        adVideo.style.display = "block";
-        countdown = 20;
+    // Countdown + logo logic
+    let countdownEl = document.getElementById("countdown");
+    let video = document.getElementById("adVideo");
+    let seconds = 20;
+    const countdown = setInterval(() => {
+      seconds--;
+      countdownEl.textContent = seconds;
+      if (seconds === 0) {
+        video.style.display = "none";
+        countdownEl.style.display = "none";
+        // Show your logo here
+        clearInterval(countdown);
+        setTimeout(() => {
+          video.style.display = "block";
+          countdownEl.style.display = "block";
+          seconds = 20;
+          countdownEl.textContent = seconds;
+        }, 10000); // 10 seconds logo display
       }
     }, 1000);
-
-    function toggleMute() {
-      adVideo.muted = !adVideo.muted;
-      document.getElementById("muteBtn").textContent = adVideo.muted ? "🔇" : "🔊";
-    }
   </script></body>
 </html>
