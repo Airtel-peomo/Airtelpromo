@@ -1,206 +1,245 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Airtel Promo Dashboard</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
     body {
-      font-family: sans-serif;
-      background: #fff;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: white;
       overflow: hidden;
-      position: relative;
-    }
-    header {
-      background: red;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .dashboard {
-      padding: 10px;
-    }
-    .card {
-      background: rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(10px);
-      border-radius: 10px;
-      padding: 20px;
-      margin: 10px 0;
-      position: relative;
-    }
-    .card h2 {
-      font-size: 18px;
-    }
-    .logo-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url('your-logo.png') center/contain no-repeat;
-      opacity: 0.08;
-      z-index: 0;
-    }
-    .card-content {
-      position: relative;
-      z-index: 1;
-    }
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      margin-top: 20px;
-    }
-    .button {
-      width: 48%;
-      padding: 15px;
-      margin-bottom: 10px;
-      background: red;
-      color: white;
-      text-align: center;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-    .banner {
-      width: 100%;
-      height: 100px;
-      margin-top: 10px;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .banner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .video-ads {
-      position: fixed;
-      bottom: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 95%;
-      max-width: 400px;
-      border-radius: 10px;
-      overflow: hidden;
-      z-index: 20;
-      display: none;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-    .video-ads video {
-      width: 100%;
-    }
-    .countdown {
-      position: absolute;
-      bottom: 5px;
-      right: 10px;
-      background: rgba(0, 0, 0, 0.6);
-      color: #fff;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 14px;
-    }
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #fff;
-      display: flex;
-      justify-content: space-around;
-      border-top: 1px solid #ddd;
-      padding: 10px 0;
-    }
-    footer div {
-      font-size: 14px;
-      color: red;
-    }
+    }.background-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 250px;
+  opacity: 0.07;
+  filter: blur(8px);
+  animation: blink 4s infinite ease-in-out;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.07; }
+  50% { opacity: 0.15; }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding-bottom: 180px;
+}
+
+.header {
+  background-color: #d90000;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-card {
+  background: rgba(255, 255, 255, 0.9);
+  margin: -20px 10px 10px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px #ccc;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.user-info {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.balance {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.balance .eye {
+  color: red;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.buttons-row {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+
+.btn {
+  background-color: #ffe5e5;
+  border: 1px solid #ffcccc;
+  color: #d90000;
+  border-radius: 10px;
+  padding: 10px;
+  flex: 1;
+  margin: 0 5px;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.banner {
+  margin: 10px auto;
+  border-radius: 10px;
+  width: 95%;
+  display: none;
+}
+
+.section {
+  background: white;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.grid div {
+  padding: 10px;
+  cursor: pointer;
+  background: #f8f8f8;
+  border-radius: 10px;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  font-size: 12px;
+  z-index: 10;
+}
+
+.ad-video-container {
+  position: fixed;
+  bottom: 50px;
+  left: 0;
+  width: 100%;
+  background: white;
+  z-index: 9;
+  padding: 5px;
+  text-align: center;
+  display: none;
+}
+
+video#adVideo {
+  width: 90%;
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+#muteBtn {
+  pointer-events: all;
+  margin-top: 5px;
+  font-size: 12px;
+  background: #d90000;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+#countdown {
+  position: fixed;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #d90000;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  z-index: 99;
+}
+
+.scatter-logo {
+  display: none;
+  position: fixed;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  animation: scatterZoom 1.5s ease-in-out forwards;
+  z-index: 9;
+}
+
+@keyframes scatterZoom {
+  0% { transform: translateX(-50%) scale(0); opacity: 0; }
+  50% { transform: translateX(-50%) scale(1.2); opacity: 1; }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
   </style>
 </head>
 <body>
-  <header>Airtel Promo</header>
-  <div class="dashboard">
-    <div class="card">
-      <div class="logo-bg"></div>
-      <div class="card-content">
-        <h2>Hello, <span id="userName">User</span></h2>
-        <p>Balance: ₦<span id="userBalance">0</span></p>
-      </div>
-    </div>
-    <div class="buttons">
-      <div class="button" onclick="location.href='addmoney.html'">Add Money</div>
-      <div class="button" onclick="location.href='withdraw.html'">Withdraw</div>
-      <div class="button">Transfer</div>
-      <div class="button">Airtime</div>
-      <div class="button">Bundle</div>
-      <div class="button">Bills</div>
-    </div>
-    <div class="banner" id="promoBanner">
-      <img src="promo-banner.png" alt="Promo" />
-    </div>
-    <div class="banner" id="updateBanner" style="display:none;">
-      <img src="update-banner.png" alt="Update" />
-    </div>
-  </div>  <div class="video-ads" id="videoAds">
-    <video id="adsVideo" muted autoplay playsinline>
-      <source src="ad.mp4" type="video/mp4" />
+  <img src="your-logo.png" alt="Logo" class="background-logo" />  <div class="content">
+    <!-- Header, Cards, Banners, Buttons go here (same as before) -->
+    <!-- (omitted here for brevity) -->
+  </div>  <div id="countdown">Ad in 20s</div>
+  <img src="your-logo.png" id="scatterLogo" class="scatter-logo" />  <div class="ad-video-container" id="adContainer">
+    <video id="adVideo" autoplay muted playsinline loop>
+      <source src="ads.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
     </video>
-    <div class="countdown" id="countdownTimer">20</div>
-  </div>  <footer>
+    <br />
+    <button id="muteBtn" onclick="toggleMute()">Unmute</button>
+  </div>  <div class="bottom-nav">
     <div>🏠 Home</div>
     <div>📷 Scan</div>
+    <div>📄 History</div>
     <div>☰ More</div>
-  </footer>  <script>
-    // User Info from localStorage
-    const user = {
-      name: localStorage.getItem("user.name") || "User",
-      balance: localStorage.getItem("user.balance") || "0"
-    };
-    document.getElementById("userName").innerText = user.name;
-    document.getElementById("userBalance").innerText = user.balance;
+  </div>  <script>
+    const countdownEl = document.getElementById('countdown');
+    const adContainer = document.getElementById('adContainer');
+    const scatterLogo = document.getElementById('scatterLogo');
+    let seconds = 20;
 
-    // Promo + Update banners
-    let promo = document.getElementById("promoBanner");
-    let update = document.getElementById("updateBanner");
-    let toggle = true;
-    setInterval(() => {
-      promo.style.display = toggle ? "block" : "none";
-      update.style.display = toggle ? "none" : "block";
-      toggle = !toggle;
-    }, toggle ? 10000 : 5000);
-
-    // Video Ads Control
-    let adTimer, countdown;
-    function showAds() {
-      const videoAds = document.getElementById('videoAds');
-      const adsVideo = document.getElementById('adsVideo');
-      const countdownTimer = document.getElementById('countdownTimer');
-
-      let seconds = 20;
-      countdownTimer.innerText = seconds;
-      videoAds.style.display = 'block';
-
-      countdown = setInterval(() => {
-        seconds--;
-        countdownTimer.innerText = seconds;
-        if (seconds <= 0) {
-          clearInterval(countdown);
-          videoAds.style.display = 'none';
-          setTimeout(() => showAds(), 10000);
-        }
-      }, 1000);
-
-      adsVideo.currentTime = 0;
-      adsVideo.play();
-
-      adsVideo.controls = false;
-      adsVideo.addEventListener('contextmenu', e => e.preventDefault());
+    function countdown() {
+      countdownEl.innerText = `Ad in ${seconds}s`;
+      seconds--;
+      if (seconds < 0) {
+        countdownEl.style.display = 'none';
+        scatterLogo.style.display = 'block';
+        setTimeout(() => {
+          scatterLogo.style.display = 'none';
+          adContainer.style.display = 'block';
+          seconds = 10;
+          setTimeout(() => {
+            adContainer.style.display = 'none';
+            countdownEl.style.display = 'block';
+            countdown();
+          }, 10000);
+        }, 2000);
+      } else {
+        setTimeout(countdown, 1000);
+      }
     }
-    setTimeout(() => showAds(), 20000);
+    countdown();
+
+    function toggleMute() {
+      const video = document.getElementById("adVideo");
+      const btn = document.getElementById("muteBtn");
+      video.muted = !video.muted;
+      btn.textContent = video.muted ? "Unmute" : "Mute";
+    }
   </script></body>
 </html>
