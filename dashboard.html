@@ -1,257 +1,278 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Airtel Promo Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+  <title>Airtel Dashboard</title>
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: Arial, sans-serif;
       background: white;
       overflow: hidden;
+    }
+
+    .background-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 250px;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .logo-piece {
+      position: absolute;
+      width: 60px;
+      opacity: 0;
+      transition: all 0.6s ease-out;
+    }
+
+    .content {
+      padding-bottom: 180px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .header {
+      background: #d90000;
+      color: white;
+      padding: 12px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .main-card {
+      background: rgba(255, 255, 255, 0.95);
+      margin: -20px 10px 10px;
+      border-radius: 15px;
+      box-shadow: 0 0 8px #ccc;
+      padding: 15px;
+    }
+
+    .user-info {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .balance {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    .eye {
+      color: red;
+      cursor: pointer;
+      margin-left: 5px;
+    }
+
+    .buttons-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+
+    .btn {
+      background-color: #ffe5e5;
+      border: 1px solid #ffcccc;
+      color: #d90000;
+      border-radius: 10px;
+      padding: 10px;
+      flex: 1;
+      margin: 0 5px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .section {
+      margin: 10px;
+      padding: 10px;
+      background: white;
+      border-radius: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .grid div {
+      background: #f8f8f8;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .video-ads {
+      position: fixed;
+      bottom: 55px;
+      left: 10px;
+      right: 10px;
+      height: 100px;
+      background: black;
+      border-radius: 15px;
+      overflow: hidden;
+      z-index: 99;
+    }
+
+    .video-ads video {
+      width: 100%;
       height: 100%;
-    }.background-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 200px;
-  opacity: 0.07;
-  filter: blur(8px);
-  animation: blink 4s infinite ease-in-out;
-  z-index: 0;
-  pointer-events: none;
-}
+      object-fit: cover;
+    }
 
-@keyframes blink {
-  0%, 100% { opacity: 0.07; }
-  50% { opacity: 0.15; }
-}
+    .countdown {
+      position: absolute;
+      top: 5px;
+      right: 15px;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 2px 10px;
+      border-radius: 12px;
+      z-index: 100;
+    }
 
-.content {
-  position: relative;
-  z-index: 1;
-  height: calc(100% - 60px);
-  overflow: hidden;
-}
-
-.header {
-  background-color: #d90000;
-  color: white;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.main-card {
-  background: rgba(255, 255, 255, 0.9);
-  margin: 10px;
-  border-radius: 12px;
-  box-shadow: 0 0 8px #ccc;
-  padding: 15px;
-  backdrop-filter: blur(8px);
-}
-
-.user-info {
-  font-weight: bold;
-  font-size: 15px;
-}
-
-.balance {
-  font-size: 18px;
-  margin-top: 8px;
-}
-
-.balance .eye {
-  color: red;
-  cursor: pointer;
-  margin-left: 5px;
-}
-
-.buttons-row {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 12px;
-}
-
-.btn {
-  background-color: #ffe5e5;
-  border: 1px solid #ffcccc;
-  color: #d90000;
-  border-radius: 10px;
-  padding: 8px;
-  flex: 1;
-  margin: 0 5px;
-  text-align: center;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.banner {
-  margin: 8px auto;
-  border-radius: 10px;
-  width: 95%;
-  display: none;
-}
-
-.section {
-  background: white;
-  border-radius: 10px;
-  margin: 8px;
-  padding: 8px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  text-align: center;
-  font-size: 11px;
-}
-
-.grid div {
-  padding: 8px;
-  cursor: pointer;
-  background: #f8f8f8;
-  border-radius: 10px;
-}
-
-.logo-container {
-  text-align: center;
-  padding: 10px 0 5px;
-}
-
-.static-logo {
-  width: 120px;
-  max-width: 90%;
-  opacity: 1;
-  animation: pulse 3s infinite ease-in-out, splitSpin 2s ease-in-out forwards;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.1); opacity: 1; }
-}
-
-@keyframes splitSpin {
-  0% {
-    transform: scale(0) rotate(0deg);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.2) rotate(180deg);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1) rotate(360deg);
-    opacity: 1;
-  }
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: white;
-  border-top: 1px solid #ddd;
-  display: flex;
-  justify-content: space-around;
-  padding: 8px 0;
-  font-size: 12px;
-  z-index: 10;
-}
-
-video.ad-video {
-  width: 100%;
-  max-height: 160px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid #ccc;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      font-size: 12px;
+      z-index: 100;
+    }
   </style>
 </head>
 <body>
-  <img src="your-logo.png" alt="Airtel Logo" class="background-logo" />  <div class="content">
+  <!-- Static Logo (Initially Hidden) -->
+  <img src="your-logo.png" id="staticLogo" class="background-logo" />
+
+  <div class="content">
     <div class="header">
       <div><b>Airtel Promo</b></div>
-      <div><img src="bell.png" alt="Bell" width="18" /></div>
-    </div><div class="main-card">
-  <div class="user-info" id="userName">Loading...</div>
-  <div id="userNumber">00000000000</div>
-  <div class="balance">
-    Account Balance: <span id="userBalance">₦0.00</span>
-    <span class="eye" onclick="toggleBalance()">👁️</span>
+      <div><img src="bell.png" width="20" /></div>
+    </div>
+
+    <div class="main-card">
+      <div class="user-info" id="userName">Loading...</div>
+      <div id="userNumber">00000000000</div>
+      <div class="balance">
+        Balance: <span id="userBalance">₦0.00</span>
+        <span class="eye" onclick="toggleBalance()">👁️</span>
+      </div>
+      <div class="buttons-row">
+        <div class="btn" onclick="location.href='add-money.html'">+ Add Money</div>
+        <div class="btn" onclick="location.href='withdraw.html'">Withdraw</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <b>Transfer & Cashout</b>
+      <div class="grid">
+        <div onclick="location.href='transfer.html'">Transfer</div>
+        <div onclick="location.href='withdraw.html'">Withdraw</div>
+        <div onclick="location.href='add-money.html'">Add Money</div>
+        <div onclick="location.href='services.html'">Services</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <b>Recharge & Bills</b>
+      <div class="grid">
+        <div onclick="location.href='airtime.html'">Airtime</div>
+        <div onclick="location.href='bundle.html'">Bundle</div>
+        <div onclick="location.href='bills.html'">Bills</div>
+        <div onclick="location.href='electricity.html'">Electricity</div>
+      </div>
+    </div>
   </div>
-  <div class="buttons-row">
-    <div class="btn" onclick="location.href='add-money.html'">+ Add Money</div>
-    <div class="btn" onclick="location.href='withdraw.html'">Withdraw</div>
+
+  <!-- Video Ad with Countdown -->
+  <div class="video-ads" id="videoAd">
+    <div class="countdown" id="countdown">20s</div>
+    <video autoplay muted playsinline loop id="adVideo">
+      <source src="your-ad.mp4" type="video/mp4" />
+    </video>
   </div>
-</div>
 
-<img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
-<img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
-
-<div class="section">
-  <b>Transfer & Cashout</b>
-  <div class="grid">
-    <div onclick="location.href='transfer.html'">Transfer</div>
-    <div onclick="location.href='withdraw.html'">Withdraw</div>
-    <div onclick="location.href='services.html'">Services</div>
-    <div onclick="location.href='more.html'">More</div>
-  </div>
-</div>
-
-<div class="section">
-  <b>Recharge & Bills</b>
-  <div class="grid">
-    <div onclick="location.href='airtime.html'">Airtime</div>
-    <div onclick="location.href='bundle.html'">Bundle</div>
-    <div onclick="location.href='bills.html'">Bills</div>
-    <div onclick="location.href='electricity.html'">Electricity</div>
-  </div>
-</div>
-
-<!-- Ad Video Section -->
-<div class="logo-container">
-  <video src="ad.mp4" autoplay muted loop class="ad-video" playsinline></video>
-</div>
-
-  </div>  <div class="bottom-nav">
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
     <div onclick="location.href='dashboard.html'">🏠 Home</div>
     <div onclick="location.href='scan.html'">📷 Scan</div>
     <div onclick="location.href='history.html'">📄 History</div>
     <div onclick="location.href='more.html'">☰ More</div>
-  </div>  <script>
-    const user = JSON.parse(localStorage.getItem('user')) || {};
-    const balanceElement = document.getElementById('userBalance');
-    let isHidden = false;
+  </div>
 
-    document.getElementById('userName').innerText = (user.name || 'USER').toUpperCase();
-    document.getElementById('userNumber').innerText = user.phone || '08000000000';
-    const balanceValue = user.balance ? `₦${user.balance}` : '₦300.00';
-    balanceElement.innerText = balanceValue;
+  <script>
+    const user = JSON.parse(localStorage.getItem("user")) || {};
+    document.getElementById("userName").innerText = (user.name || "USER").toUpperCase();
+    document.getElementById("userNumber").innerText = user.phone || "08000000000";
+    const balance = user.balance ? `₦${user.balance}` : "₦0.00";
+    let isHidden = false;
 
     function toggleBalance() {
       isHidden = !isHidden;
-      balanceElement.innerText = isHidden ? '••••••••' : balanceValue;
+      document.getElementById("userBalance").innerText = isHidden ? "•••••" : balance;
     }
 
-    const updateBanner = document.getElementById('updateBanner');
-    const promoBanner = document.getElementById('promoBanner');
+    // Countdown logic
+    let timeLeft = 20;
+    const countdownEl = document.getElementById("countdown");
+    const videoAd = document.getElementById("videoAd");
+    const staticLogo = document.getElementById("staticLogo");
 
-    function cycleBanners() {
-      updateBanner.style.display = 'block';
-      promoBanner.style.display = 'none';
-      setTimeout(() => {
-        updateBanner.style.display = 'none';
-        promoBanner.style.display = 'block';
-        setTimeout(cycleBanners, 10000);
-      }, 5000);
+    const timer = setInterval(() => {
+      timeLeft--;
+      countdownEl.innerText = `${timeLeft}s`;
+
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        videoAd.style.display = "none";
+        showLogoPieces();
+      }
+    }, 1000);
+
+    function showLogoPieces() {
+      staticLogo.style.opacity = 1;
+      staticLogo.style.animation = "logoScatter 1s ease-in-out forwards";
     }
 
-    cycleBanners();
-  </script></body>
-</html>
+    // Add scattered entry animation
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes logoScatter {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.1) rotate(0deg);
+        }
+        50% {
+          opacity: 0.5;
+          transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+        }
+        100% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1) rotate(360deg);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+    </html>
