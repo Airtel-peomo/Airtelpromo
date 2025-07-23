@@ -11,7 +11,6 @@
       background: white;
       overflow-x: hidden;
     }
-
     .background-logo {
       position: absolute;
       top: 50%;
@@ -24,7 +23,6 @@
       z-index: 0;
       pointer-events: none;
     }
-
     @keyframes blink {
       0%, 100% { opacity: 0.07; }
       50% { opacity: 0.15; }
@@ -131,42 +129,18 @@
       z-index: 10;
     }
 
-    /* Fullscreen Ad Styling */
-    #fullscreenAd {
+    #adOverlay {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: black;
-      z-index: 9999;
-      display: none;
-      justify-content: center;
+      display: flex;
       align-items: center;
-      flex-direction: column;
+      justify-content: center;
+      z-index: 9999;
     }
 
-    #adTimer {
-      position: absolute;
-      bottom: 60px;
-      color: white;
-      font-size: 18px;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 5px 15px;
-      border-radius: 20px;
-    }
-
-    #skipBtn {
-      position: absolute;
-      bottom: 20px;
-      padding: 10px 20px;
-      background: red;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      font-size: 14px;
-      cursor: pointer;
-      display: none;
-    }
-
-    video {
+    #adOverlay video {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -174,21 +148,18 @@
   </style>
 </head>
 <body>
-
-  <!-- Fullscreen Ad -->
-  <div id="fullscreenAd">
-    <video id="adVideo" autoplay playsinline>
-      <source src="your-ad.mp4" type="video/mp4" />
+  <!-- Ad Video Overlay -->
+  <div id="adOverlay">
+    <video id="adVideo" autoplay muted>
+      <source src="login-ad.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
-    <div id="adTimer">Ad ends in <span id="adCount">20</span>s</div>
-    <button id="skipBtn" onclick="closeAd()">Skip Ad</button>
   </div>
 
-  <!-- Background Logo -->
+  <!-- Blurred Background Logo -->
   <img src="your-logo.png" alt="Airtel Logo" class="background-logo" />
 
-  <div class="content" style="display: none;">
+  <div class="content" id="mainContent" style="display: none;">
     <!-- Header -->
     <div class="header">
       <div><b>Airtel Promo</b></div>
@@ -209,11 +180,11 @@
       </div>
     </div>
 
-    <!-- Banners -->
+    <!-- Promo & Update Banners -->
     <img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
     <img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
 
-    <!-- Services -->
+    <!-- Services Grid -->
     <div class="section">
       <b>Transfer & Cashout</b>
       <div class="grid">
@@ -258,7 +229,6 @@
       balanceElement.innerText = isHidden ? '••••••••' : balanceValue;
     }
 
-    // Banner Logic
     const updateBanner = document.getElementById('updateBanner');
     const promoBanner = document.getElementById('promoBanner');
 
@@ -274,46 +244,17 @@
 
     cycleBanners();
 
-    // Ad Logic
-    const adShown = localStorage.getItem('adShown');
-    const fullscreenAd = document.getElementById('fullscreenAd');
-    const content = document.querySelector('.content');
+    // Ad logic
+    const adOverlay = document.getElementById('adOverlay');
     const adVideo = document.getElementById('adVideo');
-    const adCount = document.getElementById('adCount');
-    const skipBtn = document.getElementById('skipBtn');
+    const mainContent = document.getElementById('mainContent');
 
-    function showAd() {
-      let count = 20;
-      let skipDelay = 10;
-      fullscreenAd.style.display = 'flex';
-      adVideo.volume = 0.1;
+    adVideo.volume = 0.1; // Low volume
 
-      const timer = setInterval(() => {
-        count--;
-        adCount.innerText = count;
-
-        if (count === skipDelay) {
-          skipBtn.style.display = 'block';
-        }
-
-        if (count <= 0) {
-          clearInterval(timer);
-          closeAd();
-        }
-      }, 1000);
-    }
-
-    function closeAd() {
-      fullscreenAd.style.display = 'none';
-      content.style.display = 'block';
-      localStorage.setItem('adShown', 'true');
-    }
-
-    if (!adShown) {
-      showAd();
-    } else {
-      content.style.display = 'block';
-    }
+    setTimeout(() => {
+      adOverlay.style.display = 'none';
+      mainContent.style.display = 'block';
+    }, 10000); // Skip after 10 seconds
   </script>
 </body>
-</html>
+                                                     </html>
