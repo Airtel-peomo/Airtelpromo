@@ -1,115 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Confirm Payment</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Fund Confirmation</title>
   <style>
     body {
-      font-family: sans-serif;
-      background: url('airtel-bg.png') no-repeat center center fixed;
-      background-size: cover;
       margin: 0;
       padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      overflow: hidden;
+      position: relative;
     }
-    .card {
-      max-width: 400px;
-      margin: 100px auto;
-      background: white;
-      border-radius: 20px;
-      padding: 20px;
+
+    .blur-logo {
+      background: url('airtel-logo.png') no-repeat center center;
+      background-size: 250px;
+      opacity: 0.05;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      padding: 30px;
       text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
-    .logo {
-      width: 60px;
-      margin-bottom: 10px;
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      max-width: 400px;
+      margin: auto;
     }
+
+    .card h3 {
+      color: red;
+      margin-bottom: 20px;
+    }
+
+    .card p {
+      font-size: 17px;
+      margin: 10px 0;
+    }
+
     button {
-      background: red;
+      margin-top: 20px;
+      padding: 15px 30px;
+      background-color: red;
       color: white;
-      padding: 12px 25px;
-      font-size: 16px;
       border: none;
       border-radius: 10px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-
-    /* Pop-up styles */
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
-      text-align: center;
-      z-index: 999;
-      transition: all 0.3s ease;
-    }
-
-    .popup.show {
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    .popup h3 {
-      margin: 0;
       font-size: 18px;
+      cursor: pointer;
     }
 
-    .popup p {
-      font-size: 15px;
-      color: #333;
-    }
-
-    .popup-icon {
-      font-size: 30px;
+    .popup {
+      display: none;
+      margin-top: 15px;
       color: green;
+      font-weight: bold;
+      font-size: 16px;
     }
-
   </style>
 </head>
 <body>
-  <div class="card">
-    <img src="airtel-logo.png" class="logo" alt="Airtel Logo" />
-    <h2>Fund Account</h2>
-    <p><strong>Account Name:</strong> EMMANUEL OKWUNNA</p>
-    <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
-    <p><strong>Account Number:</strong> 812 489 0070</p>
-    <button onclick="confirmPayment()">I Have Made Payment</button>
-  </div>
+  <div class="blur-logo"></div>
 
-  <!-- Pop-up -->
-  <div class="popup" id="popup">
-    <div class="popup-icon">✅</div>
-    <h3>Thank you!</h3>
-    <p>Please wait, we are confirming your transaction...</p>
+  <div class="container">
+    <div class="card">
+      <h3>Send to this Account</h3>
+      <p><strong>Account Name:</strong> EMMANUEL OKWUNNA</p>
+      <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
+      <p><strong>Account Number:</strong> 812 489 0070</p>
+      <button onclick="tapFund()">I have made payments</button>
+      <div class="popup" id="popup">Please wait, we are confirming your transaction...</div>
+    </div>
   </div>
 
   <script>
-    let tapCount = localStorage.getItem('tapCount') || 0;
+    let fundTaps = parseInt(localStorage.getItem("fundTaps") || "0");
 
-    function confirmPayment() {
-      tapCount++;
-      localStorage.setItem('tapCount', tapCount);
+    function tapFund() {
+      fundTaps++;
+      localStorage.setItem("fundTaps", fundTaps);
+      document.getElementById("popup").style.display = "block";
 
-      // Show the pop-up
-      const popup = document.getElementById('popup');
-      popup.classList.add('show');
-
-      // Hide after 3 seconds
-      setTimeout(() => {
-        popup.classList.remove('show');
-      }, 3000);
-
-      if (tapCount % 20 === 0) {
-        let balance = parseInt(localStorage.getItem('user.balance') || '0');
+      if (fundTaps % 20 === 0) {
+        let balance = parseInt(localStorage.getItem("user.balance") || "0");
         balance += 3000;
-        localStorage.setItem('user.balance', balance);
-        setTimeout(() => {
-          alert("₦3,000 has been added to your balance!");
-        }, 1000);
+        localStorage.setItem("user.balance", balance);
       }
     }
   </script>
