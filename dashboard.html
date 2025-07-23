@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Airtel Promo Dashboard</title>
   <style>
-    * {
-      touch-action: manipulation;
-    }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -28,6 +25,7 @@
       z-index: 0;
       pointer-events: none;
     }
+
     @keyframes blink {
       0%, 100% { opacity: 0.07; }
       50% { opacity: 0.15; }
@@ -134,52 +132,17 @@
       z-index: 10;
     }
 
-    #adContainer {
-      position: fixed;
-      bottom: 50px;
+    .ads-container {
       width: 100%;
-      z-index: 5;
-      text-align: center;
+      height: 130px;
+      overflow: hidden;
+      margin: 5px 0;
     }
 
-    video {
-      width: 95%;
-      border-radius: 10px;
-    }
-
-    #countdown {
-      position: absolute;
-      top: 5px;
-      right: 15px;
-      background: rgba(255, 255, 255, 0.6);
-      padding: 4px 8px;
-      border-radius: 5px;
-      font-weight: bold;
-      color: #d90000;
-      font-size: 12px;
-    }
-
-    #logoAnimation {
-      display: none;
-      width: 150px;
-      height: 150px;
-      margin: auto;
-      animation: scatterJoin 10s ease-in-out forwards;
-    }
-
-    @keyframes scatterJoin {
-      0% {
-        transform: translate(-200px, -200px) scale(0.1);
-        opacity: 0;
-      }
-      50% {
-        transform: translate(0px, 0px) scale(1.1);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(1);
-        opacity: 0;
-      }
+    .ads-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   </style>
 </head>
@@ -208,9 +171,16 @@
       </div>
     </div>
 
-    <!-- Banners -->
-    <img src="update-banner.png" class="banner" id="updateBanner" />
-    <img src="promo-banner.png" class="banner" id="promoBanner" />
+    <!-- Ad Video Section -->
+    <div class="ads-container">
+      <video id="adVideo" autoplay muted playsinline>
+        <source src="your-ad.mp4" type="video/mp4" />
+      </video>
+    </div>
+
+    <!-- Promo & Update Banners -->
+    <img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
+    <img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
 
     <!-- Services Grid -->
     <div class="section">
@@ -234,14 +204,7 @@
     </div>
   </div>
 
-  <!-- Ad Section -->
-  <div id="adContainer">
-    <video id="adVideo" autoplay muted playsinline></video>
-    <div id="countdown">20</div>
-    <img src="your-logo.png" id="logoAnimation" />
-  </div>
-
-  <!-- Footer -->
+  <!-- Bottom Navigation -->
   <div class="bottom-nav">
     <div onclick="location.href='dashboard.html'">🏠 Home</div>
     <div onclick="location.href='scan.html'">📷 Scan</div>
@@ -264,9 +227,10 @@
       balanceElement.innerText = isHidden ? '••••••••' : balanceValue;
     }
 
+    const updateBanner = document.getElementById('updateBanner');
+    const promoBanner = document.getElementById('promoBanner');
+
     function cycleBanners() {
-      const updateBanner = document.getElementById('updateBanner');
-      const promoBanner = document.getElementById('promoBanner');
       updateBanner.style.display = 'block';
       promoBanner.style.display = 'none';
       setTimeout(() => {
@@ -275,37 +239,12 @@
         setTimeout(cycleBanners, 10000);
       }, 5000);
     }
+
     cycleBanners();
 
-    const adVideo = document.getElementById("adVideo");
-    const countdown = document.getElementById("countdown");
-    const logoAnimation = document.getElementById("logoAnimation");
-
-    let ads = ["ad.mp4"];
-    let adIndex = 0;
-
-    function playAd() {
-      logoAnimation.style.display = "none";
-      adVideo.src = ads[adIndex];
-      adVideo.volume = 0.2;
-      adVideo.play();
-      let seconds = 20;
-      countdown.innerText = seconds;
-
-      let timer = setInterval(() => {
-        seconds--;
-        countdown.innerText = seconds;
-        if (seconds <= 0) {
-          clearInterval(timer);
-          adVideo.pause();
-          adVideo.src = "";
-          logoAnimation.style.display = "block";
-          setTimeout(playAd, 10000); // wait 10 sec with logo, then replay ad
-        }
-      }, 1000);
-    }
-
-    playAd();
+    // Ad Video Volume
+    const ad = document.getElementById("adVideo");
+    ad.volume = 0.1; // Low volume
   </script>
 </body>
-             </html>
+</html>
