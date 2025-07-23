@@ -1,66 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Add Money</title>
   <style>
     body {
-      font-family: sans-serif;
-      background: url('airtel-bg.png') no-repeat center center fixed;
-      background-size: cover;
       margin: 0;
       padding: 0;
+      font-family: Arial, sans-serif;
+      background: #fff;
+      overflow: hidden;
+      position: relative;
     }
+
+    .blur-logo {
+      background: url('airtel-logo.png') no-repeat center center;
+      background-size: 250px;
+      opacity: 0.05;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
     .container {
-      max-width: 400px;
-      margin: 100px auto;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 20px;
-      padding: 20px;
+      padding: 30px;
       text-align: center;
+      position: relative;
+      z-index: 1;
     }
-    .airtel-logo {
-      width: 80px;
-      margin-bottom: 10px;
-      animation: spin 5s linear infinite;
+
+    h2 {
+      color: red;
+      font-size: 24px;
     }
-    @keyframes spin {
-      100% { transform: rotate(360deg); }
-    }
+
     input {
+      padding: 15px;
       width: 90%;
-      padding: 10px;
+      max-width: 300px;
       font-size: 18px;
-      margin-bottom: 15px;
+      margin-top: 30px;
       border-radius: 10px;
       border: 1px solid #ccc;
     }
+
     button {
-      background: red;
+      margin-top: 30px;
+      padding: 15px 25px;
+      background-color: red;
       color: white;
-      padding: 12px 25px;
-      font-size: 16px;
       border: none;
       border-radius: 10px;
+      font-size: 18px;
       cursor: pointer;
+    }
+
+    .loader {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .loader img {
+      width: 60px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
+  <div class="blur-logo"></div>
+
   <div class="container">
-    <img src="airtel-logo.png" class="airtel-logo" alt="Logo" />
-    <h2>Enter Amount</h2>
-    <input type="number" id="amount" placeholder="Minimum ₦3,000" />
-    <button onclick="proceed()">Continue</button>
+    <h2>Add Money</h2>
+    <input type="number" id="amount" placeholder="Enter Amount (Min ₦3000)" />
+    <br />
+    <button onclick="continueToFund()">Continue</button>
+
+    <div class="loader" id="loader">
+      <img src="airtel-logo.png" alt="Loading..." />
+    </div>
   </div>
 
   <script>
-    function proceed() {
-      const amount = document.getElementById('amount').value;
-      if (amount >= 3000) {
-        window.location.href = 'fund-confirm.html';
-      } else {
-        alert('Minimum amount is ₦3,000');
+    function continueToFund() {
+      const amount = document.getElementById("amount").value;
+      if (parseInt(amount) < 3000) {
+        alert("Minimum amount is ₦3000");
+        return;
       }
+
+      document.getElementById("loader").style.display = "block";
+
+      setTimeout(() => {
+        localStorage.setItem("fundAmount", amount);
+        window.location.href = "fund-confirm.html";
+      }, 2000);
     }
   </script>
 </body>
