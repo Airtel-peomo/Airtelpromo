@@ -1,97 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Confirm Funding</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Confirm Payment</title>
   <style>
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #ffffffdd, #f2f2f2ee), url('your-logo.png') no-repeat center center fixed;
+      font-family: sans-serif;
+      background: url('airtel-bg.png') no-repeat center center fixed;
       background-size: cover;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
+      margin: 0;
+      padding: 0;
     }
-
     .card {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 20px 30px;
+      max-width: 400px;
+      margin: 100px auto;
+      background: white;
       border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      padding: 20px;
       text-align: center;
-      max-width: 90%;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
-
-    .card h2 {
+    .logo {
+      width: 60px;
       margin-bottom: 10px;
-      color: #e60000;
     }
-
-    .details {
-      margin: 20px 0;
-    }
-
-    .details p {
-      margin: 5px 0;
-      font-weight: bold;
-    }
-
     button {
-      background: #e60000;
+      background: red;
       color: white;
-      border: none;
       padding: 12px 25px;
       font-size: 16px;
-      border-radius: 30px;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
+      margin-top: 20px;
     }
 
+    /* Pop-up styles */
     .popup {
-      margin-top: 15px;
-      padding: 10px;
-      background: #dfffdc;
-      border: 1px solid #7bdc59;
-      border-radius: 10px;
-      color: green;
-      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      text-align: center;
+      z-index: 999;
+      transition: all 0.3s ease;
     }
+
+    .popup.show {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .popup h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .popup p {
+      font-size: 15px;
+      color: #333;
+    }
+
+    .popup-icon {
+      font-size: 30px;
+      color: green;
+    }
+
   </style>
 </head>
 <body>
   <div class="card">
-    <h2>Send ₦3,000 to:</h2>
-    <div class="details">
-      <p><strong>Name:</strong> EMMANUEL OKWUNNA</p>
-      <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
-      <p><strong>Account No:</strong> 812 489 0070</p>
-    </div>
-    <button onclick="tapFund()">I Have Made Payments</button>
-    <div class="popup" id="popup">Payment Confirmed! Please wait while we verify...</div>
+    <img src="airtel-logo.png" class="logo" alt="Airtel Logo" />
+    <h2>Fund Account</h2>
+    <p><strong>Account Name:</strong> EMMANUEL OKWUNNA</p>
+    <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
+    <p><strong>Account Number:</strong> 812 489 0070</p>
+    <button onclick="confirmPayment()">I Have Made Payment</button>
+  </div>
+
+  <!-- Pop-up -->
+  <div class="popup" id="popup">
+    <div class="popup-icon">✅</div>
+    <h3>Thank you!</h3>
+    <p>Please wait, we are confirming your transaction...</p>
   </div>
 
   <script>
-    let tapCount = localStorage.getItem('fundTapCount') || 0;
-    tapCount = parseInt(tapCount);
+    let tapCount = localStorage.getItem('tapCount') || 0;
 
-    function tapFund() {
+    function confirmPayment() {
       tapCount++;
-      localStorage.setItem('fundTapCount', tapCount);
+      localStorage.setItem('tapCount', tapCount);
 
-      document.getElementById("popup").style.display = "block";
-      document.getElementById("popup").textContent = "Payment Confirmed! Tap count: " + tapCount;
+      // Show the pop-up
+      const popup = document.getElementById('popup');
+      popup.classList.add('show');
 
-      // Fund ₦3,000 after 20 taps
-      if (tapCount >= 20) {
-        let balance = parseInt(localStorage.getItem('user.balance') || 0);
+      // Hide after 3 seconds
+      setTimeout(() => {
+        popup.classList.remove('show');
+      }, 3000);
+
+      if (tapCount % 20 === 0) {
+        let balance = parseInt(localStorage.getItem('user.balance') || '0');
         balance += 3000;
         localStorage.setItem('user.balance', balance);
-        localStorage.setItem('fundTapCount', 0); // reset for next funding
-        document.getElementById("popup").textContent = "₦3,000 successfully funded! 🎉";
+        setTimeout(() => {
+          alert("₦3,000 has been added to your balance!");
+        }, 1000);
       }
     }
   </script>
