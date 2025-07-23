@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
@@ -9,14 +10,13 @@
       font-family: Arial, sans-serif;
       background: white;
       overflow-x: hidden;
-      overflow-y: hidden;
     }
     .background-logo {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 200px;
+      width: 250px;
       opacity: 0.07;
       filter: blur(8px);
       animation: blink 4s infinite ease-in-out;
@@ -30,7 +30,7 @@
     .content {
       position: relative;
       z-index: 1;
-      padding-bottom: 180px;
+      padding-bottom: 120px;
     }
     .header {
       background-color: #d90000;
@@ -105,7 +105,7 @@
     }
     .bottom-nav {
       position: fixed;
-      bottom: 120px;
+      bottom: 0;
       left: 0;
       right: 0;
       background: white;
@@ -116,29 +116,33 @@
       font-size: 12px;
       z-index: 10;
     }
-    .video-container {
-      position: fixed;
-      bottom: 0;
-      left: 0;
+    .ad-section {
       width: 100%;
-      height: 120px;
-      background: black;
-      z-index: 9;
+      height: 160px;
+      position: fixed;
+      bottom: 50px;
+      left: 0;
+      background: #000;
+      z-index: 5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    video {
+    .ad-section video {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
     .countdown {
       position: absolute;
+      color: white;
+      font-size: 14px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 2px 6px;
+      border-radius: 5px;
       top: 5px;
       right: 10px;
-      color: white;
-      background: rgba(0,0,0,0.6);
-      padding: 3px 8px;
-      border-radius: 10px;
-      font-size: 12px;
+      z-index: 6;
     }
   </style>
 </head>
@@ -160,53 +164,62 @@
         <div class="btn" onclick="location.href='add-money.html'">+ Add Money</div>
         <div class="btn" onclick="location.href='withdraw.html'">Withdraw</div>
       </div>
-      <div class="btn" onclick="incrementTap()">I have funded</div>
-    </div><img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
-<img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
+    </div>
 
-<div class="section">
-  <b>Transfer & Cashout</b>
-  <div class="grid">
-    <div onclick="location.href='transfer.html'">Transfer Money</div>
-    <div onclick="location.href='add-money.html'">Add Money</div>
-    <div onclick="location.href='withdraw.html'">Withdraw Cash</div>
-    <div onclick="location.href='services.html'">More Services</div>
-  </div>
-</div>
-<div class="section">
-  <b>Recharge & Bill Payments</b>
-  <div class="grid">
-    <div onclick="location.href='airtime.html'">Airtime</div>
-    <div onclick="location.href='bundle.html'">Buy Bundle</div>
-    <div onclick="location.href='bills.html'">Pay Bills</div>
-    <div onclick="location.href='electricity.html'">Electricity</div>
-  </div>
-</div>
+    <img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
+    <img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
 
-  </div>  <div class="bottom-nav">
+    <div class="section">
+      <b>Transfer & Cashout</b>
+      <div class="grid">
+        <div onclick="location.href='transfer.html'">Transfer Money</div>
+        <div onclick="location.href='add-money.html'">Add Money</div>
+        <div onclick="location.href='withdraw.html'">Withdraw Cash</div>
+        <div onclick="location.href='services.html'">More Services</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <b>Recharge & Bill Payments</b>
+      <div class="grid">
+        <div onclick="location.href='airtime.html'">Airtime</div>
+        <div onclick="location.href='bundle.html'">Buy Bundle</div>
+        <div onclick="location.href='bills.html'">Pay Bills</div>
+        <div onclick="location.href='electricity.html'">Electricity</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ad-section">
+    <video id="adVideo" autoplay muted loop volume="0.1">
+      <source src="ad.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="countdown" id="countdown"></div>
+  </div>
+
+  <div class="bottom-nav">
     <div onclick="location.href='dashboard.html'">🏠 Home</div>
     <div onclick="location.href='scan.html'">📷 Scan</div>
     <div onclick="location.href='history.html'">📄 History</div>
     <div onclick="location.href='more.html'">☰ More</div>
-  </div>  <div class="video-container">
-    <video id="adVideo" autoplay muted=false volume="0.2" playsinline>
-      <source src="ad.mp4" type="video/mp4" />
-    </video>
-    <div class="countdown" id="countdown">20s</div>
-  </div>  <script>
-    const user = JSON.parse(localStorage.getItem('user')) || { name: 'User', phone: '08000000000', balance: 0 };
-    document.getElementById('userName').innerText = user.name.toUpperCase();
-    document.getElementById('userNumber').innerText = user.phone;
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user')) || {};
+    let balance = parseFloat(user.balance) || 300;
     const balanceElement = document.getElementById('userBalance');
     let isHidden = false;
+
+    document.getElementById('userName').innerText = (user.name || 'USER').toUpperCase();
+    document.getElementById('userNumber').innerText = user.phone || '08000000000';
+    balanceElement.innerText = `₦${balance.toFixed(2)}`;
+
     function toggleBalance() {
       isHidden = !isHidden;
-      balanceElement.innerText = isHidden ? '••••••••' : `₦${user.balance}`;
+      balanceElement.innerText = isHidden ? '••••••••' : `₦${balance.toFixed(2)}`;
     }
-    toggleBalance();
-    toggleBalance();
 
-    // Banner cycling
     const updateBanner = document.getElementById('updateBanner');
     const promoBanner = document.getElementById('promoBanner');
     function cycleBanners() {
@@ -220,26 +233,19 @@
     }
     cycleBanners();
 
-    // Countdown logic
-    let seconds = 20;
-    const countdown = document.getElementById('countdown');
-    setInterval(() => {
-      seconds--;
-      countdown.innerText = seconds + 's';
-      if (seconds === 0) seconds = 20;
-    }, 1000);
+    // Countdown
+    const adVideo = document.getElementById('adVideo');
+    const countdownEl = document.getElementById('countdown');
+    adVideo.volume = 0.1;
 
-    // I have funded taps logic
-    let taps = 0;
-    function incrementTap() {
-      taps++;
-      if (taps >= 20) {
-        user.balance += 3000;
-        localStorage.setItem('user', JSON.stringify(user));
-        balanceElement.innerText = `₦${user.balance}`;
-        taps = 0;
-        alert("₦3,000 added to your balance");
+    function updateCountdown() {
+      const timeLeft = Math.floor(adVideo.duration - adVideo.currentTime);
+      if (!isNaN(timeLeft)) {
+        countdownEl.innerText = `Ad ends in ${timeLeft}s`;
       }
+      requestAnimationFrame(updateCountdown);
     }
-  </script></body>
+    updateCountdown();
+  </script>
+</body>
 </html>
