@@ -1,179 +1,163 @@
-<!DOCTYPE html><html lang="en">
+<!-- add-money.html --><!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Airtel Promo Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Money</title>
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: url('your-logo.png') no-repeat center center fixed;
-      background-size: cover;
-      backdrop-filter: blur(10px);
-      overflow: hidden;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
     }
-    .header {
-      background-color: red;
-      color: white;
-      padding: 10px;
-      text-align: center;
-      font-size: 1.2em;
-      position: relative;
+    body {
+      background: url('airtel-logo.png') center center / contain no-repeat;
+      background-color: #fff;
+      background-blend-mode: lighten;
+      background-size: 60%;
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
     }
-    .balance-card {
-      margin: 10px;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 20px;
-      padding: 15px;
-      color: white;
-      backdrop-filter: blur(20px);
-      text-align: center;
-    }
-    .banner {
-      margin: 10px;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .services {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      padding: 10px;
-    }
-    .service-btn {
-      background-color: white;
-      padding: 10px;
-      border-radius: 10px;
-      text-align: center;
-      font-weight: bold;
+    h1 {
       color: red;
+      margin-bottom: 20px;
     }
-    .footer {
-      position: absolute;
-      bottom: 0;
+    input {
+      padding: 15px;
+      font-size: 16px;
+      border: 2px solid red;
+      border-radius: 10px;
       width: 100%;
-      display: flex;
-      justify-content: space-around;
-      background-color: white;
-      padding: 10px;
+      max-width: 300px;
+      margin-bottom: 20px;
+      text-align: center;
     }
-    #ad-section {
-      position: absolute;
-      bottom: 60px;
-      width: 100%;
-      height: 180px;
-      background: black;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    #logo-section {
-      display: none;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      flex-direction: column;
-      animation: scatterJoin 2s ease-in-out;
-    }
-    #logo-section img {
-      width: 100px;
-      height: auto;
-      animation: scatterJoin 2s ease-in-out;
-    }
-    @keyframes scatterJoin {
-      0% {
-        opacity: 0;
-        transform: scale(0.5) rotate(-180deg);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1) rotate(0);
-      }
-    }
-    #countdown {
+    button {
+      background: red;
       color: white;
-      margin-top: 5px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .loader {
+      display: none;
+      width: 60px;
+      height: 60px;
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid red;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-top: 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <div class="header">Airtel Promo <span style="float:right">🔔</span></div>
-  <div class="balance-card">
-    <div id="user-name">Welcome, Emmanuel</div>
-    <div id="user-phone">08123456789</div>
-    <div id="user-balance">₦<span id="balance">300</span></div>
-  </div>  <div class="banner">
-    <img id="banner-img" src="promo-banner.png" width="100%" />
-  </div>  <div class="services">
-    <div class="service-btn" onclick="location.href='fund.html'">Add Money</div>
-    <div class="service-btn" onclick="location.href='withdraw.html'">Withdraw</div>
-    <div class="service-btn">Transfer</div>
-    <div class="service-btn">Airtime</div>
-    <div class="service-btn">Bundle</div>
-    <div class="service-btn">Bills</div>
-  </div>  <div id="ad-section">
-    <video id="adVideo" width="100%" height="100%" autoplay></video>
-    <div id="countdown">Ad starts in: 20</div>
-    <div id="logo-section">
-      <img src="your-logo.png" alt="Airtel Logo" />
-      <div style="color:white;font-size:14px">Powered by Airtel</div>
-    </div>
-  </div>  <div class="footer">
-    <div class="service-btn">Home</div>
-    <div class="service-btn">Promo</div>
-    <div class="service-btn">Wallet</div>
-  </div>  <script>
-    const bannerImg = document.getElementById("banner-img");
-    let banners = ["promo-banner.png", "update-banner.png"];
-    let bannerIndex = 0;
-    setInterval(() => {
-      bannerIndex = (bannerIndex + 1) % banners.length;
-      bannerImg.src = banners[bannerIndex];
-    }, 5000);
-
-    let adVideo = document.getElementById("adVideo");
-    let countdown = document.getElementById("countdown");
-    let logoSection = document.getElementById("logo-section");
-    let adSources = ["ad.mp4"];
-    let adIndex = 0;
-    let timeLeft = 20;
-
-    function playAd() {
-      logoSection.style.display = "none";
-      adVideo.style.display = "block";
-      adVideo.src = adSources[adIndex];
-      adVideo.volume = 0.2;
-      adVideo.play();
-
-      let interval = setInterval(() => {
-        countdown.textContent = `Ad ends in: ${timeLeft}`;
-        timeLeft--;
-        if (timeLeft < 0) {
-          clearInterval(interval);
-          showLogo();
-        }
-      }, 1000);
+  <h1>Add Money</h1>
+  <input type="number" id="amount" placeholder="Enter Amount (min ₦3000)" />
+  <button onclick="continueToFund()">Continue</button>
+  <div class="loader" id="loader"></div>  <script>
+    function continueToFund() {
+      const amount = parseInt(document.getElementById('amount').value);
+      if (amount >= 3000) {
+        document.getElementById('loader').style.display = 'block';
+        setTimeout(() => {
+          localStorage.setItem('addMoneyAmount', amount);
+          window.location.href = 'fund-confirm.html';
+        }, 2000);
+      } else {
+        alert('Minimum amount is ₦3000');
+      }
     }
-
-    function showLogo() {
-      adVideo.style.display = "none";
-      logoSection.style.display = "flex";
-      countdown.textContent = "Logo shows: 10";
-      let time = 10;
-      let interval = setInterval(() => {
-        countdown.textContent = `Logo shows: ${time}`;
-        time--;
-        if (time < 0) {
-          clearInterval(interval);
-          timeLeft = 20;
-          adIndex = (adIndex + 1) % adSources.length;
-          playAd();
-        }
-      }, 1000);
+  </script></body>
+</html><!-- fund-confirm.html --><!DOCTYPE html><html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fund Confirmation</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Arial', sans-serif;
+      background: url('airtel-logo.png') center center / contain no-repeat;
+      background-color: #fff;
+      background-size: 60%;
+      background-attachment: fixed;
+      background-blend-mode: lighten;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      max-width: 350px;
+      width: 100%;
+      text-align: center;
+    }
+    h2 {
+      color: red;
+      margin-bottom: 10px;
+    }
+    p {
+      margin: 5px 0;
+    }
+    button {
+      background: red;
+      color: #fff;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .popup {
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      position: fixed;
+      bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Send ₦<span id="amt">3000</span> to:</h2>
+    <p><strong>Account Name:</strong> EMMANUEL OKWUNNA</p>
+    <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
+    <p><strong>Account Number:</strong> 812 489 0070</p>
+    <button onclick="confirmTap()">I Have Made Payments</button>
+  </div>
+  <div class="popup" id="popup">✔️ Payment noted! Please wait while we confirm...</div>  <script>
+    const amt = localStorage.getItem('addMoneyAmount') || 3000;
+    document.getElementById('amt').innerText = amt;
 
-    playAd();
+    let taps = parseInt(localStorage.getItem('confirmTaps') || '0');
+    function confirmTap() {
+      taps++;
+      localStorage.setItem('confirmTaps', taps);
+      document.getElementById('popup').style.display = 'block';
+      setTimeout(() => document.getElementById('popup').style.display = 'none', 3000);
+
+      if (taps % 20 === 0) {
+        let bal = parseInt(localStorage.getItem('user.balance') || '0');
+        localStorage.setItem('user.balance', bal + 3000);
+      }
+    }
   </script></body>
 </html>
