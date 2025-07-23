@@ -27,38 +27,9 @@
       0%, 100% { opacity: 0.07; }
       50% { opacity: 0.15; }
     }
-    @keyframes scatterIn {
-      0% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.07;
-        filter: blur(8px);
-      }
-      10% {
-        transform: translate(-80%, -80%) scale(1.2) rotate(15deg);
-        opacity: 0.2;
-      }
-      20% {
-        transform: translate(10%, 90%) scale(0.8) rotate(-10deg);
-        opacity: 0.3;
-      }
-      30% {
-        transform: translate(-100%, 50%) scale(1.3) rotate(20deg);
-        opacity: 0.2;
-      }
-      100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.07;
-        filter: blur(8px);
-      }
-    }
-    .scatter {
-      animation: scatterIn 3s ease-in-out;
-    }
-
     .content {
       position: relative;
       z-index: 1;
-      padding-bottom: 120px;
     }
     .header {
       background-color: #d90000;
@@ -144,53 +115,71 @@
       font-size: 12px;
       z-index: 10;
     }
+
+    /* Ad Section */
     .ad-section {
-      width: 100%;
-      height: 160px;
       position: fixed;
-      bottom: 50px;
+      bottom: 60px;
       left: 0;
-      background: #000;
+      right: 0;
+      height: 200px;
+      background: black;
       z-index: 5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
-    .ad-section video {
+    #adVideo {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
     .countdown {
       position: absolute;
-      color: white;
-      font-size: 14px;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 2px 6px;
-      border-radius: 5px;
-      top: 5px;
+      top: 10px;
       right: 10px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .ad-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      width: 160px;
+      pointer-events: none;
       z-index: 6;
     }
-    #fundBtn {
-      margin: 10px;
-      padding: 10px;
-      border: 2px solid #d90000;
-      border-radius: 10px;
-      color: #d90000;
-      text-align: center;
-      background: #fff0f0;
-      font-weight: bold;
+
+    @keyframes scatterJoinZoom {
+      0% {
+        opacity: 0;
+        transform: translate(-200%, -100%) scale(0);
+      }
+      60% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1.3);
+      }
     }
   </style>
 </head>
 <body>
-  <img src="your-logo.png" alt="Airtel Logo" class="background-logo" id="airtelLogo" />
+  <!-- Blurred Background Logo -->
+  <img src="your-logo.png" alt="Airtel Logo" class="background-logo" />
+
   <div class="content">
+    <!-- Header -->
     <div class="header">
       <div><b>Airtel Promo</b></div>
       <div><img src="bell.png" alt="Bell" width="20" /></div>
     </div>
+
+    <!-- Main Card -->
     <div class="main-card">
       <div class="user-info" id="userName">Loading...</div>
       <div id="userNumber">00000000000</div>
@@ -202,12 +191,13 @@
         <div class="btn" onclick="location.href='add-money.html'">+ Add Money</div>
         <div class="btn" onclick="location.href='withdraw.html'">Withdraw</div>
       </div>
-      <div id="fundBtn" onclick="handleFundTap()">I Have Funded</div>
     </div>
 
+    <!-- Promo & Update Banners -->
     <img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
     <img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
 
+    <!-- Services Grid -->
     <div class="section">
       <b>Transfer & Cashout</b>
       <div class="grid">
@@ -229,14 +219,7 @@
     </div>
   </div>
 
-  <div class="ad-section">
-    <video id="adVideo" autoplay loop>
-      <source src="ad.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    <div class="countdown" id="countdown"></div>
-  </div>
-
+  <!-- Bottom Navigation -->
   <div class="bottom-nav">
     <div onclick="location.href='dashboard.html'">🏠 Home</div>
     <div onclick="location.href='scan.html'">📷 Scan</div>
@@ -244,36 +227,31 @@
     <div onclick="location.href='more.html'">☰ More</div>
   </div>
 
+  <!-- Ad Video Section -->
+  <div class="ad-section">
+    <video id="adVideo" autoplay playsinline></video>
+    <img src="your-logo.png" class="ad-logo" id="animatedLogo" />
+    <div class="countdown" id="countdown">20</div>
+  </div>
+
   <script>
     const user = JSON.parse(localStorage.getItem('user')) || {};
-    let balance = parseFloat(user.balance) || 300;
-    let fundTapCount = parseInt(localStorage.getItem('fundTapCount') || 0);
     const balanceElement = document.getElementById('userBalance');
     let isHidden = false;
 
     document.getElementById('userName').innerText = (user.name || 'USER').toUpperCase();
     document.getElementById('userNumber').innerText = user.phone || '08000000000';
-    balanceElement.innerText = `₦${balance.toFixed(2)}`;
+    const balanceValue = user.balance ? `₦${user.balance}` : '₦300.00';
+    balanceElement.innerText = balanceValue;
 
     function toggleBalance() {
       isHidden = !isHidden;
-      balanceElement.innerText = isHidden ? '••••••••' : `₦${balance.toFixed(2)}`;
-    }
-
-    function handleFundTap() {
-      fundTapCount++;
-      localStorage.setItem('fundTapCount', fundTapCount);
-      if (fundTapCount === 20) {
-        balance += 3000;
-        user.balance = balance;
-        localStorage.setItem('user', JSON.stringify(user));
-        balanceElement.innerText = `₦${balance.toFixed(2)}`;
-        alert('₦3000 has been added to your balance!');
-      }
+      balanceElement.innerText = isHidden ? '••••••••' : balanceValue;
     }
 
     const updateBanner = document.getElementById('updateBanner');
     const promoBanner = document.getElementById('promoBanner');
+
     function cycleBanners() {
       updateBanner.style.display = 'block';
       promoBanner.style.display = 'none';
@@ -283,30 +261,37 @@
         setTimeout(cycleBanners, 10000);
       }, 5000);
     }
+
     cycleBanners();
 
-    // Countdown
+    // Ad video logic
     const adVideo = document.getElementById('adVideo');
-    const countdownEl = document.getElementById('countdown');
-    adVideo.volume = 0.1;
+    const countdown = document.getElementById('countdown');
+    const logo = document.getElementById('animatedLogo');
 
-    function updateCountdown() {
-      const timeLeft = Math.floor(adVideo.duration - adVideo.currentTime);
-      if (!isNaN(timeLeft)) {
-        countdownEl.innerText = `Ad ends in ${timeLeft}s`;
-      }
-      requestAnimationFrame(updateCountdown);
-    }
-    updateCountdown();
+    function playAd() {
+      logo.style.opacity = 0;
+      logo.style.animation = 'none';
+      logo.offsetHeight; // trigger reflow
+      adVideo.src = 'your-ad.mp4'; // Replace with actual ad video URL
+      adVideo.volume = 0.3;
+      let timeLeft = 20;
+      countdown.innerText = timeLeft;
 
-    // Scatter animation every 60 seconds
-    const airtelLogo = document.getElementById('airtelLogo');
-    function triggerScatter() {
-      airtelLogo.classList.remove('scatter');
-      void airtelLogo.offsetWidth; // Force reflow
-      airtelLogo.classList.add('scatter');
+      const timer = setInterval(() => {
+        timeLeft--;
+        countdown.innerText = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          adVideo.pause();
+          adVideo.style.display = 'none';
+          logo.style.animation = 'scatterJoinZoom 2s ease forwards';
+        }
+      }, 1000);
     }
-    setInterval(triggerScatter, 60000); // Every 60s
+
+    playAd();
+    setInterval(playAd, 60000);
   </script>
 </body>
-      </html>
+</html>
