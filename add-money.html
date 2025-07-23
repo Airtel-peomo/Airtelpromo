@@ -1,59 +1,60 @@
-<!-- add-money.html --><!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Money</title>
   <style>
     body {
       font-family: sans-serif;
       background: #fff;
       margin: 0;
-      padding: 20px;
+      padding: 2rem;
       text-align: center;
     }
-    .card {
-      max-width: 400px;
-      margin: 50px auto;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      border: 1px solid #eee;
+    img.logo {
+      width: 100px;
+      margin-bottom: 20px;
     }
     input {
-      width: 100%;
       padding: 10px;
-      font-size: 18px;
-      margin: 20px 0;
+      width: 200px;
+      font-size: 16px;
     }
     button {
-      padding: 12px 25px;
-      font-size: 16px;
-      background: red;
+      padding: 12px 20px;
+      background-color: red;
       color: white;
       border: none;
-      border-radius: 6px;
+      font-size: 16px;
+      margin-top: 20px;
       cursor: pointer;
     }
     .error {
       color: red;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h2>Enter Amount to Fund</h2>
-    <input type="number" id="amount" placeholder="Minimum ₦3,000">
-    <div class="error" id="error"></div>
-    <button onclick="continueFunding()">Continue</button>
-  </div>  <script>
-    function continueFunding() {
-      const amount = parseInt(document.getElementById('amount').value);
-      if (isNaN(amount) || amount < 3000) {
-        document.getElementById('error').innerText = 'Minimum amount is ₦3,000';
-        return;
+  <img src="your-airtel-logo.png" class="logo" alt="Airtel Logo" />
+  <h2>Add Money</h2>
+  <p>Enter amount (Minimum ₦3,000)</p>
+  <input type="number" id="amount" placeholder="₦3000 minimum">
+  <div id="error" class="error"></div>
+  <br>
+  <button onclick="continueToFund()">Continue</button>
+
+  <script>
+    function continueToFund() {
+      const amount = document.getElementById('amount').value;
+      if (parseInt(amount) >= 3000) {
+        // Save amount to localStorage
+        localStorage.setItem('pendingAmount', amount);
+        window.location.href = "fund-confirm.html";
+      } else {
+        document.getElementById('error').innerText = "Please enter ₦3,000 or more";
       }
-      localStorage.setItem('fundAmount', amount);
-      window.location.href = 'fund-confirm.html';
     }
-  </script></body>
+  </script>
+</body>
 </html>
