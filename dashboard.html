@@ -10,7 +10,6 @@
       font-family: Arial, sans-serif;
       background: white;
       overflow-x: hidden;
-      overflow-y: hidden;
     }
 
     .background-logo {
@@ -132,14 +131,42 @@
       z-index: 10;
     }
 
-    .ads-container {
-      width: 100%;
-      height: 130px;
-      overflow: hidden;
-      margin: 5px 0;
+    /* Fullscreen Ad Styling */
+    #fullscreenAd {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: black;
+      z-index: 9999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
 
-    .ads-container video {
+    #adTimer {
+      position: absolute;
+      bottom: 60px;
+      color: white;
+      font-size: 18px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 5px 15px;
+      border-radius: 20px;
+    }
+
+    #skipBtn {
+      position: absolute;
+      bottom: 20px;
+      padding: 10px 20px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 14px;
+      cursor: pointer;
+      display: none;
+    }
+
+    video {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -147,10 +174,21 @@
   </style>
 </head>
 <body>
-  <!-- Blurred Background Logo -->
+
+  <!-- Fullscreen Ad -->
+  <div id="fullscreenAd">
+    <video id="adVideo" autoplay playsinline>
+      <source src="your-ad.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <div id="adTimer">Ad ends in <span id="adCount">20</span>s</div>
+    <button id="skipBtn" onclick="closeAd()">Skip Ad</button>
+  </div>
+
+  <!-- Background Logo -->
   <img src="your-logo.png" alt="Airtel Logo" class="background-logo" />
 
-  <div class="content">
+  <div class="content" style="display: none;">
     <!-- Header -->
     <div class="header">
       <div><b>Airtel Promo</b></div>
@@ -171,18 +209,11 @@
       </div>
     </div>
 
-    <!-- Ad Video Section -->
-    <div class="ads-container">
-      <video id="adVideo" autoplay muted playsinline>
-        <source src="your-ad.mp4" type="video/mp4" />
-      </video>
-    </div>
-
-    <!-- Promo & Update Banners -->
+    <!-- Banners -->
     <img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
     <img src="promo-banner.png" class="banner" id="promoBanner" alt="Promo Banner" />
 
-    <!-- Services Grid -->
+    <!-- Services -->
     <div class="section">
       <b>Transfer & Cashout</b>
       <div class="grid">
@@ -227,6 +258,7 @@
       balanceElement.innerText = isHidden ? '••••••••' : balanceValue;
     }
 
+    // Banner Logic
     const updateBanner = document.getElementById('updateBanner');
     const promoBanner = document.getElementById('promoBanner');
 
@@ -242,9 +274,46 @@
 
     cycleBanners();
 
-    // Ad Video Volume
-    const ad = document.getElementById("adVideo");
-    ad.volume = 0.1; // Low volume
+    // Ad Logic
+    const adShown = localStorage.getItem('adShown');
+    const fullscreenAd = document.getElementById('fullscreenAd');
+    const content = document.querySelector('.content');
+    const adVideo = document.getElementById('adVideo');
+    const adCount = document.getElementById('adCount');
+    const skipBtn = document.getElementById('skipBtn');
+
+    function showAd() {
+      let count = 20;
+      let skipDelay = 10;
+      fullscreenAd.style.display = 'flex';
+      adVideo.volume = 0.1;
+
+      const timer = setInterval(() => {
+        count--;
+        adCount.innerText = count;
+
+        if (count === skipDelay) {
+          skipBtn.style.display = 'block';
+        }
+
+        if (count <= 0) {
+          clearInterval(timer);
+          closeAd();
+        }
+      }, 1000);
+    }
+
+    function closeAd() {
+      fullscreenAd.style.display = 'none';
+      content.style.display = 'block';
+      localStorage.setItem('adShown', 'true');
+    }
+
+    if (!adShown) {
+      showAd();
+    } else {
+      content.style.display = 'block';
+    }
   </script>
 </body>
 </html>
