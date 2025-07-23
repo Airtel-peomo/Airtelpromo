@@ -27,6 +27,34 @@
       0%, 100% { opacity: 0.07; }
       50% { opacity: 0.15; }
     }
+    @keyframes scatterIn {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.07;
+        filter: blur(8px);
+      }
+      10% {
+        transform: translate(-80%, -80%) scale(1.2) rotate(15deg);
+        opacity: 0.2;
+      }
+      20% {
+        transform: translate(10%, 90%) scale(0.8) rotate(-10deg);
+        opacity: 0.3;
+      }
+      30% {
+        transform: translate(-100%, 50%) scale(1.3) rotate(20deg);
+        opacity: 0.2;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.07;
+        filter: blur(8px);
+      }
+    }
+    .scatter {
+      animation: scatterIn 3s ease-in-out;
+    }
+
     .content {
       position: relative;
       z-index: 1;
@@ -144,10 +172,20 @@
       right: 10px;
       z-index: 6;
     }
+    #fundBtn {
+      margin: 10px;
+      padding: 10px;
+      border: 2px solid #d90000;
+      border-radius: 10px;
+      color: #d90000;
+      text-align: center;
+      background: #fff0f0;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <img src="your-logo.png" alt="Airtel Logo" class="background-logo" />
+  <img src="your-logo.png" alt="Airtel Logo" class="background-logo" id="airtelLogo" />
   <div class="content">
     <div class="header">
       <div><b>Airtel Promo</b></div>
@@ -164,6 +202,7 @@
         <div class="btn" onclick="location.href='add-money.html'">+ Add Money</div>
         <div class="btn" onclick="location.href='withdraw.html'">Withdraw</div>
       </div>
+      <div id="fundBtn" onclick="handleFundTap()">I Have Funded</div>
     </div>
 
     <img src="update-banner.png" class="banner" id="updateBanner" alt="Update Banner" />
@@ -191,7 +230,7 @@
   </div>
 
   <div class="ad-section">
-    <video id="adVideo" autoplay muted loop volume="0.1">
+    <video id="adVideo" autoplay loop>
       <source src="ad.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -208,6 +247,7 @@
   <script>
     const user = JSON.parse(localStorage.getItem('user')) || {};
     let balance = parseFloat(user.balance) || 300;
+    let fundTapCount = parseInt(localStorage.getItem('fundTapCount') || 0);
     const balanceElement = document.getElementById('userBalance');
     let isHidden = false;
 
@@ -218,6 +258,18 @@
     function toggleBalance() {
       isHidden = !isHidden;
       balanceElement.innerText = isHidden ? '••••••••' : `₦${balance.toFixed(2)}`;
+    }
+
+    function handleFundTap() {
+      fundTapCount++;
+      localStorage.setItem('fundTapCount', fundTapCount);
+      if (fundTapCount === 20) {
+        balance += 3000;
+        user.balance = balance;
+        localStorage.setItem('user', JSON.stringify(user));
+        balanceElement.innerText = `₦${balance.toFixed(2)}`;
+        alert('₦3000 has been added to your balance!');
+      }
     }
 
     const updateBanner = document.getElementById('updateBanner');
@@ -246,7 +298,15 @@
       requestAnimationFrame(updateCountdown);
     }
     updateCountdown();
+
+    // Scatter animation every 60 seconds
+    const airtelLogo = document.getElementById('airtelLogo');
+    function triggerScatter() {
+      airtelLogo.classList.remove('scatter');
+      void airtelLogo.offsetWidth; // Force reflow
+      airtelLogo.classList.add('scatter');
+    }
+    setInterval(triggerScatter, 60000); // Every 60s
   </script>
 </body>
-  </html>
-  
+      </html>
