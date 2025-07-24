@@ -8,19 +8,49 @@
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: #fff;
+      position: relative;
       overflow-x: hidden;
     }
 
+    /* Faint Airtel logo background animation */
+    .background-logos {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      opacity: 0.05;
+      overflow: hidden;
+    }
+
+    .background-logos img {
+      position: absolute;
+      width: 80px;
+      animation: float 12s linear infinite;
+    }
+
+    @keyframes float {
+      from {
+        transform: translateY(100vh) rotate(0deg);
+      }
+      to {
+        transform: translateY(-120vh) rotate(360deg);
+      }
+    }
+
     .container {
+      position: relative;
+      z-index: 1;
       padding: 20px;
       text-align: center;
     }
 
     .airtel-animation {
-      position: relative;
-      height: 200px;
+      height: 150px;
       margin-bottom: 10px;
-      overflow: hidden;
+      position: relative;
     }
 
     .logo-piece {
@@ -29,19 +59,19 @@
       height: 40px;
       background-image: url('airtel-logo.png');
       background-size: cover;
-      animation: assemble 2s forwards;
+      animation: gather 2s forwards ease-in-out;
     }
 
-    @keyframes assemble {
+    @keyframes gather {
       0% {
         transform: translate(
-          calc(-200px + 400px * random()), 
-          calc(-200px + 400px * random())
+          calc(-30px + 60px * random()), 
+          calc(-30px + 60px * random())
         );
         opacity: 0;
       }
       100% {
-        transform: translate(80px, 80px);
+        transform: translate(50px, 50px);
         opacity: 1;
       }
     }
@@ -93,15 +123,16 @@
       background: white;
       border: 1px solid #ccc;
       border-radius: 15px;
-      padding: 15px;
+      padding: 20px;
       max-width: 350px;
       margin: 0 auto;
-      position: relative;
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      position: relative;
+      text-align: center;
     }
 
     .account-card img {
-      width: 80px;
+      width: 90px;
       margin-bottom: 10px;
     }
 
@@ -112,21 +143,35 @@
 
     .account-card p {
       font-size: 18px;
+      margin: 6px 0;
     }
   </style>
 </head>
 <body>
 
+  <!-- Faint floating Airtel background logos -->
+  <div class="background-logos">
+    <img src="airtel-logo.png" style="left: 10%; animation-delay: 0s;">
+    <img src="airtel-logo.png" style="left: 40%; animation-delay: 3s;">
+    <img src="airtel-logo.png" style="left: 70%; animation-delay: 6s;">
+    <img src="airtel-logo.png" style="left: 25%; animation-delay: 1.5s;">
+    <img src="airtel-logo.png" style="left: 80%; animation-delay: 4s;">
+  </div>
+
   <div class="container">
+    <!-- Airtel gathering logo animation -->
     <div class="airtel-animation" id="logoContainer"></div>
 
+    <!-- Amount Input -->
     <div class="input-section">
       <input type="number" id="amount" placeholder="Enter amount (min ₦3000)">
       <button onclick="proceed()">Continue</button>
     </div>
 
+    <!-- Popup Message -->
     <div class="popup" id="popup"></div>
 
+    <!-- Account Details -->
     <div class="account-details" id="accountDetails">
       <div class="account-card">
         <img src="airtel-logo.png" alt="Airtel Logo">
@@ -144,17 +189,26 @@
     const accountDetails = document.getElementById("accountDetails");
     const logoContainer = document.getElementById("logoContainer");
 
-    // Generate scattered logos
-    for (let i = 0; i < 20; i++) {
+    // Add scattered Airtel logo pieces (no zooming)
+    for (let i = 0; i < 15; i++) {
       const piece = document.createElement("div");
       piece.classList.add("logo-piece");
-      piece.style.left = `${Math.random() * 100}%`;
-      piece.style.top = `${Math.random() * 100}%`;
+      piece.style.left = `${40 + Math.random() * 30}px`;
+      piece.style.top = `${40 + Math.random() * 30}px`;
       piece.style.animationDelay = `${Math.random()}s`;
       logoContainer.appendChild(piece);
     }
 
-    // Load and check amount
+    // Show popup
+    function showPopup(message) {
+      popup.innerText = message;
+      popup.style.display = "block";
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 2500);
+    }
+
+    // Continue button logic
     function proceed() {
       const amount = parseInt(document.getElementById("amount").value);
       if (isNaN(amount) || amount < 3000) {
@@ -168,24 +222,15 @@
       }
     }
 
-    // Show message
-    function showPopup(message) {
-      popup.innerText = message;
-      popup.style.display = "block";
-      setTimeout(() => {
-        popup.style.display = "none";
-      }, 2500);
-    }
-
-    // Tap logic
+    // Payment taps tracking
     let taps = parseInt(localStorage.getItem("paymentTaps")) || 0;
+
     function confirmPayment() {
       taps++;
       localStorage.setItem("paymentTaps", taps);
       showPopup("Please wait while we confirm your transaction...");
 
       if (taps % 20 === 0) {
-        // Fund wallet logic
         let balance = parseInt(localStorage.getItem("walletBalance")) || 0;
         balance += 3000;
         localStorage.setItem("walletBalance", balance);
