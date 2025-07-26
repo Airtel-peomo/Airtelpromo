@@ -1,100 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Add Money</title>
+  <meta charset="UTF-8">
+  <title>Add Money - Airtel Wallet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: sans-serif;
-      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
     }
 
     body {
-      background: #fff;
-      overflow-x: hidden;
+      background-color: #fff;
+      overflow: hidden;
       position: relative;
-    }
-
-    .airtel-logo {
-      width: 80px;
-      margin: 20px auto;
-      display: block;
-      z-index: 2;
-      position: relative;
+      min-height: 100vh;
     }
 
     .background {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
       height: 100%;
+      width: 100%;
       overflow: hidden;
       z-index: 0;
-      pointer-events: none;
     }
 
-    .float-logo {
+    .logo-piece {
       position: absolute;
-      width: 20px;
-      height: 20px;
-      background: url('airtel-logo.png') no-repeat center;
+      width: 30px;
+      height: 30px;
+      background-image: url("airtel.png"); /* use your Airtel logo */
       background-size: contain;
-      opacity: 0.1;
-      animation: float 15s infinite linear;
+      background-repeat: no-repeat;
+      animation: float 10s linear infinite;
+      opacity: 0.2;
     }
 
     @keyframes float {
       0% {
-        transform: translateY(100vh) scale(0.5);
-        opacity: 0.1;
+        transform: translateY(100vh) rotate(0deg);
       }
       100% {
-        transform: translateY(-10vh) scale(1);
-        opacity: 0;
+        transform: translateY(-100vh) rotate(360deg);
       }
     }
 
     .container {
       position: relative;
-      z-index: 2;
-      padding: 20px;
+      z-index: 1;
+      padding: 30px 20px;
       text-align: center;
     }
 
-    input {
-      padding: 15px;
-      font-size: 18px;
-      width: 80%;
-      border-radius: 10px;
-      border: 1px solid #ccc;
+    .airtel-logo {
+      width: 100px;
+      margin: 0 auto 20px;
+    }
+
+    h2 {
+      color: #d6001c;
       margin-bottom: 20px;
     }
 
-    button {
-      padding: 15px 30px;
-      background: red;
-      color: white;
-      font-size: 18px;
-      border: none;
+    input[type="number"] {
+      padding: 12px;
+      width: 100%;
+      max-width: 300px;
+      border: 1px solid #ccc;
       border-radius: 10px;
-      cursor: pointer;
+      margin-bottom: 20px;
+      font-size: 16px;
     }
 
-    .hidden {
+    .btn {
+      background-color: #d6001c;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #b30019;
+    }
+
+    .popup {
       display: none;
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      z-index: 9999;
+      text-align: center;
     }
 
     .loader {
-      margin: 30px auto;
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid red;
+      display: none;
+      margin: 20px auto;
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #d6001c;
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       animation: spin 1s linear infinite;
     }
 
@@ -103,104 +121,108 @@
       100% { transform: rotate(360deg); }
     }
 
-    .account-details {
+    .account-section {
+      display: none;
       margin-top: 30px;
-      background: #f9f9f9;
+      text-align: center;
+    }
+
+    .account-box {
+      background: rgba(255, 255, 255, 0.8);
       padding: 20px;
       border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    .popup {
-      background: #fff3cd;
-      color: #856404;
-      border: 1px solid #ffeeba;
-      padding: 10px;
-      margin: 10px auto;
-      width: 80%;
-      border-radius: 10px;
-    }
-
-    .dashboard-btn {
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       margin-top: 20px;
-      background: #444;
+    }
+
+    .account-box p {
+      margin: 10px 0;
+      font-weight: bold;
+      color: #d6001c;
+    }
+
+    .back-btn {
+      margin-top: 30px;
+      display: inline-block;
+      color: #d6001c;
+      font-weight: bold;
+      text-decoration: underline;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <img src="airtel-logo.png" alt="Airtel Logo" class="airtel-logo" />
-
-  <!-- Background animation -->
-  <div class="background">
-    <!-- Floating logos -->
-    <script>
-      for (let i = 0; i < 50; i++) {
-        const logo = document.createElement('div');
-        logo.classList.add('float-logo');
-        logo.style.left = Math.random() * 100 + 'vw';
-        logo.style.top = Math.random() * 100 + 'vh';
-        logo.style.animationDelay = Math.random() * 10 + 's';
-        document.querySelector('.background').appendChild(logo);
-      }
-    </script>
-  </div>
+  <!-- Floating Background Logos -->
+  <div class="background" id="background"></div>
 
   <div class="container">
-    <div id="amount-section">
-      <input type="number" id="amount" placeholder="Enter amount (min ₦3,000)" />
-      <br />
-      <button onclick="validateAmount()">Continue</button>
-    </div>
+    <img src="airtel.png" alt="Airtel Logo" class="airtel-logo">
+    <h2>Add Money</h2>
+    <input type="number" id="amount" placeholder="Enter amount (min ₦3,000)">
+    <br>
+    <button class="btn" onclick="proceed()">Continue</button>
 
-    <div id="popup" class="popup hidden">Please input minimum of ₦3,000</div>
+    <div class="loader" id="loader"></div>
 
-    <div id="loader" class="loader hidden"></div>
-
-    <div id="account-section" class="hidden">
-      <img src="airtel-logo.png" alt="Airtel Logo" class="airtel-logo" />
-      <div class="account-details">
-        <h3>Send Payment To:</h3>
-        <p><strong>Name:</strong> EMMANUEL OKWUNNA</p>
-        <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
-        <p><strong>Account:</strong> 812 489 0070</p>
-        <br />
-        <button onclick="recordTap()">I Have Made Payments</button>
-        <br />
-        <button class="dashboard-btn" onclick="goToDashboard()">Return to Dashboard</button>
+    <div class="account-section" id="accountDetails">
+      <img src="airtel.png" width="60" alt="Airtel">
+      <div class="account-box">
+        <p>Account Name: EMMANUEL OKWUNNA</p>
+        <p>Bank: SmartCash Payment Service Bank</p>
+        <p>Account Number: 812 489 0070</p>
+        <button class="btn" onclick="madePayment()">I Have Made Payments</button>
       </div>
+      <div class="back-btn" onclick="goToDashboard()">← Back to Dashboard</div>
     </div>
   </div>
 
+  <!-- Popup -->
+  <div class="popup" id="popup"></div>
+
   <script>
+    // Background floating logos
+    const bg = document.getElementById("background");
+    for (let i = 0; i < 40; i++) {
+      let logo = document.createElement("div");
+      logo.className = "logo-piece";
+      logo.style.left = Math.random() * 100 + "vw";
+      logo.style.animationDuration = (5 + Math.random() * 10) + "s";
+      bg.appendChild(logo);
+    }
+
     let tapCount = parseInt(localStorage.getItem('tapCount') || 0);
+    let balance = parseInt(localStorage.getItem('balance') || 0);
 
-    function validateAmount() {
-      const amount = parseInt(document.getElementById('amount').value);
-      const popup = document.getElementById('popup');
-      if (amount < 3000) {
-        popup.classList.remove('hidden');
-      } else {
-        popup.classList.add('hidden');
-        showLoader();
+    function showPopup(message) {
+      const popup = document.getElementById("popup");
+      popup.innerText = message;
+      popup.style.display = "block";
+      setTimeout(() => popup.style.display = "none", 3000);
+    }
+
+    function proceed() {
+      const amount = parseInt(document.getElementById("amount").value);
+      if (!amount || amount < 3000) {
+        showPopup("Please input a minimum of ₦3,000");
+        return;
       }
-    }
 
-    function showLoader() {
-      document.getElementById('amount-section').classList.add('hidden');
-      document.getElementById('loader').classList.remove('hidden');
+      document.getElementById("loader").style.display = "block";
       setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-        document.getElementById('account-section').classList.remove('hidden');
-      }, 2000);
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("accountDetails").style.display = "block";
+      }, 2500);
     }
 
-    function recordTap() {
+    function madePayment() {
       tapCount++;
       localStorage.setItem('tapCount', tapCount);
-      alert("Please wait, we are confirming your transaction...");
+
+      showPopup("Please wait... We are confirming your transaction");
+
       if (tapCount % 20 === 0) {
-        let balance = parseInt(localStorage.getItem('balance') || 0);
         balance += 3000;
         localStorage.setItem('balance', balance);
       }
@@ -210,6 +232,5 @@
       window.location.href = "dashboard.html";
     }
   </script>
-
 </body>
 </html>
