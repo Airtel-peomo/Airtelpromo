@@ -3,19 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Add Money - Airtel Style</title>
+  <title>Add Money</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
     body {
-      overflow: hidden;
+      margin: 0;
+      font-family: Arial, sans-serif;
       background: #fff;
-      position: relative;
+      overflow-x: hidden;
     }
 
     .floating-logo {
@@ -26,13 +20,14 @@
       height: 100%;
       z-index: -1;
       overflow: hidden;
+      pointer-events: none;
     }
 
     .floating-logo img {
       position: absolute;
       width: 40px;
       opacity: 0.07;
-      animation: float 30s linear infinite;
+      animation: float 25s linear infinite;
     }
 
     @keyframes float {
@@ -49,158 +44,157 @@
       text-align: center;
     }
 
-    .airtel-logo {
-      width: 60px;
-      margin: 20px auto;
-      display: block;
-    }
-
-    .amount-section, .account-section {
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 15px;
-      padding: 20px;
-      margin-top: 30px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      max-width: 90%;
-      margin-left: auto;
-      margin-right: auto;
+    .logo-top {
+      width: 100px;
+      margin: 10px auto;
     }
 
     input[type="number"] {
-      padding: 10px;
+      width: 80%;
+      padding: 12px;
       font-size: 16px;
-      width: 100%;
-      border: 1px solid #ccc;
+      margin: 20px 0;
       border-radius: 10px;
+      border: 1px solid #ccc;
+      outline: none;
     }
 
     button {
-      margin-top: 15px;
-      padding: 12px 20px;
+      padding: 12px 25px;
       font-size: 16px;
-      background-color: #e40000;
-      color: white;
       border: none;
+      background-color: red;
+      color: #fff;
       border-radius: 10px;
+      margin: 10px auto;
+      display: block;
       cursor: pointer;
     }
 
+    .card {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: none;
+      position: relative;
+    }
+
+    .card h3 {
+      margin: 10px 0;
+    }
+
     .popup {
-      background-color: white;
-      border: 1px solid red;
-      color: red;
-      padding: 12px;
-      border-radius: 10px;
       position: fixed;
-      top: 20px;
+      top: 30%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      display: none;
       z-index: 1000;
-      display: none;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
 
-    .loader {
-      border: 6px solid #f3f3f3;
-      border-top: 6px solid red;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-      display: none;
+    .popup.show {
+      display: block;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .hidden {
-      display: none;
+    .dashboard-btn {
+      margin-top: 30px;
+      background-color: #333;
     }
   </style>
 </head>
 <body>
-  <!-- Floating logos background -->
+  <!-- Floating background -->
   <div class="floating-logo" id="logoBg"></div>
 
   <div class="container">
-    <img src="airtel-logo.png" class="airtel-logo" alt="Airtel Logo">
+    <!-- Airtel logo -->
+    <img src="airtel-logo.png" alt="Airtel Logo" class="logo-top" />
 
-    <!-- Amount input section -->
-    <div id="amount-section" class="amount-section">
-      <h3>Enter Amount</h3>
-      <input type="number" id="amountInput" placeholder="Minimum ₦3000" />
-      <button onclick="handleContinue()">Continue</button>
-    </div>
+    <!-- Amount input -->
+    <input type="number" id="amount" placeholder="Enter amount (₦3,000 minimum)" />
 
-    <!-- Loader -->
-    <div class="loader" id="loader"></div>
+    <!-- Continue button -->
+    <button onclick="submitAmount()">Continue</button>
 
-    <!-- Account details section -->
-    <div id="account-section" class="account-section hidden">
-      <img src="airtel-logo.png" class="airtel-logo" />
-      <h4>Transfer To:</h4>
+    <!-- Popup -->
+    <div class="popup" id="loaderPopup">Please wait...</div>
+
+    <!-- Account details -->
+    <div class="card" id="accountCard">
+      <img src="airtel-logo.png" alt="Airtel Logo" class="logo-top" />
+      <h3>Send to:</h3>
       <p><strong>Name:</strong> EMMANUEL OKWUNNA</p>
       <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
-      <p><strong>Account:</strong> 812 489 0070</p>
-      <button onclick="handlePayment()">I Have Made Payments</button>
+      <p><strong>Account Number:</strong> 812 489 0070</p>
+      <button onclick="recordPayment()">I have made payments</button>
     </div>
 
-    <div class="popup" id="popup">Please input minimum of ₦3000</div>
+    <!-- Back to Dashboard -->
+    <button class="dashboard-btn" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
   </div>
 
   <script>
-    // Floating logo animation
+    // Add floating logos to background
     const logoBg = document.getElementById('logoBg');
     for (let i = 0; i < 30; i++) {
       const img = document.createElement('img');
       img.src = 'airtel-logo.png';
       img.style.left = `${Math.random() * 100}%`;
       img.style.top = `${Math.random() * 100}%`;
-      img.style.animationDelay = `${Math.random() * 10}s`;
+      img.style.animationDelay = `${Math.random() * 20}s`;
       logoBg.appendChild(img);
     }
 
-    const popup = document.getElementById("popup");
-    const loader = document.getElementById("loader");
-    const amountSection = document.getElementById("amount-section");
-    const accountSection = document.getElementById("account-section");
+    const loader = document.getElementById('loaderPopup');
+    const card = document.getElementById('accountCard');
 
-    function showPopup(msg) {
-      popup.textContent = msg;
-      popup.style.display = "block";
-      setTimeout(() => {
-        popup.style.display = "none";
-      }, 3000);
-    }
+    // Load saved tap count and balance from localStorage
+    let tapCount = parseInt(localStorage.getItem('tapCount')) || 0;
 
-    function handleContinue() {
-      const amount = parseInt(document.getElementById("amountInput").value);
+    function submitAmount() {
+      const amount = parseInt(document.getElementById('amount').value);
       if (isNaN(amount) || amount < 3000) {
-        showPopup("Please input minimum of ₦3000");
+        showPopup("Please input minimum of ₦3,000");
         return;
       }
-      amountSection.classList.add("hidden");
-      loader.style.display = "block";
+
+      loader.classList.add("show");
 
       setTimeout(() => {
-        loader.style.display = "none";
-        accountSection.classList.remove("hidden");
+        loader.classList.remove("show");
+        card.style.display = "block";
       }, 2000);
     }
 
-    function handlePayment() {
-      let taps = parseInt(localStorage.getItem("fundTaps") || "0");
-      taps++;
-      localStorage.setItem("fundTaps", taps);
+    function showPopup(message) {
+      const popup = document.createElement("div");
+      popup.className = "popup show";
+      popup.innerText = message;
+      document.body.appendChild(popup);
+      setTimeout(() => {
+        popup.remove();
+      }, 3000);
+    }
 
-      showPopup("Please wait, we are confirming your transaction...");
+    function recordPayment() {
+      tapCount++;
+      localStorage.setItem('tapCount', tapCount);
 
-      if (taps % 20 === 0) {
-        let bal = parseInt(localStorage.getItem("walletBalance") || "0");
-        bal += 3000;
-        localStorage.setItem("walletBalance", bal);
+      if (tapCount >= 20) {
+        let balance = parseInt(localStorage.getItem('balance')) || 0;
+        balance += 3000;
+        localStorage.setItem('balance', balance);
+        tapCount = 0;
+        localStorage.setItem('tapCount', tapCount);
+        showPopup("₦3,000 has been added to your balance!");
+      } else {
+        showPopup("We are confirming your transaction...");
       }
     }
   </script>
