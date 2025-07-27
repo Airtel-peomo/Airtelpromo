@@ -2,199 +2,164 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Add Money</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Success</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #fff;
-      overflow-x: hidden;
-    }
-
-    .animated-bg {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: url('airtel-logo.png') repeat;
-      opacity: 0.05;
-      z-index: 0;
-      animation: moveBg 30s linear infinite;
-    }
-
-    @keyframes moveBg {
-      0% { background-position: 0 0; }
-      100% { background-position: 1000px 1000px; }
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      padding: 30px 20px;
-      text-align: center;
-    }
-
-    .logo {
-      width: 80px;
-      margin: 0 auto 20px;
-      display: block;
-    }
-
-    .input-box {
-      margin-top: 20px;
-    }
-
-    input[type="number"] {
-      padding: 10px;
-      width: 80%;
-      font-size: 18px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      outline: none;
-    }
-
-    .continue-btn {
-      margin-top: 20px;
-      background-color: #d90000;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .account-details {
-      display: none;
-      margin-top: 30px;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px #ccc;
-    }
-
-    .account-details h3 {
-      margin: 0 0 10px;
-    }
-
-    .pay-btn {
-      margin-top: 15px;
-      background-color: #d90000;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    /* Pop-up */
-    .popup {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
-      display: none;
-      align-items: center;
+      background-color: #fff;
+      overflow: hidden;
+      display: flex;
       justify-content: center;
-      z-index: 99;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      position: relative;
     }
 
-    .popup-content {
-      background: #fff;
-      padding: 25px;
+    .success-card {
       text-align: center;
+      padding: 30px 20px;
+      background: #fff;
       border-radius: 15px;
-      width: 80%;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      z-index: 2;
     }
 
-    .popup-content h2 {
-      margin-top: 10px;
+    .success-check {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 5px solid #d90000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 20px;
+      animation: pop 0.4s ease-out forwards;
+    }
+
+    .success-check span {
+      font-size: 40px;
+      color: #d90000;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .message {
       font-size: 18px;
+      margin-bottom: 20px;
+      color: #333;
     }
 
-    .popup-content img {
-      width: 60px;
+    .username {
+      color: #d90000;
+      font-weight: bold;
     }
 
-    .popup-content button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background: #d90000;
+    button {
+      background-color: #d90000;
       color: white;
       border: none;
-      border-radius: 8px;
+      padding: 12px 20px;
       font-size: 16px;
+      border-radius: 8px;
       cursor: pointer;
+      margin-top: 10px;
     }
 
+    canvas.confetti {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
-  <div class="animated-bg"></div>
+  <canvas class="confetti" id="confetti-canvas"></canvas>
 
-  <div class="container">
-    <img src="airtel-logo.png" class="logo" alt="Logo" />
-    <div class="input-box">
-      <input type="number" id="amountInput" placeholder="Enter amount (₦3000 minimum)" />
-      <br />
-      <button class="continue-btn" onclick="proceed()">Continue</button>
+  <div class="success-card">
+    <div class="success-check">
+      <span>✔️</span>
     </div>
-
-    <div class="account-details" id="accountBox">
-      <h3>Send to:</h3>
-      <p><b>EMMANUEL OKWUNNA</b></p>
-      <p>SmartCash Payment Service Bank</p>
-      <p>Account No: <b>812 489 0070</b></p>
-      <button class="pay-btn" onclick="madePayment()">I have made payments</button>
+    <div class="message">
+      🎉🎊 Dear <span class="username" id="userName">User</span>,<br>
+      You have successfully funded your wallet with <b>₦3,000</b>
     </div>
-  </div>
-
-  <!-- Popup -->
-  <div class="popup" id="popup">
-    <div class="popup-content">
-      <img src="airtel-logo.png" alt="Logo" />
-      <h2 id="popupMessage">Dear USERNAME, you have successfully funded your wallet with ₦3000.</h2>
-      <button onclick="closePopup()">OK</button>
-    </div>
+    <button onclick="redirectHome()">OK</button>
   </div>
 
   <script>
-    let tapCount = parseInt(localStorage.getItem('tapCount') || '0');
-    let user = JSON.parse(localStorage.getItem('user')) || { name: "User", phone: "08000000000", balance: 0 };
+    // Load user from localStorage
+    const user = JSON.parse(localStorage.getItem('user')) || {};
+    document.getElementById("userName").textContent = (user.name || "User").toUpperCase();
 
-    function proceed() {
-      const amt = document.getElementById('amountInput').value;
-      if (amt < 3000) {
-        alert("Minimum amount is ₦3000");
-        return;
-      }
-      document.getElementById('accountBox').style.display = 'block';
-    }
-
-    function madePayment() {
-      tapCount++;
-      localStorage.setItem('tapCount', tapCount);
-      if (tapCount >= 20) {
-        // Add ₦3000 to balance
-        user.balance = (parseFloat(user.balance) || 0) + 3000;
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('tapCount', 0);
-        showPopup();
-      } else {
-        alert(`Tap count: ${tapCount}/20`);
-      }
-    }
-
-    function showPopup() {
-      const message = `Dear ${user.name.toUpperCase()}, you have successfully funded your wallet with ₦3000.`;
-      document.getElementById('popupMessage').innerText = message;
-      document.getElementById('popup').style.display = 'flex';
-    }
-
-    function closePopup() {
-      document.getElementById('popup').style.display = 'none';
+    function redirectHome() {
       window.location.href = "dashboard.html";
     }
+
+    // Confetti animation
+    const canvas = document.getElementById("confetti-canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confetti = [];
+
+    function createConfetti() {
+      for (let i = 0; i < 150; i++) {
+        confetti.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 4,
+          d: Math.random() * 10 + 10,
+          color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+          tilt: Math.random() * 10 - 5,
+          tiltAngle: 0,
+          tiltAngleIncrement: Math.random() * 0.07 + 0.05
+        });
+      }
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach(c => {
+        ctx.beginPath();
+        ctx.lineWidth = c.r;
+        ctx.strokeStyle = c.color;
+        ctx.moveTo(c.x + c.tilt + c.r / 2, c.y);
+        ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 2);
+        ctx.stroke();
+      });
+      updateConfetti();
+    }
+
+    function updateConfetti() {
+      confetti.forEach(c => {
+        c.y += Math.cos(c.d) + 2;
+        c.tiltAngle += c.tiltAngleIncrement;
+        c.tilt = Math.sin(c.tiltAngle) * 15;
+
+        if (c.y > canvas.height) {
+          c.y = -10;
+          c.x = Math.random() * canvas.width;
+        }
+      });
+    }
+
+    function animateConfetti() {
+      drawConfetti();
+      requestAnimationFrame(animateConfetti);
+    }
+
+    createConfetti();
+    animateConfetti();
   </script>
 </body>
 </html>
