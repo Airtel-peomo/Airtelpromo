@@ -1,187 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Airtel Promo - Pay Bills</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bills - Buy Data Bundles</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Arial', sans-serif;
       margin: 0;
       padding: 0;
-      background: #f8f9fa;
+      background: #f4f4f4;
     }
     header {
-      background: #d60000;
+      background-color: #d0021b;
       color: white;
-      padding: 15px;
+      padding: 1rem;
       text-align: center;
-      font-size: 20px;
+      font-size: 1.5rem;
     }
     .container {
-      padding: 20px;
+      padding: 1rem;
     }
-    .section {
+    .bundle {
       background: white;
-      padding: 20px;
+      padding: 1rem;
+      margin-bottom: 1rem;
       border-radius: 10px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    .section h3 {
-      margin-top: 0;
-      color: #d60000;
+    .bundle img {
+      width: 40px;
+      height: 40px;
+      margin-right: 1rem;
     }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
+    .bundle-info {
+      flex-grow: 1;
     }
-    button {
-      background: #d60000;
+    .bundle-info h4 {
+      margin: 0;
+    }
+    .bundle button {
+      padding: 0.5rem 1rem;
+      background: #d0021b;
       color: white;
       border: none;
+      border-radius: 5px;
       cursor: pointer;
     }
-    button:disabled {
-      background: #aaa;
-    }
-    .bundle-option {
-      display: flex;
-      align-items: center;
-      margin: 8px 0;
-      justify-content: space-between;
-    }
-    .bundle-option img {
-      height: 24px;
-      width: 24px;
-      margin-right: 10px;
-    }
-    .logo-text {
-      display: flex;
-      align-items: center;
-    }
-    .message {
-      padding: 10px;
-      background: #fef2f2;
-      border: 1px solid #ffcccc;
-      color: #b30000;
-      border-radius: 6px;
-      margin-top: 10px;
-      text-align: center;
-    }
-    .success {
-      background: #e0ffe0;
-      border: 1px solid #66cc66;
-      color: #006600;
+    .bundle button:hover {
+      background: #a00014;
     }
   </style>
 </head>
 <body>
+  <header>Buy Data Bundles</header>
 
-<header>📲 Buy Airtime / Data</header>
+  <div class="container">
+    <div class="bundle">
+      <img src="airtel.png" alt="Airtel" />
+      <div class="bundle-info">
+        <h4>Airtel 500MB - ₦100</h4>
+      </div>
+      <button onclick="buyBundle('Airtel', '500MB', 100)">Buy</button>
+    </div>
 
-<div class="container">
+    <div class="bundle">
+      <img src="airtel.png" alt="Airtel" />
+      <div class="bundle-info">
+        <h4>Airtel 700MB - ₦150</h4>
+      </div>
+      <button onclick="buyBundle('Airtel', '700MB', 150)">Buy</button>
+    </div>
 
-  <div class="section">
-    <h3>Buy Airtime</h3>
-    <label>Enter Amount</label>
-    <input type="number" id="airtime-amount" placeholder="₦100">
-    <label>Phone Number</label>
-    <input type="tel" id="airtime-number" placeholder="08012345678">
-    <label>Select Network</label>
-    <select id="airtime-network">
-      <option value="Airtel">Airtel</option>
-      <option value="MTN">MTN</option>
-      <option value="Glo">Glo</option>
-      <option value="9mobile">9mobile</option>
-    </select>
-    <button onclick="buyAirtime()">Buy Airtime</button>
-    <div id="airtime-message" class="message" style="display:none;"></div>
+    <div class="bundle">
+      <img src="mtn.png" alt="MTN" />
+      <div class="bundle-info">
+        <h4>MTN 1GB - ₦150</h4>
+      </div>
+      <button onclick="buyBundle('MTN', '1GB', 150)">Buy</button>
+    </div>
+
+    <div class="bundle">
+      <img src="glo.png" alt="Glo" />
+      <div class="bundle-info">
+        <h4>Glo 1GB - ₦130</h4>
+      </div>
+      <button onclick="buyBundle('Glo', '1GB', 130)">Buy</button>
+    </div>
+
+    <div class="bundle">
+      <img src="9mobile.png" alt="9mobile" />
+      <div class="bundle-info">
+        <h4>9mobile 1GB - ₦120</h4>
+      </div>
+      <button onclick="buyBundle('9mobile', '1GB', 120)">Buy</button>
+    </div>
   </div>
 
-  <div class="section">
-    <h3>Cheap Data Bundles</h3>
-
-    <div class="bundle-option">
-      <div class="logo-text"><img src="logos/airtel.png"> Airtel 500MB</div>
-      <button onclick="buyBundle('Airtel', 100, '500MB')">₦100</button>
-    </div>
-
-    <div class="bundle-option">
-      <div class="logo-text"><img src="logos/airtel.png"> Airtel 700MB</div>
-      <button onclick="buyBundle('Airtel', 150, '700MB')">₦150</button>
-    </div>
-
-    <div class="bundle-option">
-      <div class="logo-text"><img src="logos/mtn.png"> MTN 1GB</div>
-      <button onclick="buyBundle('MTN', 150, '1GB')">₦150</button>
-    </div>
-
-    <div class="bundle-option">
-      <div class="logo-text"><img src="logos/glo.png"> Glo 1GB</div>
-      <button onclick="buyBundle('Glo', 130, '1GB')">₦130</button>
-    </div>
-
-    <div class="bundle-option">
-      <div class="logo-text"><img src="logos/9mobile.png"> 9mobile 500MB</div>
-      <button onclick="buyBundle('9mobile', 120, '500MB')">₦120</button>
-    </div>
-
-    <div id="bundle-message" class="message" style="display:none;"></div>
-  </div>
-
-</div>
-
-<script>
-  let balance = parseFloat(localStorage.getItem("walletBalance")) || 0;
-  const username = localStorage.getItem("username") || "User";
-
-  function updateBalance(amount) {
-    balance -= amount;
-    localStorage.setItem("walletBalance", balance);
-  }
-
-  function showMessage(id, msg, isSuccess = false) {
-    const el = document.getElementById(id);
-    el.innerText = msg;
-    el.className = isSuccess ? "message success" : "message";
-    el.style.display = "block";
-    setTimeout(() => el.style.display = "none", 4000);
-  }
-
-  function buyAirtime() {
-    const amount = parseInt(document.getElementById("airtime-amount").value);
-    const number = document.getElementById("airtime-number").value;
-    const network = document.getElementById("airtime-network").value;
-
-    if (!amount || !number) {
-      showMessage("airtime-message", "Please enter valid amount and number");
-      return;
+  <script>
+    function getUsername() {
+      return localStorage.getItem('username') || 'User';
     }
 
-    if (balance < 3500) {
-      showMessage("airtime-message", "Insufficient balance! You need at least ₦3,500");
-      return;
+    function getBalance() {
+      return parseFloat(localStorage.getItem('balance')) || 0;
     }
 
-    updateBalance(amount);
-    showMessage("airtime-message", `Dear ${username}, you successfully recharged ₦${amount} to ${number} (${network})`, true);
-  }
-
-  function buyBundle(network, price, data) {
-    if (balance < 3500) {
-      showMessage("bundle-message", "Insufficient balance! You need at least ₦3,500");
-      return;
+    function setBalance(amount) {
+      localStorage.setItem('balance', amount);
     }
 
-    updateBalance(price);
-    showMessage("bundle-message", `🎉 Dear ${username}, you bought ${data} data on ${network} for ₦${price}`, true);
-  }
-</script>
+    function buyBundle(network, size, price) {
+      const balance = getBalance();
 
+      if (balance < 3500) {
+        alert("⚠️ Please fund wallet to at least ₦3500 before buying bundles.");
+        return;
+      }
+
+      if (balance < price) {
+        alert("❌ Insufficient balance to complete this purchase.");
+        return;
+      }
+
+      const newBalance = balance - price;
+      setBalance(newBalance);
+
+      // Save to transaction history
+      const history = JSON.parse(localStorage.getItem("transactions")) || [];
+      const newTransaction = {
+        type: "Data Bundle",
+        network,
+        size,
+        price,
+        date: new Date().toLocaleString()
+      };
+      history.unshift(newTransaction);
+      localStorage.setItem("transactions", JSON.stringify(history));
+
+      alert(`🎉 Dear ${getUsername()}, your ${network} ${size} bundle purchase of ₦${price} was successful!`);
+      window.location.href = "dashboard.html";
+    }
+  </script>
 </body>
-</html>
+      </html>
