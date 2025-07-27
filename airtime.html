@@ -1,1 +1,189 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Buy Airtime</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background: linear-gradient(rgba(255,0,0,0.1), rgba(255,255,255,0.8)), url('airtel-bg-float.gif') no-repeat center center fixed;
+      background-size: cover;
+      overflow-x: hidden;
+    }
+    .container {
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      color: #b30000;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .network-logos {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0;
+    }
+    .network-logos img {
+      height: 30px;
+    }
+    .bundles {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .bundle-option {
+      padding: 10px;
+      background: #fff0f0;
+      border: 1px solid #f00;
+      border-radius: 10px;
+      cursor: pointer;
+      flex: 1 1 45%;
+      text-align: center;
+    }
+    .btn {
+      background: #e60000;
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      display: none;
+    }
+    .popup-box {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 0 20px #ffcccc;
+    }
+    .popup-box h3 {
+      margin-bottom: 15px;
+      color: #b30000;
+    }
+    .popup-box button {
+      background: #e60000;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Buy Airtime</h2><div class="input-group">
+  <label for="phone">Phone Number</label>
+  <input type="tel" id="phone" placeholder="Enter recipient's number">
+</div>
 
+<div class="input-group">
+  <label for="network">Select Network</label>
+  <select id="network">
+    <option value="Airtel">Airtel</option>
+    <option value="MTN">MTN</option>
+    <option value="Glo">Glo</option>
+    <option value="9mobile">9mobile</option>
+  </select>
+</div>
+
+<div class="input-group">
+  <label for="amount">Amount (₦)</label>
+  <input type="number" id="amount" placeholder="Enter amount">
+</div>
+
+<div class="network-logos">
+  <img src="airtel.png" alt="Airtel">
+  <img src="mtn.png" alt="MTN">
+  <img src="glo.png" alt="Glo">
+  <img src="9mobile.png" alt="9mobile">
+</div>
+
+<div class="bundles">
+  <div class="bundle-option" onclick="selectBundle(100)">₦100</div>
+  <div class="bundle-option" onclick="selectBundle(200)">₦200</div>
+  <div class="bundle-option" onclick="selectBundle(500)">₦500</div>
+  <div class="bundle-option" onclick="selectBundle(1000)">₦1000</div>
+</div>
+
+<button class="btn" onclick="buyAirtime()">Buy Airtime</button>
+
+  </div>  <div class="popup" id="popup">
+    <div class="popup-box">
+      <h3>🎉 Airtime Purchase Successful</h3>
+      <p id="popupMsg"></p>
+      <button onclick="closePopup()">OK</button>
+    </div>
+  </div>  <script>
+    function selectBundle(value) {
+      document.getElementById('amount').value = value;
+    }
+
+    function buyAirtime() {
+      const phone = document.getElementById('phone').value.trim();
+      const network = document.getElementById('network').value;
+      const amount = parseInt(document.getElementById('amount').value);
+
+      if (!phone || phone.length < 11 || isNaN(amount) || amount < 50) {
+        alert("Please enter valid phone and amount (min ₦50)");
+        return;
+      }
+
+      // Save to local history (you can connect it to real storage)
+      const history = JSON.parse(localStorage.getItem("airtime_history") || "[]");
+      const newRecord = {
+        number: phone,
+        network,
+        amount,
+        date: new Date().toLocaleString()
+      };
+      history.push(newRecord);
+      localStorage.setItem("airtime_history", JSON.stringify(history));
+
+      // Deduct from wallet (simulate)
+      let balance = parseInt(localStorage.getItem("wallet_balance") || "0");
+      if (amount > balance) {
+        alert("Insufficient balance");
+        return;
+      }
+      balance -= amount;
+      localStorage.setItem("wallet_balance", balance);
+
+      // Show popup
+      document.getElementById("popupMsg").innerText = `₦${amount} airtime has been sent to ${phone} (${network}).`;
+      document.getElementById("popup").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+      window.location.href = "dashboard.html";
+    }
+  </script></body>
+    </html>
