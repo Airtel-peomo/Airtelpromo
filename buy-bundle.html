@@ -8,185 +8,183 @@
     body {
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      background: #f2f2f2;
-    }
-    header {
-      background: red;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 22px;
+      padding: 0;
+      background: #f4f4f4;
     }
     .container {
+      max-width: 400px;
+      margin: auto;
+      background: #fff;
       padding: 20px;
-    }
-    input, select {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-    .bundle-list {
-      margin-top: 20px;
-    }
-    .bundle-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: white;
-      padding: 10px 15px;
+      box-shadow: 0 0 10px #ccc;
+      margin-top: 30px;
       border-radius: 10px;
-      margin-bottom: 10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    .bundle-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .bundle-left img {
-      width: 30px;
-      height: 30px;
-    }
-    .buy-btn {
-      background: red;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .message {
+    h2 {
       text-align: center;
+      color: #d6001c;
+    }
+    label {
+      display: block;
       margin-top: 15px;
       font-weight: bold;
-      color: green;
     }
-    .error {
-      color: red;
+    select, input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      background: #d6001c;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .bundle {
+      padding: 10px;
+      border: 1px dashed #ccc;
+      margin-top: 10px;
+      border-radius: 6px;
+    }
+    .bundle input {
+      margin-right: 10px;
+    }
+    .network-logo {
+      height: 20px;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+    #message {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: green;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h2>Buy Data Bundle</h2>
 
-<header>Buy Data Bundle</header>
+    <label for="network">Choose Network</label>
+    <select id="network" onchange="loadBundles()">
+      <option value="">-- Select Network --</option>
+      <option value="Airtel">📶 Airtel</option>
+      <option value="MTN">📶 MTN</option>
+      <option value="Glo">📶 Glo</option>
+      <option value="9mobile">📶 9mobile</option>
+    </select>
 
-<div class="container">
-  <label for="network">Select Network</label>
-  <select id="network">
-    <option value="Airtel">Airtel</option>
-    <option value="MTN">MTN</option>
-    <option value="Glo">Glo</option>
-    <option value="9mobile">9mobile</option>
-  </select>
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" placeholder="Enter phone number">
 
-  <label for="phone">Enter Phone Number</label>
-  <input type="text" id="phone" placeholder="08012345678" maxlength="11" />
+    <div id="bundles"></div>
 
-  <div class="bundle-list" id="bundleList"></div>
+    <button onclick="buyBundle()">Buy Bundle</button>
+    <div id="message"></div>
+  </div>
 
-  <div class="message" id="message"></div>
-</div>
+  <script>
+    const bundleOptions = {
+      "Airtel": [
+        { label: "500MB - ₦100", price: 100 },
+        { label: "700MB - ₦150", price: 150 },
+        { label: "1GB - ₦200", price: 200 },
+      ],
+      "MTN": [
+        { label: "500MB - ₦120", price: 120 },
+        { label: "1GB - ₦150", price: 150 },
+        { label: "2GB - ₦250", price: 250 },
+      ],
+      "Glo": [
+        { label: "500MB - ₦90", price: 90 },
+        { label: "1GB - ₦130", price: 130 },
+        { label: "2GB - ₦200", price: 200 },
+      ],
+      "9mobile": [
+        { label: "500MB - ₦110", price: 110 },
+        { label: "1GB - ₦160", price: 160 },
+        { label: "2GB - ₦260", price: 260 },
+      ]
+    };
 
-<script>
-  const bundles = {
-    Airtel: [
-      { price: 100, size: "500MB" },
-      { price: 150, size: "700MB" },
-      { price: 200, size: "1GB" },
-    ],
-    MTN: [
-      { price: 150, size: "1GB" },
-      { price: 250, size: "2GB" },
-    ],
-    Glo: [
-      { price: 130, size: "1GB" },
-      { price: 200, size: "2GB" },
-    ],
-    "9mobile": [
-      { price: 120, size: "500MB" },
-      { price: 180, size: "1GB" },
-    ]
-  };
+    function loadBundles() {
+      const network = document.getElementById("network").value;
+      const bundleDiv = document.getElementById("bundles");
+      bundleDiv.innerHTML = "";
 
-  const logos = {
-    Airtel: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Airtel_logo_2022.svg",
-    MTN: "https://upload.wikimedia.org/wikipedia/commons/2/2f/MTN_Logo.svg",
-    Glo: "https://upload.wikimedia.org/wikipedia/commons/e/e1/Glo_Logo.svg",
-    "9mobile": "https://upload.wikimedia.org/wikipedia/commons/1/19/9mobile_logo.png"
-  };
-
-  const networkSelect = document.getElementById("network");
-  const bundleList = document.getElementById("bundleList");
-  const messageBox = document.getElementById("message");
-
-  let userBalance = parseInt(localStorage.getItem("userBalance")) || 0;
-  const phoneInput = document.getElementById("phone");
-
-  function updateBundles() {
-    const network = networkSelect.value;
-    bundleList.innerHTML = "";
-    bundles[network].forEach(bundle => {
-      const item = document.createElement("div");
-      item.className = "bundle-item";
-      item.innerHTML = `
-        <div class="bundle-left">
-          <img src="${logos[network]}" alt="${network}">
-          <span>${bundle.size}</span>
-        </div>
-        <div>
-          ₦${bundle.price}
-          <button class="buy-btn" onclick="buyBundle('${network}', ${bundle.price}, '${bundle.size}')">Buy</button>
-        </div>
-      `;
-      bundleList.appendChild(item);
-    });
-  }
-
-  function buyBundle(network, price, size) {
-    const phone = phoneInput.value.trim();
-    messageBox.classList.remove("error");
-    messageBox.innerText = "";
-
-    if (phone.length !== 11 || !/^\d{11}$/.test(phone)) {
-      messageBox.classList.add("error");
-      messageBox.innerText = "Enter valid 11-digit phone number.";
-      return;
+      if (bundleOptions[network]) {
+        bundleOptions[network].forEach((bundle, i) => {
+          const id = `bundle${i}`;
+          bundleDiv.innerHTML += `
+            <div class="bundle">
+              <input type="radio" name="bundle" id="${id}" value="${bundle.price}">
+              <label for="${id}">${bundle.label}</label>
+            </div>
+          `;
+        });
+      }
     }
 
-    if (userBalance < 3500) {
-      messageBox.classList.add("error");
-      messageBox.innerText = "Insufficient balance. You must fund at least ₦3,500.";
-      return;
+    function getBalance() {
+      return parseInt(localStorage.getItem("walletBalance") || "0");
     }
 
-    userBalance -= price;
-    localStorage.setItem("userBalance", userBalance);
+    function updateBalance(amount) {
+      let current = getBalance();
+      localStorage.setItem("walletBalance", current - amount);
+    }
 
-    // Save to history
-    const history = JSON.parse(localStorage.getItem("transactionHistory") || "[]");
-    history.push({
-      type: "Data Bundle",
-      network,
-      amount: price,
-      size,
-      phone,
-      time: new Date().toLocaleString()
-    });
-    localStorage.setItem("transactionHistory", JSON.stringify(history));
+    function addToHistory(type, amount, number, network) {
+      const history = JSON.parse(localStorage.getItem("history") || "[]");
+      history.push({
+        type: type,
+        amount: amount,
+        number: number,
+        network: network,
+        date: new Date().toLocaleString()
+      });
+      localStorage.setItem("history", JSON.stringify(history));
+    }
 
-    messageBox.classList.remove("error");
-    messageBox.innerHTML = `✅ <strong>Success:</strong> ${size} data purchased for ${phone} on ${network}.`;
-  }
+    function buyBundle() {
+      const phone = document.getElementById("phone").value;
+      const selected = document.querySelector('input[name="bundle"]:checked');
+      const network = document.getElementById("network").value;
+      const msg = document.getElementById("message");
 
-  networkSelect.addEventListener("change", updateBundles);
+      if (!phone || !selected || !network) {
+        msg.style.color = "red";
+        msg.innerText = "Please fill all fields.";
+        return;
+      }
 
-  // Load initial
-  updateBundles();
-</script>
+      const amount = parseInt(selected.value);
+      const balance = getBalance();
 
+      if (balance < 3500) {
+        msg.style.color = "red";
+        msg.innerText = "❌ Insufficient balance. Fund your wallet first.";
+        return;
+      }
+
+      // Success
+      updateBalance(amount);
+      addToHistory("Data Bundle", amount, phone, network);
+
+      msg.style.color = "green";
+      msg.innerHTML = `🎉 You successfully bought ${selected.nextElementSibling.innerText} for ${phone}`;
+      setTimeout(() => {
+        msg.innerText = "";
+      }, 5000);
+    }
+  </script>
 </body>
-  </html>
+</html>
