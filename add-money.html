@@ -1,174 +1,172 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Add Money - Airtel Promo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Add Money</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      overflow: hidden;
       font-family: Arial, sans-serif;
-      background: url('airtel-bg.png') no-repeat center center fixed;
+      background: #fff;
+    }
+    body {
+      background-image: url('airtel-bg.png');
       background-size: cover;
-      overflow-x: hidden;
-      touch-action: manipulation;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+    .overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.8);
+      z-index: 1;
     }
     .container {
-      max-width: 400px;
-      margin: auto;
+      position: relative;
+      z-index: 2;
       padding: 20px;
       text-align: center;
+      top: 5%;
     }
-    .logo {
-      width: 100px;
-      animation: float 4s ease-in-out infinite;
+    .airtel-logo {
+      width: 80px;
+      animation: scatterJoin 3s infinite;
+      margin: 0 auto 20px;
     }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    @keyframes scatterJoin {
+      0% { transform: scale(1.5) rotate(0deg); opacity: 0.2; }
+      50% { transform: scale(0.8) rotate(180deg); opacity: 0.8; }
+      100% { transform: scale(1) rotate(360deg); opacity: 1; }
     }
     input[type="number"] {
+      width: 80%;
       padding: 10px;
-      font-size: 16px;
-      width: 100%;
-      margin-top: 20px;
-      border-radius: 10px;
+      margin-bottom: 15px;
       border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 18px;
     }
     button {
-      padding: 12px 20px;
-      font-size: 16px;
-      background-color: red;
-      color: white;
+      background: red;
+      color: #fff;
+      padding: 10px 20px;
       border: none;
-      border-radius: 10px;
-      margin-top: 20px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
     }
-    .account-card {
-      margin-top: 30px;
-      background: rgba(255, 255, 255, 0.9);
+    .card {
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.95);
       padding: 20px;
-      border-radius: 20px;
-      text-align: center;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      display: none;
+    }
+    .copy-btn {
+      margin-top: 10px;
+      font-size: 14px;
+      background: #eee;
+      color: #333;
     }
     .popup {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 100;
-    }
-    .popup-content {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      text-align: center;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      z-index: 10;
+      display: none;
     }
     .confetti {
-      font-size: 30px;
-      animation: confetti-fall 1s ease infinite;
+      font-size: 32px;
+      animation: sparkle 1s infinite alternate;
     }
-    @keyframes confetti-fall {
-      0% { transform: translateY(-20px); }
-      100% { transform: translateY(20px); }
-    }
-    .history {
-      margin-top: 40px;
-      text-align: left;
-      background: white;
-      padding: 10px;
-      border-radius: 10px;
-    }
-    .copy {
-      color: blue;
-      cursor: pointer;
-      font-weight: bold;
+    @keyframes sparkle {
+      from { opacity: 1; }
+      to { opacity: 0.3; }
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <img src="airtel-logo.png" class="logo" alt="Airtel Logo">
-  <h2>Fund Wallet</h2>
-  <input type="number" id="amount" placeholder="Enter amount (Min ₦3000)">
-  <button onclick="showDetails()">Continue</button>  <div id="accountSection" style="display:none;">
-    <div class="account-card">
-      <h3>Make Payment To:</h3>
-      <p><strong>Name:</strong> Emmanuel Okwunna</p>
-      <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
-      <p><strong>Acc No:</strong> <span id="accNum">8124890070</span> <span class="copy" onclick="copyAccount()">[Copy]</span></p>
-      <button onclick="handlePaymentTap()">I Have Made Payment</button>
-    </div>
-  </div>  <div class="history" id="history">
-    <h4>Funding History</h4>
-    <ul id="historyList"></ul>
-  </div>
-</div><div id="popup" class="popup" style="display:none;">
-  <div class="popup-content">
-    <div id="popupMessage"></div>
-    <button onclick="closePopup()">OK</button>
-  </div>
-</div><script>
-  let taps = parseInt(localStorage.getItem("taps") || 0);
-  let balance = parseInt(localStorage.getItem("balance") || 0);
-  let history = JSON.parse(localStorage.getItem("fundingHistory") || "[]");
-  const historyList = document.getElementById("historyList");
+  <div class="overlay"></div>
+  <div class="container">
+    <img src="airtel-logo.png" class="airtel-logo" alt="Airtel Logo" />
+    <h2>Fund Wallet</h2>
+    <input type="number" id="amount" placeholder="Enter amount (Min ₦3000)" />
+    <br />
+    <button onclick="showAccount()">Continue</button><div class="card" id="accountCard">
+  <p><strong>Send to:</strong></p>
+  <p>EMMANUEL OKWUNNA</p>
+  <p>SmartCash PSB</p>
+  <p id="acct">8124890070</p>
+  <button class="copy-btn" onclick="copyAccount()">Copy Account Number</button>
+  <br><br>
+  <button onclick="tapped()">I have made payment</button>
+  <br><br>
+  <button onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+</div>
 
-  function renderHistory() {
-    historyList.innerHTML = "";
-    history.forEach((item) => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      historyList.appendChild(li);
-    });
-  }
+  </div>  <div class="popup" id="popup">
+    <div class="confetti">🎉🎊🎉</div>
+    <h3 id="popupMsg"></h3>
+    <button onclick="redirectHome()">OK</button>
+  </div>  <script>
+    let tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
+    const username = localStorage.getItem("username") || "User";
 
-  function copyAccount() {
-    const accText = document.getElementById("accNum").textContent;
-    navigator.clipboard.writeText(accText);
-    alert("Account number copied!");
-  }
+    function showAccount() {
+      const amt = parseInt(document.getElementById("amount").value);
+      if (isNaN(amt) || amt < 3000) {
+        alert("Please input minimum of ₦3000");
+        return;
+      }
+      document.getElementById("accountCard").style.display = "block";
+    }
 
-  function showPopup(msg) {
-    document.getElementById("popupMessage").innerHTML = msg;
-    document.getElementById("popup").style.display = "flex";
-  }
+    function copyAccount() {
+      const acct = document.getElementById("acct").innerText;
+      navigator.clipboard.writeText(acct).then(() => alert("Account number copied!"));
+    }
 
-  function closePopup() {
-    document.getElementById("popup").style.display = "none";
-    if (taps >= 20) {
+    function tapped() {
+      tapCount++;
+      localStorage.setItem("tapCount", tapCount);
+
+      if (tapCount >= 20) {
+        // reset tap
+        localStorage.setItem("tapCount", 0);
+
+        // update balance
+        let bal = parseInt(localStorage.getItem("balance")) || 0;
+        bal += 3000;
+        localStorage.setItem("balance", bal);
+
+        // add to history
+        const txns = JSON.parse(localStorage.getItem("transactions") || "[]");
+        txns.push({ type: "Fund", amount: 3000, date: new Date().toLocaleString() });
+        localStorage.setItem("transactions", JSON.stringify(txns));
+
+        // show popup
+        document.getElementById("popupMsg").innerText = `Dear ${username}, you have successfully funded your wallet with ₦3,000.`;
+        document.getElementById("popup").style.display = "block";
+      }
+    }
+
+    function redirectHome() {
+      document.getElementById("popup").style.display = "none";
       window.location.href = "dashboard.html";
     }
-  }
-
-  function showDetails() {
-    const amount = parseInt(document.getElementById("amount").value);
-    if (amount < 3000) {
-      showPopup("<b style='color:red;'>Please input a minimum of ₦3000</b>");
-      return;
-    }
-    document.getElementById("accountSection").style.display = "block";
-  }
-
-  function handlePaymentTap() {
-    taps++;
-    localStorage.setItem("taps", taps);
-    if (taps >= 20) {
-      taps = 0;
-      balance += 3000;
-      localStorage.setItem("balance", balance);
-      localStorage.setItem("taps", 0);
-      const date = new Date().toLocaleString();
-      const name = localStorage.getItem("username") || "User";
-      const entry = `${date} - Funded ₦3000 via transfer.`;
-      history.unshift(entry);
-      localStorage.setItem("fundingHistory", JSON.stringify(history));
-      renderHistory();
-      showPopup(`<div class='confetti'>🎉🎊🎉🎊</div><h3>Dear ${name},</h3><p>You have successfully funded your wallet with ₦3000.</p><p>Your transaction is successful!</p>`);
-    }
-  }
-
-  renderHistory();
-</script></body>
+  </script></body>
 </html>
