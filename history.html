@@ -1,1 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Transaction History</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #fff, #f8f8f8);
+      overflow-x: hidden;
+      padding: 20px;
+    }
 
+    h1 {
+      text-align: center;
+      color: #d81f26;
+      margin-bottom: 10px;
+    }
+
+    .history-container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+
+    .transaction {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .transaction:last-child {
+      border-bottom: none;
+    }
+
+    .amount {
+      font-weight: bold;
+      color: green;
+    }
+
+    .date {
+      font-size: 14px;
+      color: gray;
+    }
+
+    .no-transactions {
+      text-align: center;
+      padding: 40px 0;
+      color: #aaa;
+      font-style: italic;
+    }
+
+    a.back {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      text-decoration: none;
+      background: #d81f26;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    a.back:hover {
+      background: #b0101a;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Transaction History</h1>
+  <div class="history-container" id="historyContainer">
+    <div class="no-transactions">Loading...</div>
+  </div>
+
+  <a class="back" href="dashboard.html">← Back to Dashboard</a>
+
+  <script>
+    const historyContainer = document.getElementById('historyContainer');
+
+    function loadHistory() {
+      const history = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+
+      if (history.length === 0) {
+        historyContainer.innerHTML = '<div class="no-transactions">No transactions yet.</div>';
+        return;
+      }
+
+      historyContainer.innerHTML = '';
+      history.reverse().forEach(tx => {
+        const div = document.createElement('div');
+        div.className = 'transaction';
+        div.innerHTML = `
+          <div class="amount">+₦${tx.amount}</div>
+          <div class="date">${tx.date}</div>
+        `;
+        historyContainer.appendChild(div);
+      });
+    }
+
+    loadHistory();
+  </script>
+</body>
+</html>
