@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Buy Data Bundle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9f9;
+    }
+    header {
+      background-color: #d50000;
+      color: white;
+      padding: 1rem;
+      font-size: 1.4rem;
+      text-align: center;
+    }
+    .container {
+      padding: 1rem;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .bundle-option {
+      display: flex;
+      align-items: center;
+      padding: 0.7rem;
+      margin-top: 1rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .bundle-option:hover {
+      background-color: #ffeaea;
+    }
+    .bundle-option img {
+      width: 32px;
+      margin-right: 1rem;
+    }
+    .bundle-option span {
+      flex: 1;
+      font-weight: 500;
+    }
+    .status {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+      display: none;
+    }
+    .success {
+      background-color: #e6ffe6;
+      color: green;
+    }
+    .error {
+      background-color: #fff2f2;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+<header>Buy Data Bundle</header>
+
+<div class="container">
+  <label>Phone Number</label>
+  <input type="text" id="phone" placeholder="Enter number (e.g. 08012345678)">
+
+  <label>Select Network</label>
+  <select id="network">
+    <option value="airtel">Airtel</option>
+    <option value="mtn">MTN</option>
+    <option value="glo">GLO</option>
+    <option value="9mobile">9Mobile</option>
+  </select>
+
+  <div id="bundles"></div>
+
+  <div id="status" class="status"></div>
+</div>
+
+<script>
+  const bundles = {
+    airtel: [
+      { label: '500MB for ₦100', amount: 100, size: '500MB' },
+      { label: '700MB for ₦150', amount: 150, size: '700MB' },
+      { label: '1GB for ₦200', amount: 200, size: '1GB' },
+    ],
+    mtn: [
+      { label: '1GB for ₦150', amount: 150, size: '1GB' },
+      { label: '2GB for ₦250', amount: 250, size: '2GB' },
+    ],
+    glo: [
+      { label: '1GB for ₦130', amount: 130, size: '1GB' },
+      { label: '2GB for ₦230', amount: 230, size: '2GB' },
+    ],
+    '9mobile': [
+      { label: '1GB for ₦120', amount: 120, size: '1GB' },
+      { label: '2GB for ₦220', amount: 220, size: '2GB' },
+    ],
+  };
+
+  const logos = {
+    airtel: 'https://upload.wikimedia.org/wikipedia/commons/8/86/Airtel_logo_2020.png',
+    mtn: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/MTN_Logo.svg',
+    glo: 'https://upload.wikimedia.org/wikipedia/commons/2/2b/Glo_Logo.png',
+    '9mobile': 'https://upload.wikimedia.org/wikipedia/commons/8/8a/9mobile_logo.png'
+  };
+
+  const balance = parseInt(localStorage.getItem('balance')) || 0;
+
+  const bundlesDiv = document.getElementById('bundles');
+  const statusDiv = document.getElementById('status');
+
+  document.getElementById('network').addEventListener('change', renderBundles);
+  window.onload = renderBundles;
+
+  function renderBundles() {
+    const network = document.getElementById('network').value;
+    bundlesDiv.innerHTML = '';
+    bundles[network].forEach(bundle => {
+      const div = document.createElement('div');
+      div.className = 'bundle-option';
+      div.innerHTML = `
+        <img src="${logos[network]}" alt="${network} logo">
+        <span>${bundle.label}</span>
+      `;
+      div.onclick = () => purchaseBundle(network, bundle);
+      bundlesDiv.appendChild(div);
+    });
+  }
+
+  function purchaseBundle(network, bundle) {
+    const phone = document.getElementById('phone').value.trim();
+    if (phone.length < 11) {
+      showStatus('Enter a valid phone number.', 'error');
+      return;
+    }
+    if (balance < 3500) {
+      showStatus('Insufficient balance to buy data. Fund your wallet with ₦3,500 or more.', 'error');
+      return;
+    }
+    const newBalance = balance - bundle.amount;
+    localStorage.setItem('balance', newBalance);
+    const transactions = JSON.parse(localStorage.getItem('history') || '[]');
+    transactions.push({
+      type: 'Data Bundle',
+      network: network,
+      size: bundle.size,
+      amount: bundle.amount,
+      number: phone,
+      time: new Date().toLocaleString()
+    });
+    localStorage.setItem('history', JSON.stringify(transactions));
+    showStatus(`✅ ${bundle.size} purchased successfully for ${phone}!`, 'success');
+  }
+
+  function showStatus(message, type) {
+    statusDiv.textContent = message;
+    statusDiv.className = 'status ' + type;
+    statusDiv.style.display = 'block';
+    setTimeout(() => {
+      statusDiv.style.display = 'none';
+    }, 4000);
+  }
+</script>
+
+</body>
+</html>
